@@ -7,4 +7,8 @@ const router: Router = express.Router();
 import testsRoutes from './api-tests';
 router.use('/tests', testsRoutes);
 
+// Import seat selection route
+import seatRoutes from './seat-selection-api';
+router.use('/seats', seatRoutes);
+
 export default router;

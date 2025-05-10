@@ -1,0 +1,34 @@
+### Reserve a seat successfully
+POST http://localhost:3000/api/v1/seats/select
+Content-Type: application/json
+
+{
+  "userId": "user123",
+  "seatNumber": "A1"
+}
+
+### Try reserving an already reserved seat
+POST http://localhost:3000/api/v1/seats/select
+Content-Type: application/json
+
+{
+  "userId": "user123",
+  "seatNumber": "A3"
+}
+
+### Try reserving a seat that doesn't exist
+POST http://localhost:3000/api/v1/seats/select
+Content-Type: application/json
+
+{
+  "userId": "user123",
+  "seatNumber": "Z9"
+}
+
+### Missing fields in the request
+POST http://localhost:3000/api/v1/seats/select
+Content-Type: application/json
+
+{
+  "seatNumber": "A1"
+}
