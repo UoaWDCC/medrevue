@@ -1,9 +1,11 @@
 import type React from 'react';
 import { Link, Route, Routes } from 'react-router';
+
 import { Footer } from './components/Footer';
 import { Menu } from './components/Menu';
 import HomePage from './pages/Home';
 import { SponsorPage } from './pages/SponsorPage';
+import UserDetail from './pages/UserDetail';
 import SeatSelectionPage from './pages/seat_selection';
 
 const App: React.FC = () => {
@@ -72,6 +74,7 @@ const App: React.FC = () => {
             </Link>
           }
         />
+        <Route path="/user-detail" element={<UserDetail />} />
       </Routes>
       <Footer />
     </>
