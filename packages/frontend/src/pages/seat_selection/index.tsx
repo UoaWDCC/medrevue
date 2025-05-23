@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SeatPlanning } from '../../components/SeatPlanning';
 import type { AppDispatch, RootState } from '../../redux/store';
 import './SeatSelectionStyles.css';
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import type { Seat } from '../../components/SeatPlanning/SeatPlanning';
 import { toggleSeatSelection } from '../../redux/slices/seatSelectionSlice';
 
@@ -62,19 +63,21 @@ const SeatSelectionPage: React.FC = () => {
       {/* Main container */}
       <div className="relative flex flex-col md:flex-row items-center justify-between h-full bg-[#070507] z-1 gap-x-8 p-4">
         {/* Seat Selection Container */}
-        <div className="w-[60%] h-auto flex items-center justify-center overflow-hidden">
-          {/* Scaling SeatPlanning by screen size */}
-          <div
-            className="
-              scale-45 
-              sm:scale-50 
-              md:scale-65 
-              lg:scale-88 
-              xl:scale-100
-            "
+        <div className="w-[60%] h-full flex items-center justify-center overflow-hidden border-2 border-[#E5CE63]/10 rounded-xl">
+          <TransformWrapper
+            wheel={{ step: 50 }}
+            pinch={{ step: 5 }}
+            doubleClick={{ disabled: true }}
+            minScale={1}
+            maxScale={4}
+            initialScale={1}
           >
-            <SeatPlanning />
-          </div>
+            <TransformComponent
+              wrapperStyle={{ width: '100%', height: '100%' }}
+            >
+              <SeatPlanning />
+            </TransformComponent>
+          </TransformWrapper>
         </div>
         {/* Selected Seat View */}
         <div className="w-[40%] h-[90%] flex  bg-[#070507] rounded-xl p-4 flex-col gap-y-4">

@@ -42,9 +42,9 @@ const SeatButton: React.FC<SeatButtonProps> = ({
       onClick={() => onSeatSelect()}
       title={`Row ${seat.rowLabel}, Seat ${seat.number}`}
       style={{ transform: yOffset ? `translateY(${yOffset}px)` : undefined }}
-      className={`w-[12px] h-[12px] text-[5px] rounded-full transition-all duration-200 ${seat.seatType === 'normal' ? regularClass : vipClass} ${availableClass}`}
+      className={`w-[12px] h-[12px] text-[5px] rounded-full transition-all duration-200 flex justify-center items-center ${seat.seatType === 'normal' ? regularClass : vipClass} ${availableClass}`}
     >
-      {seat.selected && seat.number}
+      <span>{seat.selected && seat.number}</span>
     </button>
   );
 };
