@@ -8,6 +8,7 @@ import { SponsorPage } from './pages/SponsorPage';
 import UserDetail from './pages/UserDetail';
 import SeatSelectionPage from './pages/seat_selection';
 
+
 const App: React.FC = () => {
   return (
     <>
