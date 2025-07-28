@@ -5,6 +5,7 @@ import type React from 'react';
 
 import afterLogo from '../../assets/after.png';
 import anzcaLogo from '../../assets/anzca.png';
+import BLStringerLogo from '../../assets/bl-stringer.jpeg';
 import medworldLogo from '../../assets/medworld.png';
 import mpsLogo from '../../assets/mps.png';
 import oneHealthLogo from '../../assets/one health.jpeg';
@@ -58,23 +59,6 @@ export const Sponsors: React.FC = () => {
             />
           </a>
         </div>
-      </div>
-
-      <div>
-        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-[#E5CE63] font-[Poppins]">
-          SILVER
-        </p>
-        <a
-          href="https://pizzaclub.co.nz"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img
-            src={pizzaclubLogo}
-            alt="Pizza Club"
-            className="md:h-20 h-10 object-contain mx-auto bg-white"
-          />
-        </a>
       </div>
 
       <div>
@@ -142,6 +126,34 @@ export const Sponsors: React.FC = () => {
             </a>
           </div>
         </div>
+      </div>
+
+      <div>
+        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-[#E5CE63] font-[Poppins]">
+          SPECIAL SPONSOR
+        </p>
+        <a
+          href="https://pizzaclub.co.nz"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src={pizzaclubLogo}
+            alt="Pizza Club"
+            className="md:h-20 h-10 object-contain mx-auto bg-white"
+          />
+        </a>
+        <a
+          href="https://blstringer.co.nz/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src={BLStringerLogo}
+            alt="BL Stringer"
+            className="md:h-20 h-10 object-contain mx-auto bg-white"
+          />
+        </a>
       </div>
     </div>
   );
