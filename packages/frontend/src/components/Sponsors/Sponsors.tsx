@@ -63,6 +63,23 @@ export const Sponsors: React.FC = () => {
 
       <div>
         <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-[#E5CE63] font-[Poppins]">
+          SILVER
+        </p>
+        <a
+          href="https://pizzaclub.co.nz"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src={pizzaclubLogo}
+            alt="Pizza Club"
+            className="md:h-20 h-10 object-contain mx-auto bg-white"
+          />
+        </a>
+      </div>
+
+      <div>
+        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-[#E5CE63] font-[Poppins]">
           BRONZE
         </p>
         <div className="flex flex-col items-center gap-3">
@@ -132,17 +149,6 @@ export const Sponsors: React.FC = () => {
         <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-[#E5CE63] font-[Poppins]">
           SPECIAL SPONSOR
         </p>
-        <a
-          href="https://pizzaclub.co.nz"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img
-            src={pizzaclubLogo}
-            alt="Pizza Club"
-            className="md:h-20 h-10 object-contain mx-auto bg-white"
-          />
-        </a>
         <a
           href="https://blstringer.co.nz/"
           target="_blank"
