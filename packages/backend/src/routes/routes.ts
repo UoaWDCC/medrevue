@@ -6,10 +6,10 @@ import express, { type Request, type Response, type Router } from 'express';
 const router: Router = express.Router();
 
 /**
- * This route handler will respond to a GET request to the "/" path (e.g. http://localhost:3000/). It will
+ * This route handler will respond to a GET request to the "/pulse" path (e.g. http://localhost:3000/pulse). It will
  * return an HTTP 200 (OK) response with the given JSON data.
  */
-router.get('/', (_req: Request, res: Response): void => {
+router.get('/pulse', (_req: Request, res: Response): void => {
   /**
    * res.json() will return a 200 OK response, with Content-Type = application/json, and a JSON string equal
    * to the result of calling JSON.stringify() on the given JavaScript object.

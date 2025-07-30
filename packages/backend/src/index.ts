@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import routes from './routes/routes';
+import path from 'path';
 
 // Load environment variables from the .env file
 dotenv.config();
@@ -26,14 +27,19 @@ app.use(
 
 // Allow larger JSON payloads
 app.use(express.json({ limit: '50mb' }));
-// Serve static files from the 'public' directory
-app.use(express.static('public'));
+// Serve static files from the 'public/frontend' directory
+app.use(express.static('public/frontend'));
 
 // app.get('/', (_req: Request, res: Response): void => {
 //   res.send('Med Revue Hub!');
 // });
 
 app.use('/', routes);
+
+// Redirect all non-api routes to the React SPA
+app.use('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'frontend', 'index.html'));
+});
 
 (async () => {
   // Start the DB running. Then, once it's connected, start the server.
