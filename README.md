@@ -28,5 +28,7 @@ Steps (details in [Dockerfile](./Dockerfile)):
 - Backend built
 - Backend (with frontend) served on Fly.io
 
-You can find the latest deployment at [medrevue.fly.dev](https://medrevue.fly.dev/) or [medrevue.wdcc.co.nz](https://medrevue.wdcc.co.nz/).  
-You can trigger a manual deployment in the [actions tab](https://github.com/UoaWDCC/medrevue/actions/workflows/deploy.yml).
+Note: the deployment uses Yarn due to an issue with npm's peer dependency resolution.
+
+> You can find the latest deployment at [medrevue.fly.dev](https://medrevue.fly.dev/) or [medrevue.wdcc.co.nz](https://medrevue.wdcc.co.nz/).  
+> You can trigger a manual deployment in the [actions tab](https://github.com/UoaWDCC/medrevue/actions/workflows/deploy.yml).
