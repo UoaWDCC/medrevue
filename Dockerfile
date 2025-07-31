@@ -21,24 +21,20 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
 
 # Install node modules
-COPY package-lock.json package.json ./
+COPY yarn.lock package.json ./
 COPY packages/frontend/package.json packages/frontend/
 COPY packages/backend/package.json packages/backend/
-RUN npm ci --include=dev
-
-# # Debugging: print file structure
-# RUN apt-get update -qq && \
-#     apt-get install tree
-# RUN tree -I "node_modules" && exit 1
+# Install dev dependencies
+RUN yarn install --frozen-lockfile --production=false
 
 # Copy application code
 COPY packages/ packages/
 
 # Build application
-RUN npm run build
+RUN yarn build
 
-# Remove development dependencies
-RUN npm prune --omit=dev
+# Prune dev dependencies to reduce final image size
+RUN yarn install --frozen-lockfile --production=true
 
 
 # Final stage for app image
@@ -47,10 +43,10 @@ FROM base
 # Copy built application
 COPY --from=build /app /app
 
-# Print the final image file structure
-RUN apt-get update -qq && \
-    apt-get install tree
-RUN tree -I "node_modules"
+# # Print the final image file structure
+# RUN apt-get update -qq && \
+#     apt-get install tree
+# RUN tree -I "node_modules"
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000

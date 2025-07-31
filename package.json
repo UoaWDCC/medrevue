@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "test:frontend": "npm run test --workspace @medrevue/frontend",
     "test:backend": "npm run test --workspace @medrevue/backend",
