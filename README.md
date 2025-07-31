@@ -17,3 +17,16 @@ Med Revue Hub is designed to:
 - npm install
 - npm run dev:frontend
 - npm run dev:backend
+
+## 🚀 Deployment
+
+Upon pushing to main, this app is automatically deployed to Fly.io via Github Actions ([workflow file](.github\workflows\deploy.yml)).
+
+Steps (details in [Dockerfile](./Dockerfile)):
+- Frontend built
+- Frontend build moved to backend
+- Backend built
+- Backend (with frontend) served on Fly.io
+
+You can find the latest deployment at [medrevue.fly.dev](https://medrevue.fly.dev/) or [medrevue.wdcc.co.nz](https://medrevue.wdcc.co.nz/).  
+You can trigger a manual deployment in the [actions tab](https://github.com/UoaWDCC/medrevue/actions/workflows/deploy.yml).
