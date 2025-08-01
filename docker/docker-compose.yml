@@ -10,12 +10,12 @@ services:
     environment:
       REDIS_HOST: "redis_test"
     develop:
+      #TODO: path is wrong
       watch:
         - action: sync
-          path: ./src
-          target: ./src
+          path: ../packages/backend/src
+          target: /app/packages/backend/src
     container_name: medrevue-backend-development
-
     profiles: ["dev", "test"]
     ports:
       - "3000:3000"
