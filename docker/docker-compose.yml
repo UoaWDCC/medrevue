@@ -1,15 +1,20 @@
 # docker-compose does not work with fly.io, so expect to only ever run the compose file when attempting to run the development or test environment using docker compose
 services:
   app_dev:
+    depends_on:
+      - redis_test
     build:
       context: ..
       dockerfile: ./docker/backend/Dockerfile
+    environment:
+      REDIS_HOST: "redis_test"
     develop:
       watch:
         - action: sync
           path: ./src
           target: ./src
     container_name: medrevue-backend-development
+
     profiles: ["dev", "test"]
     ports:
       - "3000:3000"
