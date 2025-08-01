@@ -1,6 +1,7 @@
 # docker-compose does not work with fly.io, so expect to only ever run the compose file when attempting to run the development or test environment using docker compose
 services:
   app_dev:
+    env_file: "../packages/backend/.env.development.local"
     depends_on:
       - redis_test
     build:
