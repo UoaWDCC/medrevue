@@ -7,6 +7,7 @@ services:
     build:
       context: ..
       dockerfile: ./docker/backend/Dockerfile
+      target: backend-dev
     environment:
       REDIS_HOST: "redis_test"
     develop:
@@ -23,4 +24,25 @@ services:
     container_name: "redis_test"
     ports:
       - "6379:6379"
-    profiles: ["test"] #NOTE: I didn't use volumes because I think this should only be used for testing 
+    profiles: ["test"] #NOTE: I didn't use volumes because I think this should only be used for testing
+  redis_prod:
+    image: redis:latest
+    container_name: "redis_test"
+    ports:
+      - "6379:6379"
+    profiles: ["prod"]
+    #TODO: add volume for redis
+  app_prod:
+    env_file: "../packages/backend/.env.production.local"
+    depends_on:
+      - redis_prod
+    build:
+      context: ..
+      dockerfile: ./docker/backend/Dockerfile
+      target: fullstack-prod
+    environment:
+      REDIS_HOST: "redis_prod"
+    container_name: medrevue-production
+    profiles: ["prod"]
+    ports:
+      - "3000:3000"
