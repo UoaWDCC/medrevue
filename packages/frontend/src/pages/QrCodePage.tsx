@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { LoadingComponent } from '../components/LoadingComponent';
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000';
+
 const QrCodePage: React.FC = () => {
   const { orderId, signature } = useParams<{
     orderId: string;
@@ -20,9 +23,7 @@ const QrCodePage: React.FC = () => {
     }
 
     // Construct the backend API URL
-    const backendUrl =
-      import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
-    const qrImageUrl = `${backendUrl}/api/v1/qrcode/order/${orderId}/${signature}`;
+    const qrImageUrl = `${API_BASE_URL}/api/v1/qrcode/order/${orderId}/${signature}`;
 
     setImageUrl(qrImageUrl);
     setLoading(false);
