@@ -10,7 +10,6 @@ services:
     environment:
       REDIS_HOST: "redis_test"
     develop:
-      #TODO: path is wrong
       watch:
         - action: sync
           path: ../packages/backend/src
@@ -24,4 +23,4 @@ services:
     container_name: "redis_test"
     ports:
       - "6379:6379"
-    profiles: ["test"]
+    profiles: ["test"] #NOTE: I didn't use volumes because I think this should only be used for testing.
