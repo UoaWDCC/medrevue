@@ -71,7 +71,9 @@ docker run --rm -it --entrypoint bash <TAG NAME OR ID>
 
 ### Env Files
 
-If using the test profile, you need to configure a .env.development.local file in the backend directory, otherwise the program will not
+Depending on the profile, you might need to reconfigure different .env files, otherwise Docker will not be able to access/link your env variables. 
+
+Place the .env files in the same location you would put the .env file. Use ``.env.development.local`` for development and test profiles, and ``.env.production.local`` for the production profile. 
 
 ### Stopping Docker Container
 
