@@ -1,12 +1,12 @@
 # docker-compose does not work with fly.io, so expect to only ever run the compose file when attempting to run the development or test environment using docker compose
 services:
-  app_dev:
+  app_backend_test:
     env_file: "../packages/backend/.env.development.local"
     depends_on:
       - redis_test
     build:
       context: ..
-      dockerfile: ./docker/backend/Dockerfile
+      dockerfile: ./docker/Dockerfile
       target: backend-dev
     environment:
       REDIS_HOST: "redis_test"
@@ -16,7 +16,7 @@ services:
           path: ../packages/backend/src
           target: /app/packages/backend/src
     container_name: medrevue-backend-development
-    profiles: ["dev", "test"]
+    profiles: ["test:backend"]
     ports:
       - "3000:3000"
   redis_test:
@@ -24,25 +24,40 @@ services:
     container_name: "redis_test"
     ports:
       - "6379:6379"
-    profiles: ["test"] #NOTE: I didn't use volumes because I think this should only be used for testing
+    profiles: ["test:backend"] #NOTE: I didn't use volumes because I think this should only be used for testing
   redis_prod:
     image: redis:latest
-    container_name: "redis_test"
+    container_name: "redis_prod"
     ports:
       - "6379:6379"
     profiles: ["prod"]
-    #TODO: add volume for redis
+    #TODO: add volume for redis prod
   app_prod:
     env_file: "../packages/backend/.env.production.local"
+    environment:
+      REDIS_HOST: "redis_prod"
     depends_on:
       - redis_prod
     build:
       context: ..
-      dockerfile: ./docker/backend/Dockerfile
+      dockerfile: ./docker/Dockerfile
       target: fullstack-prod
-    environment:
-      REDIS_HOST: "redis_prod"
     container_name: medrevue-production
     profiles: ["prod"]
     ports:
       - "3000:3000"
+  app_frontend_dev:
+    env_file: "../packages/backend/.env.development.local"
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+      target: frontend-dev
+    develop:
+      watch:
+        - action: sync
+          path: ../packages/frontend/src
+          target: /app/packages/frontend/src
+    container_name: medrevue-frontend-development
+    profiles: ["dev:frontend"]
+    ports:
+      - "5173:5173"
