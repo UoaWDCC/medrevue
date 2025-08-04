@@ -323,40 +323,37 @@ export async function sendConfirmationEmail(order: IOrder): Promise<void> {
             
             <div class="order-details">
                 <div class="detail-row">
-                    <span class="detail-label">Order Number</span>
+                    <span class="detail-label">Order Number: </span>
                     <span class="detail-value">#${orderId}</span>
                 </div>
                 <div class="detail-row">
-                    <span class="detail-label">Show Date</span>
+                    <span class="detail-label">Show Date: </span>
                     <span class="detail-value">${order.selectedDate}</span>
                 </div>
                 <div class="detail-row">
-                    <span class="detail-label">Show Time</span>
+                    <span class="detail-label">Show Time: </span>
                     <span class="detail-value">7:30 PM - 10:00 PM</span>
                 </div>
                 <div class="detail-row">
-                    <span class="detail-label">Doors Open</span>
+                    <span class="detail-label">Doors Open: </span>
                     <span class="detail-value">6:45 PM</span>
                 </div>
                 <div class="detail-row">
-                    <span class="detail-label">Location</span>
+                    <span class="detail-label">Location: </span>
                     <span class="detail-value">SkyCity Theatre</span>
                 </div>
                 <div class="detail-row">
-                    <span class="detail-label">Seats</span>
+                    <span class="detail-label">Seats: </span>
                     <span class="detail-value">${seats}</span>
                 </div>
                 <div class="detail-row">
-                    <span class="detail-label">Total Paid</span>
+                    <span class="detail-label">Total Paid: </span>
                     <span class="detail-value total-price">${totalPrice}</span>
                 </div>
             </div>
             
             <div class="qr-section">
                 <h3 class="qr-title">🎫 Your Digital Ticket</h3>
-                <p style="color: #0c4a6e; margin-bottom: 15px; font-weight: 500;">
-                    Show this QR code at the venue for entry
-                </p>
                 <div class="qr-code">
                     <img src="${qrCodeDataUrl}" alt="Ticket QR Code" style="width: 200px; height: 200px; display: block;"/>
                 </div>
@@ -373,7 +370,7 @@ export async function sendConfirmationEmail(order: IOrder): Promise<void> {
                     ⚠️ Important Information
                 </h3>
                 <ul>
-                    <li>Save this order summary QR code to your phone for easy access</li>
+                    <li>Save this order summary to your phone for easy access</li>
                     <li>Arrive 15 minutes before show time</li>
                     <li>Keep your ticket handy for scanning at entry, we may only be looking at the ticket email and not scanning the QR code at entry</li>
                     <li>Contact us if you have any issues with your ticket</li>

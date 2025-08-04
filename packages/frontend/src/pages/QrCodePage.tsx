@@ -61,9 +61,6 @@ const QrCodePage: React.FC = () => {
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             Your Ticket QR Code
           </h1>
-          <p className="text-gray-600 mb-8">
-            Show this QR code at the venue for entry
-          </p>
 
           <div className="bg-gray-50 p-6 rounded-lg mb-6">
             <img
