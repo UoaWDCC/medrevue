@@ -6,6 +6,54 @@ import { Order } from '../../models/order';
 
 const router = express.Router();
 
+// New endpoint for order QR codes (public access for email links)
+router.get(
+  '/order/:orderId/:signature',
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { orderId, signature } = req.params;
+
+      if (!orderId || !signature) {
+        res.status(400).json({ error: 'Missing orderId or signature' });
+        return;
+      }
+
+      const qrCodeSecret = process.env.QRCODE_SECRET;
+      if (!qrCodeSecret) {
+        res.status(500).json({ error: 'QRCODE_SECRET not configured' });
+        return;
+      }
+
+      // Verify the signature
+      const hmac = crypto.createHmac('sha256', qrCodeSecret);
+      hmac.update(orderId);
+      const expectedSignature = hmac.digest('hex');
+
+      if (signature !== expectedSignature) {
+        res.status(403).json({ error: 'Invalid signature' });
+        return;
+      }
+
+      // Verify order exists
+      const order = await Order.findById(orderId).exec();
+      if (!order) {
+        res.status(404).json({ error: 'Order not found' });
+        return;
+      }
+
+      // Generate QR code with the same payload as in email
+      const qrPayload = `${orderId}.${signature}`;
+
+      res.setHeader('Content-Type', 'image/png');
+      res.setHeader('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
+      await QRCode.toFileStream(res, qrPayload);
+    } catch (error) {
+      console.error('Failed to serve order QR code:', error);
+      res.status(500).json({ error: 'Failed to generate QR code' });
+    }
+  },
+);
+
 router.get(
   '/',
   verifyInternalRequest,

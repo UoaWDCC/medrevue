@@ -5,6 +5,7 @@ import { Footer } from './components/Footer';
 import { Menu } from './components/Menu';
 import CancelPage from './pages/CancelPage';
 import HomePage from './pages/Home';
+import QrCodePage from './pages/QrCodePage';
 import ReturnPolicyPage from './pages/ReturnPolicy';
 import { SponsorPage } from './pages/SponsorPage';
 import SuccessPage from './pages/SuccessPage';
@@ -112,6 +113,15 @@ const App: React.FC = () => {
             <>
               <Menu />
               <ReturnPolicyPage />
+            </>
+          }
+        />
+        <Route
+          path="/qrcode/:orderId/:signature"
+          element={
+            <>
+              <Menu />
+              <QrCodePage />
             </>
           }
         />

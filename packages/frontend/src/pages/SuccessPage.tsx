@@ -44,27 +44,50 @@ const SuccessPage: React.FC = () => {
       return;
     }
 
+    let isPolling = true;
+
     const fetchStatus = async () => {
+      if (!isPolling) return;
+
       try {
         const res = await axios.get(
           `${API_BASE_URL}/api/v1/orders/order-status/${orderId}`,
           { withCredentials: true },
         );
-        if (res.data.paymentStatus) {
+        if (res.data.paymentStatus && isPolling) {
           setStatus(res.data.paymentStatus);
-          if (res.data.paymentStatus === 'succeeded' && intervalRef.current) {
-            clearInterval(intervalRef.current);
+          if (res.data.paymentStatus === 'succeeded') {
+            isPolling = false;
+            if (intervalRef.current) {
+              clearInterval(intervalRef.current);
+              intervalRef.current = null;
+            }
           }
         }
       } catch (e) {
         console.error('Failed to fetch payment status', e);
+        // On error, stop polling to prevent spam
+        isPolling = false;
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
       }
     };
 
+    // Initial fetch
     fetchStatus();
+
+    // Set up polling interval
     intervalRef.current = window.setInterval(fetchStatus, 3000);
+
+    // Cleanup function
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      isPolling = false;
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
     };
   }, []);
 

@@ -298,9 +298,13 @@ router.get(
         return;
       }
       if (paymentIntentDetails.status === 'succeeded' && !order.paid) {
-        // Update order status to paid
+        // Update order status to paid FIRST to prevent race conditions
         order.paid = true;
+
+        // Save the order immediately to prevent duplicate processing
         await updateOrder(order);
+
+        // Then do the other operations
         await markSeatsUnavailable(
           order.selectedDate,
           order.selectedSeats.map((s) => ({
@@ -315,8 +319,24 @@ router.get(
         await redisClient.del(`seats:${order.selectedDate}`);
         await refreshSeatCache(order.selectedDate);
 
-        // Send confirmation email
-        await sendConfirmationEmail(order);
+        // Send confirmation email only if not recently sent (10 minutes)
+        const emailKey = `email_sent:${id}`;
+        const recentlySent = await redisClient.get(emailKey);
+
+        if (!recentlySent) {
+          try {
+            await sendConfirmationEmail(order);
+            // Mark email as sent for 10 minutes to prevent duplicates
+            await redisClient.setex(emailKey, 600, 'true'); // 600 seconds = 10 minutes
+          } catch (emailError) {
+            console.error('Failed to send confirmation email:', emailError);
+            // Don't set the Redis key if email failed, allowing retry
+          }
+        } else {
+          console.log(
+            `Email already sent recently for order ${id}, skipping duplicate`,
+          );
+        }
       }
       res.status(200).json({ paymentStatus: paymentIntentDetails.status });
     } catch (error: unknown) {
