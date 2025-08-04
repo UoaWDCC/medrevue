@@ -1,19 +1,18 @@
 # docker-compose does not work with fly.io, so expect to only ever run the compose file when attempting to run the development or test environment using docker compose
 services:
   app_backend_test:
-    env_file: "../packages/backend/.env.development.local"
+    env_file: "./packages/backend/.env.development.local"
     depends_on:
       - redis_test
     build:
-      context: ..
-      dockerfile: ./docker/Dockerfile
+      dockerfile: .
       target: backend-dev
     environment:
       REDIS_HOST: "redis_test"
     develop:
       watch:
         - action: sync
-          path: ../packages/backend/src
+          path: ./packages/backend/src
           target: /app/packages/backend/src
     container_name: medrevue-backend-development
     profiles: ["test:backend"]
@@ -33,29 +32,25 @@ services:
     profiles: ["prod"]
     #TODO: add volume for redis prod
   app_prod:
-    env_file: "../packages/backend/.env.production.local"
+    env_file: "./packages/backend/.env.production.local"
     environment:
       REDIS_HOST: "redis_prod"
     depends_on:
       - redis_prod
     build:
-      context: ..
-      dockerfile: ./docker/Dockerfile
       target: fullstack-prod
     container_name: medrevue-production
     profiles: ["prod"]
     ports:
       - "3000:3000"
   app_frontend_dev:
-    env_file: "../packages/backend/.env.development.local"
+    env_file: "./packages/frontend/.env.development.local"
     build:
-      context: ..
-      dockerfile: ./docker/Dockerfile
       target: frontend-dev
     develop:
       watch:
         - action: sync
-          path: ../packages/frontend/src
+          path: ./packages/frontend/src
           target: /app/packages/frontend/src
     container_name: medrevue-frontend-development
     profiles: ["dev:frontend"]
