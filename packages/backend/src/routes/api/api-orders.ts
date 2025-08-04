@@ -1,6 +1,9 @@
 import express, { type Request, type Response } from 'express';
 import Stripe from 'stripe';
 import {
+  type DuplicateTicketReport,
+  checkDuplicateTickets,
+  checkSpecificSeatDuplicate,
   createOrder,
   deleteOrder,
   getOrderStatistics,
@@ -198,6 +201,81 @@ router.get('/stats', async (_req: Request, res: Response): Promise<void> => {
     });
   }
 });
+
+// Check for duplicate ticket sales
+router.get(
+  '/duplicates',
+  verifyInternalRequest,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { date, includeUnpaid } = req.query;
+      const includeUnpaidOrders = includeUnpaid === 'true';
+      const dateFilter = typeof date === 'string' ? date : undefined;
+
+      const duplicateReport = await checkDuplicateTickets(
+        dateFilter,
+        includeUnpaidOrders,
+      );
+      res.status(200).json(duplicateReport);
+    } catch (error) {
+      console.error('Error checking duplicate tickets:', error);
+      res.status(500).json({
+        error: 'Failed to check duplicate tickets',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  },
+);
+
+// Check if a specific seat has been sold multiple times
+router.get(
+  '/duplicates/seat/:date/:rowLabel/:number',
+  verifyInternalRequest,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { date, rowLabel, number } = req.params;
+      const { includeUnpaid } = req.query;
+      const includeUnpaidOrders = includeUnpaid === 'true';
+
+      if (!date || !rowLabel || !number) {
+        res.status(400).json({
+          error: 'Missing required parameters: date, rowLabel, or number',
+        });
+        return;
+      }
+
+      const seatNumber = Number.parseInt(number, 10);
+      if (Number.isNaN(seatNumber)) {
+        res.status(400).json({ error: 'Seat number must be a valid integer' });
+        return;
+      }
+
+      const orderIds = await checkSpecificSeatDuplicate(
+        date,
+        rowLabel,
+        seatNumber,
+        includeUnpaidOrders,
+      );
+
+      res.status(200).json({
+        seat: {
+          date,
+          rowLabel,
+          number: seatNumber,
+        },
+        orderIds,
+        isDuplicate: orderIds.length > 1,
+        orderCount: orderIds.length,
+      });
+    } catch (error) {
+      console.error('Error checking specific seat duplicate:', error);
+      res.status(500).json({
+        error: 'Failed to check specific seat duplicate',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  },
+);
 
 // Retrive order by ID
 router.get('/:id', async (req: Request, res: Response): Promise<void> => {

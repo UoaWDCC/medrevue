@@ -189,6 +189,212 @@ async function deleteOrder(id: string): Promise<boolean> {
   }
 }
 
+interface DuplicateTicketReport {
+  duplicateSeats: {
+    date: string;
+    rowLabel: string;
+    number: number;
+    seatType: string;
+    orderIds: string[];
+    orderDetails: Array<{
+      orderId: string;
+      customerName: string;
+      email: string;
+      paid: boolean;
+      createdAt: Date;
+    }>;
+  }[];
+  duplicateOrders: {
+    customerEmail: string;
+    duplicateOrderGroups: Array<{
+      orderIds: string[];
+      selectedSeats: Array<{
+        rowLabel: string;
+        number: number;
+        seatType: string;
+      }>;
+      orderDetails: Array<{
+        orderId: string;
+        customerName: string;
+        paid: boolean;
+        createdAt: Date;
+      }>;
+    }>;
+  }[];
+  summary: {
+    totalDuplicateSeats: number;
+    totalDuplicateOrders: number;
+    affectedCustomers: number;
+  };
+}
+
+/**
+ * Checks for duplicate ticket sales across all orders
+ * @param dateFilter Optional date filter to check duplicates for a specific date only
+ * @param includeUnpaidOrders Whether to include unpaid orders in the duplicate check (default: false)
+ * @returns Detailed report of duplicate tickets found
+ */
+async function checkDuplicateTickets(
+  dateFilter?: string,
+  includeUnpaidOrders = false,
+): Promise<DuplicateTicketReport> {
+  try {
+    // Build query filter
+    const matchFilter: { selectedDate?: string; paid?: boolean } = {};
+    if (dateFilter) {
+      matchFilter.selectedDate = dateFilter;
+    }
+    if (!includeUnpaidOrders) {
+      matchFilter.paid = true;
+    }
+
+    // Find duplicate seats - same seat sold to multiple orders
+    const duplicateSeatsAggregation = await Order.aggregate([
+      { $match: matchFilter },
+      { $unwind: '$selectedSeats' },
+      {
+        $group: {
+          _id: {
+            date: '$selectedDate',
+            rowLabel: '$selectedSeats.rowLabel',
+            number: '$selectedSeats.number',
+            seatType: '$selectedSeats.seatType',
+          },
+          orders: {
+            $push: {
+              orderId: '$_id',
+              customerName: { $concat: ['$firstName', ' ', '$lastName'] },
+              email: '$email',
+              paid: '$paid',
+              createdAt: '$createdAt',
+            },
+          },
+          count: { $sum: 1 },
+        },
+      },
+      { $match: { count: { $gt: 1 } } },
+      {
+        $project: {
+          date: '$_id.date',
+          rowLabel: '$_id.rowLabel',
+          number: '$_id.number',
+          seatType: '$_id.seatType',
+          orderIds: '$orders.orderId',
+          orderDetails: '$orders',
+          _id: 0,
+        },
+      },
+    ]).exec();
+
+    // Find duplicate orders - same customer with same seat selections
+    const duplicateOrdersAggregation = await Order.aggregate([
+      { $match: matchFilter },
+      {
+        $group: {
+          _id: {
+            email: '$email',
+            selectedDate: '$selectedDate',
+            selectedSeats: '$selectedSeats',
+          },
+          orders: {
+            $push: {
+              orderId: '$_id',
+              customerName: { $concat: ['$firstName', ' ', '$lastName'] },
+              paid: '$paid',
+              createdAt: '$createdAt',
+            },
+          },
+          count: { $sum: 1 },
+        },
+      },
+      { $match: { count: { $gt: 1 } } },
+      {
+        $group: {
+          _id: '$_id.email',
+          duplicateOrderGroups: {
+            $push: {
+              orderIds: '$orders.orderId',
+              selectedSeats: '$_id.selectedSeats',
+              orderDetails: '$orders',
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          customerEmail: '$_id',
+          duplicateOrderGroups: 1,
+          _id: 0,
+        },
+      },
+    ]).exec();
+
+    // Calculate summary statistics
+    const totalDuplicateSeats = duplicateSeatsAggregation.length;
+    const totalDuplicateOrders = duplicateOrdersAggregation.reduce(
+      (total, customer) =>
+        total +
+        customer.duplicateOrderGroups.reduce(
+          (customerTotal: number, group: { orderIds: string[] }) =>
+            customerTotal + group.orderIds.length,
+          0,
+        ),
+      0,
+    );
+    const affectedCustomers = duplicateOrdersAggregation.length;
+
+    return {
+      duplicateSeats: duplicateSeatsAggregation,
+      duplicateOrders: duplicateOrdersAggregation,
+      summary: {
+        totalDuplicateSeats,
+        totalDuplicateOrders,
+        affectedCustomers,
+      },
+    };
+  } catch (error) {
+    console.error('Error checking duplicate tickets:', error);
+    throw new Error('Failed to check duplicate tickets');
+  }
+}
+
+/**
+ * Checks if a specific seat has been sold to multiple orders
+ * @param date The date of the show
+ * @param rowLabel The row label of the seat
+ * @param number The seat number
+ * @param includeUnpaidOrders Whether to include unpaid orders (default: false)
+ * @returns Array of order IDs that contain this seat
+ */
+async function checkSpecificSeatDuplicate(
+  date: string,
+  rowLabel: string,
+  number: number,
+  includeUnpaidOrders = false,
+): Promise<string[]> {
+  try {
+    const matchFilter: {
+      selectedDate: string;
+      'selectedSeats.rowLabel': string;
+      'selectedSeats.number': number;
+      paid?: boolean;
+    } = {
+      selectedDate: date,
+      'selectedSeats.rowLabel': rowLabel,
+      'selectedSeats.number': number,
+    };
+    if (!includeUnpaidOrders) {
+      matchFilter.paid = true;
+    }
+
+    const orders = await Order.find(matchFilter).select('_id').exec();
+    return orders.map((order) => (order._id as string).toString());
+  } catch (error) {
+    console.error('Error checking specific seat duplicate:', error);
+    throw new Error('Failed to check specific seat duplicate');
+  }
+}
+
 export {
   createOrder,
   retrieveOrderList,
@@ -197,4 +403,7 @@ export {
   updateOrder,
   deleteOrder,
   getOrderStatistics,
+  checkDuplicateTickets,
+  checkSpecificSeatDuplicate,
+  type DuplicateTicketReport,
 };
