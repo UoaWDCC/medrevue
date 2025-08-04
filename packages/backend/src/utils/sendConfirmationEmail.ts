@@ -124,8 +124,9 @@ export async function sendConfirmationEmail(order: IOrder): Promise<void> {
         
         .detail-row {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
             padding: 8px 0;
             border-bottom: 1px solid #e5e7eb;
         }
@@ -143,7 +144,7 @@ export async function sendConfirmationEmail(order: IOrder): Promise<void> {
         .detail-value {
             font-weight: 500;
             color: #1f2937;
-            text-align: right;
+            text-align: left;
             font-size: 14px;
         }
         
@@ -291,15 +292,7 @@ export async function sendConfirmationEmail(order: IOrder): Promise<void> {
                 margin: 20px 0;
             }
             
-            .detail-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 4px;
-            }
-            
-            .detail-value {
-                text-align: left;
-            }
+
         }
     </style>
 </head>
