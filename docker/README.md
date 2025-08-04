@@ -14,7 +14,12 @@ docker compose -f <PATH TO DOCKER-COMPOSE.YML> --profile <PROFILE NAME> up --bui
 
 This will (re)build the Docker image and create a new container on watch mode. Watch automatically updates and previews your running Compose services as you edit and save your code.
 
-There are two profiles: test, which is for the backend, and prod, which complies the frontend into the backend. You can see all profile names in docker-compose.yml.
+There are four profiles:
+
+- `test:backend`
+- `prod`,which auto-compiles the frontend dist folder for the backend to serve
+- `dev:frontend`
+- `dev:backend` (TODO)
 
 If you wish to activate Nodemon while running the container, type `w` in the Docker terminal where your container is being run. This will enable watch mode, and will sync changes in the src directory.
 
