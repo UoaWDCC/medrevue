@@ -1,16 +1,24 @@
 Simple introduction on how to use and build Dockerfiles locally.
 
+## Installing Docker
+
+You must [install and run Docker](https://docs.docker.com/engine/install/) in the background before creating any Docker containers.
+
 ## Starting Docker Container
 
 To start a Docker container, run:
 
 ```bash
-docker compose -f <PATH TO DOCKER-COMPOSE.YML> --profile <PROFILE NAME> up --build -w
+docker compose -f <PATH TO DOCKER-COMPOSE.YML> --profile <PROFILE NAME> up --build
 ```
 
 This will (re)build the Docker image and create a new container on watch mode. Watch automatically updates and previews your running Compose services as you edit and save your code.
 
-There is currently only one profile: test, which is for the backend. You can see all profile names in docker-compose.yml.
+There are two profiles: test, which is for the backend, and prod, which complies the frontend into the backend. You can see all profile names in docker-compose.yml.
+
+If you wish to activate Nodemon while running the container, type `w` in the Docker terminal where your container is being run. This will enable watch mode, and will sync changes in the src directory.
+
+NOTE: There is no watch mode for the production build. Meaning you cannot hot-reload Vite nor run Nodemon in Express in the production build.
 
 ## Activating shells
 
