@@ -327,7 +327,7 @@ router.get(
           try {
             await sendConfirmationEmail(order);
             // Mark email as sent for 10 minutes to prevent duplicates
-            await redisClient.setex(emailKey, 600, 'true'); // 600 seconds = 10 minutes
+            await redisClient.setEx(emailKey, 600, 'true'); // 600 seconds = 10 minutes
           } catch (emailError) {
             console.error('Failed to send confirmation email:', emailError);
             // Don't set the Redis key if email failed, allowing retry
