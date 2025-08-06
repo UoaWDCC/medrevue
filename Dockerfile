@@ -61,11 +61,13 @@ WORKDIR /app/packages/backend
 RUN npm run build
 
 FROM base AS fullstack-prod
-COPY --from=backend-build /app/packages/backend/dist .
-COPY --from=frontend-build /app/dist ./frontend-dist
-COPY --from=backend-build /app/node_modules ./node_modules
+COPY --from=backend-build /app/packages/backend/dist ./app/packages/backend/dist
+#this has to match the directory structure in routes.ts, hence the need for nesting 
+COPY --from=frontend-build /app/dist ./app/packages/frontend/dist
+COPY --from=backend-build /app/node_modules ./app/packages/backend/node_modules
 ENV NODE_ENV="production"
 ENV DOCKER_USE="true" 
+WORKDIR /app/packages/backend/dist
 CMD ["node", "index.js"]
 
 
