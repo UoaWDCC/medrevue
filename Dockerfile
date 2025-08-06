@@ -10,8 +10,6 @@ COPY ./packages/frontend /app/packages/frontend
 COPY ./packages/types /app/packages/types
 RUN npm ci
 
-
-
 FROM base AS backend-deps
 WORKDIR /app
 #we need to copy root dir's package.json as it contains the package name medrevue (otherwise installing types will not work.) 
@@ -29,7 +27,7 @@ RUN npm ci
 
 FROM backend-deps AS backend-dev
 # #specify the env variable for development 
-COPY --from=backend-build . .
+COPY --from=backend-deps . .
 ENV NODE_ENV=development
 ENV PORT=3000
 
