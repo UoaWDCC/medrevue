@@ -12,6 +12,7 @@ import oneHealthLogo from '../../assets/one health.jpeg';
 import pizzaclubLogo from '../../assets/pizza-club.png';
 import respmedLogo from '../../assets/respmed.png';
 import tamakihealthLogo from '../../assets/tamaki-health.png';
+import coffeeClubLogo from '../../assets/the-coffee-club.png';
 import weLogo from '../../assets/we.png';
 
 export const Sponsors: React.FC = () => {
@@ -149,17 +150,32 @@ export const Sponsors: React.FC = () => {
         <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-[#E5CE63] font-[Poppins]">
           SPECIAL SPONSOR
         </p>
-        <a
-          href="https://blstringer.co.nz/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img
-            src={BLStringerLogo}
-            alt="BL Stringer"
-            className="md:h-20 h-10 object-contain mx-auto bg-white"
-          />
-        </a>
+        <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-row justify-center items-center gap-5">
+            <a
+              href="https://blstringer.co.nz/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={BLStringerLogo}
+                alt="BL Stringer"
+                className="md:h-20 h-10 object-contain bg-white"
+              />
+            </a>
+            <a
+              href="https://www.thecoffeeclub.co.nz/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={coffeeClubLogo}
+                alt="The Coffee Club"
+                className="md:h-20 h-10 object-contain bg-white"
+              />
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );
