@@ -89,6 +89,6 @@ By default, only changes in the src directory are watched. Changes to .env files
 
 There are some benefits to using the Dockerfile. For one, using the dev/test Dockerfile for the backend allows you to use Redis without having to install Redis on your local machine.
 
-Using the `test:backend` profile also allows the Redis server to restart on every test run, meaning that you will always have a clean Redis server to use.
+Using the `test:backend` profile also allows the Redis server to restart on every docker down, meaning that you will always have a clean Redis server to use.
 
 On the other hand, `dev:backend` and `prod` profiles uses two (different!) Redis volumes to persist data even after your container is destroyed. This is different from `test:backend`, which doesn't persist Redis cache. NOTE: Redis data is stored only when docker-compose down is run.
