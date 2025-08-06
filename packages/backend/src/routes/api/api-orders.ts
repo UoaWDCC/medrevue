@@ -6,6 +6,7 @@ import {
   checkSpecificSeatDuplicate,
   createOrder,
   deleteOrder,
+  getEnhancedOrderStatistics,
   getOrderStatistics,
   retrieveOrderByEmail,
   retrieveOrderById,
@@ -193,14 +194,31 @@ router.get(
 
 router.get('/stats', async (_req: Request, res: Response): Promise<void> => {
   try {
-    const stats = await getOrderStatistics();
+    const stats = await getEnhancedOrderStatistics();
     res.status(200).json(stats);
   } catch (error) {
+    console.error('Error calculating enhanced order statistics:', error);
     res.status(500).json({
       error: 'Unable to calculate order statistics',
     });
   }
 });
+
+// Basic stats endpoint for backward compatibility
+router.get(
+  '/stats/basic',
+  async (_req: Request, res: Response): Promise<void> => {
+    try {
+      const stats = await getOrderStatistics();
+      res.status(200).json(stats);
+    } catch (error) {
+      console.error('Error calculating basic order statistics:', error);
+      res.status(500).json({
+        error: 'Unable to calculate order statistics',
+      });
+    }
+  },
+);
 
 // Check for duplicate ticket sales
 router.get(

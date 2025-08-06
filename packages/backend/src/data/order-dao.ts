@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import Stripe from 'stripe';
+import { Seat } from '../models/Seat';
 import { type IOrder, Order } from '../models/order';
 
 dotenv.config();
@@ -176,6 +177,98 @@ async function getOrderStatistics() {
     totalSoldPrice: stats.totalSoldPrice,
     totalOrders: stats.totalOrders,
     totalSeatsOrdered: stats.totalSeatsOrdered,
+  };
+}
+
+async function getEnhancedOrderStatistics() {
+  // Show dates from the frontend configuration
+  const showDates = ['2025-08-14', '2025-08-15', '2025-08-16'];
+
+  // Get overall statistics
+  const overallStats = await getOrderStatistics();
+
+  // Get statistics by date
+  const dateStats = await Promise.all(
+    showDates.map(async (date) => {
+      // Get order statistics for this date
+      const orderResult = await Order.aggregate([
+        { $match: { paid: true, selectedDate: date } },
+        {
+          $project: { seatsCount: { $size: '$selectedSeats' }, totalPrice: 1 },
+        },
+        {
+          $group: {
+            _id: null,
+            totalSoldPrice: { $sum: '$totalPrice' },
+            totalOrders: { $sum: 1 },
+            totalSeatsOrdered: { $sum: '$seatsCount' },
+          },
+        },
+      ]).exec();
+
+      // Get seat statistics for this date
+      const totalSeats = await Seat.countDocuments({ date });
+      const availableSeats = await Seat.countDocuments({
+        date,
+        available: true,
+      });
+      const soldSeats = totalSeats - availableSeats;
+
+      // Get seat type breakdown
+      const seatTypeStats = await Seat.aggregate([
+        { $match: { date } },
+        {
+          $group: {
+            _id: '$seatType',
+            total: { $sum: 1 },
+            available: { $sum: { $cond: ['$available', 1, 0] } },
+            sold: { $sum: { $cond: ['$available', 0, 1] } },
+          },
+        },
+      ]).exec();
+
+      const orderStatsForDate =
+        orderResult.length > 0
+          ? orderResult[0]
+          : {
+              totalSoldPrice: 0,
+              totalOrders: 0,
+              totalSeatsOrdered: 0,
+            };
+
+      return {
+        date,
+        orders: {
+          totalSoldPrice: orderStatsForDate.totalSoldPrice,
+          totalOrders: orderStatsForDate.totalOrders,
+          totalSeatsOrdered: orderStatsForDate.totalSeatsOrdered,
+        },
+        seats: {
+          total: totalSeats,
+          available: availableSeats,
+          sold: soldSeats,
+          seatTypes: seatTypeStats.reduce(
+            (acc, stat) => {
+              acc[stat._id] = {
+                total: stat.total,
+                available: stat.available,
+                sold: stat.sold,
+              };
+              return acc;
+            },
+            {} as Record<
+              string,
+              { total: number; available: number; sold: number }
+            >,
+          ),
+        },
+      };
+    }),
+  );
+
+  return {
+    overall: overallStats,
+    byDate: dateStats,
   };
 }
 
@@ -403,6 +496,7 @@ export {
   updateOrder,
   deleteOrder,
   getOrderStatistics,
+  getEnhancedOrderStatistics,
   checkDuplicateTickets,
   checkSpecificSeatDuplicate,
   type DuplicateTicketReport,

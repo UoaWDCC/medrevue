@@ -5,6 +5,7 @@ import { Footer } from './components/Footer';
 import { Menu } from './components/Menu';
 import CancelPage from './pages/CancelPage';
 import HomePage from './pages/Home';
+import OrderStatsDashboard from './pages/OrderStatsDashboard';
 import QrCodePage from './pages/QrCodePage';
 import ReturnPolicyPage from './pages/ReturnPolicy';
 import { SponsorPage } from './pages/SponsorPage';
@@ -122,6 +123,15 @@ const App: React.FC = () => {
             <>
               <Menu />
               <QrCodePage />
+            </>
+          }
+        />
+        <Route
+          path="/dashboard/orders/stats"
+          element={
+            <>
+              <Menu />
+              <OrderStatsDashboard />
             </>
           }
         />
