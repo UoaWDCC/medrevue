@@ -71,13 +71,13 @@ docker run --rm -it --entrypoint bash <TAG NAME OR ID>
 
 ### Env Files
 
-Depending on the profile, you might need to reconfigure different .env files, otherwise Docker will not be able to access/link your env variables. 
+Depending on the profile, you might need to reconfigure different .env files, otherwise Docker will not be able to access/link your env variables.
 
-Place the .env files in the same location you would put the .env file. Use ``.env.development.local`` for development and test profiles, and ``.env.production.local`` for the production profile. 
+Place the .env files in the same location you would put the .env file. Use `.env.development.local` for development and test profiles, and `.env.production.local` for the production profile.
 
-### Stopping Docker Container
+### Stopping and Removing Docker Container
 
-To stop a Docker container, run:
+To stop and remove a Docker container, run:
 
 ```bash
 docker compose -f <PATH TO DOCKER-COMPOSE.YML> --profile <PROFILE NAME> down
@@ -87,4 +87,8 @@ docker compose -f <PATH TO DOCKER-COMPOSE.YML> --profile <PROFILE NAME> down
 
 By default, only changes in the src directory are watched. Changes to .env files are not synced, hence you will need to stop the running container and start it up again for these to sync.
 
-There are some benefits to using the Dockerfile. For one, using the dev/test Dockerfile for the backend allows you to use Redis without having to install Redis on your local machine. Using the test Dockerfile also allows the Redis server to restart on every test run, meaning that you will always have a clean Redis server to use. (?)
+There are some benefits to using the Dockerfile. For one, using the dev/test Dockerfile for the backend allows you to use Redis without having to install Redis on your local machine.
+
+Using the `test:backend` profile also allows the Redis server to restart on every test run, meaning that you will always have a clean Redis server to use.
+
+On the other hand, `dev:backend` and `prod` profiles uses two (different!) Redis volumes to persist data even after your container is destroyed. This is different from `test:backend`, which doesn't persist Redis cache. NOTE: Redis data is stored only when docker-compose down is run.
