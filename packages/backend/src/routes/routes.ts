@@ -13,22 +13,10 @@ import apiV1Routes from './api/api';
 router.use('/api/v1', apiV1Routes);
 
 // Express serve React frontend build files
-// Only enable this if we are using prod build
-
-if (process.env.NODE_ENV === 'production') {
-  if (process.env.DOCKER_USE === 'true') {
-    console.log('Docker is being used for this production build.');
-    router.use(express.static(path.join(__dirname, '../../../frontend-dist')));
-    router.get('*', (_, res) => {
-      res.sendFile(path.join(__dirname, '../../../frontend-dist/index.html'));
-    });
-  } else {
-    router.use(express.static(path.join(__dirname, '../../../frontend/dist')));
-    router.get('*', (_, res) => {
-      res.sendFile(path.join(__dirname, '../../../frontend/dist/index.html'));
-    });
-  }
-}
+router.use(express.static(path.join(__dirname, '../../../frontend/dist')));
+router.get('*', (_, res) => {
+  res.sendFile(path.join(__dirname, '../../../frontend/dist/index.html'));
+});
 
 /**
  * Export the router so it can be used outside.
