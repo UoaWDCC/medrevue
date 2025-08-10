@@ -107,7 +107,7 @@ export const seedSeatData = (): SeatData => {
           seatData[row.label] = [];
         }
         const isVip =
-          (row.label === 'H' || row.label === 'I') &&
+          (row.label === 'H' || row.label === 'I' || row.label === 'J') &&
           midRange &&
           i >= midRange.start &&
           i <= midRange.end;
