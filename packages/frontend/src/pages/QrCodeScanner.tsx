@@ -1,6 +1,6 @@
 import QrScanner from 'qr-scanner';
 import type React from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { LoadingComponent } from '../components/LoadingComponent';
 
 const API_BASE_URL =
@@ -35,57 +35,6 @@ const QrCodeScanner: React.FC = () => {
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [hasCamera, setHasCamera] = useState(true);
-  const [permissionStatus, setPermissionStatus] = useState<
-    'unknown' | 'granted' | 'denied'
-  >('unknown');
-
-  // Move handleScan outside useEffect to avoid dependency issues
-  const handleScan = useCallback(
-    async (qrData: string) => {
-      if (loading) return; // Prevent multiple scans
-
-      setLoading(true);
-      setError('');
-
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/v1/qrcode/scan`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ qrData }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || 'Failed to scan QR code');
-        }
-
-        setOrderInfo(data.order);
-        setIsScanning(false);
-        // Stop the scanner and camera
-        if (scanner) {
-          scanner.stop();
-        }
-        // Also stop all video tracks to ensure camera is released
-        if (videoRef.current?.srcObject) {
-          const stream = videoRef.current.srcObject as MediaStream;
-          for (const track of stream.getTracks()) {
-            track.stop();
-          }
-          videoRef.current.srcObject = null;
-        }
-      } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : 'Unknown error occurred';
-        setError(errorMessage);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [loading, scanner],
-  );
 
   useEffect(() => {
     let qrScanner: QrScanner | null = null;
@@ -108,11 +57,9 @@ const QrCodeScanner: React.FC = () => {
           {
             highlightScanRegion: true,
             highlightCodeOutline: true,
-            preferredCamera: 'environment', // Use back camera on mobile
           },
         );
 
-        console.log('QR Scanner initialized successfully');
         setScanner(qrScanner);
       } catch (err) {
         console.error('Failed to initialize scanner:', err);
@@ -127,131 +74,57 @@ const QrCodeScanner: React.FC = () => {
         qrScanner.destroy();
       }
     };
-  }, [handleScan]);
-
-  // Check camera permissions on component mount
-  useEffect(() => {
-    const checkCameraPermission = async () => {
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        setHasCamera(false);
-        setError('Camera API not supported in this browser');
-        return;
-      }
-
-      try {
-        // Check if permissions API is available
-        if ('permissions' in navigator) {
-          const permission = await navigator.permissions.query({
-            name: 'camera' as PermissionName,
-          });
-          if (permission.state === 'granted') {
-            setPermissionStatus('granted');
-          } else if (permission.state === 'denied') {
-            setPermissionStatus('denied');
-          }
-        }
-      } catch (err) {
-        console.log(
-          'Permission API not available or error checking permissions:',
-          err,
-        );
-        // Fallback: permissions will be checked when user clicks start
-      }
-    };
-
-    checkCameraPermission();
   }, []);
 
-  const startScanning = async () => {
-    if (!scanner) {
-      console.error('Scanner not initialized');
-      setError('Scanner not initialized. Please refresh the page.');
-      return;
-    }
+  const handleScan = async (qrData: string) => {
+    if (loading) return; // Prevent multiple scans
 
-    console.log('Starting scan process...');
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/v1/qrcode/scan`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ qrData }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to scan QR code');
+      }
+
+      setOrderInfo(data.order);
+      setIsScanning(false);
+      if (scanner) {
+        scanner.stop();
+      }
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'Unknown error occurred';
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const startScanning = async () => {
+    if (!scanner) return;
+
     setError('');
     setOrderInfo(null);
     setIsScanning(true);
 
     try {
-      // Try to start the scanner directly - it will request permission if needed
-      console.log('Starting QR scanner...');
+      // Prefer rear camera for better scanning on mobile
+      await scanner.setCamera('environment').catch(() => undefined);
       await scanner.start();
-
-      // If we get here, permission was granted
-      setPermissionStatus('granted');
-      console.log('Scanner started successfully');
-
-      // Debug: Check if the video element has a stream
-      setTimeout(() => {
-        if (videoRef.current) {
-          console.log('Video element debug info:', {
-            hasStream: !!videoRef.current.srcObject,
-            videoWidth: videoRef.current.videoWidth,
-            videoHeight: videoRef.current.videoHeight,
-            readyState: videoRef.current.readyState,
-            paused: videoRef.current.paused,
-          });
-        }
-      }, 1000);
-
-      // Ensure video element is properly configured and displays the stream
-      if (videoRef.current) {
-        videoRef.current.playsInline = true;
-        videoRef.current.autoplay = true;
-        videoRef.current.muted = true;
-
-        // Wait for the QR scanner to assign the stream to the video element
-        const waitForVideoStream = () => {
-          if (videoRef.current?.srcObject) {
-            console.log(
-              'Video has stream from QR scanner, attempting to play...',
-            );
-            videoRef.current.play().catch((playError) => {
-              console.error('Failed to play video:', playError);
-            });
-          } else {
-            console.log('Waiting for QR scanner to assign video stream...');
-            setTimeout(waitForVideoStream, 100);
-          }
-        };
-
-        // Start waiting for the video stream
-        setTimeout(waitForVideoStream, 300);
-
-        // Also force a style update to ensure visibility
-        videoRef.current.style.display = 'block';
-        videoRef.current.style.width = '100%';
-        videoRef.current.style.maxWidth = '400px';
-        videoRef.current.style.height = 'auto';
-      }
     } catch (err) {
       console.error('Failed to start scanner:', err);
-      console.error('Error details:', {
-        name: err instanceof Error ? err.name : 'Unknown',
-        message: err instanceof Error ? err.message : String(err),
-        stack: err instanceof Error ? err.stack : undefined,
-      });
-
-      // Check if it's a permission error
-      if (
-        err instanceof Error &&
-        (err.name === 'NotAllowedError' || err.message.includes('permission'))
-      ) {
-        setPermissionStatus('denied');
-        setError(
-          'Camera permission denied. Please allow camera access and try again.',
-        );
-      } else if (err instanceof Error && err.name === 'NotFoundError') {
-        setError('No camera found on this device.');
-      } else if (err instanceof Error && err.name === 'NotReadableError') {
-        setError('Camera is already in use by another application.');
-      } else {
-        setError(
-          `Failed to start camera: ${err instanceof Error ? err.message : String(err)}`,
-        );
-      }
+      setError('Failed to start camera. Please check permissions.');
       setIsScanning(false);
     }
   };
@@ -260,21 +133,12 @@ const QrCodeScanner: React.FC = () => {
     if (scanner) {
       scanner.stop();
     }
-    // Stop all video tracks to ensure camera is released
-    if (videoRef.current?.srcObject) {
-      const stream = videoRef.current.srcObject as MediaStream;
-      for (const track of stream.getTracks()) {
-        track.stop();
-      }
-      videoRef.current.srcObject = null;
-    }
     setIsScanning(false);
   };
 
   const resetScanner = () => {
     setOrderInfo(null);
     setError('');
-    setPermissionStatus('unknown'); // Reset permission status for fresh attempt
     startScanning();
   };
 
@@ -296,338 +160,283 @@ const QrCodeScanner: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
-            <h1 className="text-3xl font-bold text-center">
-              🎫 QR Code Scanner
-            </h1>
-            <p className="text-center text-blue-100 mt-2">
-              Scan ticket QR codes to view order information
-            </p>
-          </div>
+    <>
+      <style>
+        {`
+        .qr-scan-anim { animation: qr-scan 2.2s ease-in-out infinite; }
+        @keyframes qr-scan {
+          0% { top: 10px; opacity: 0; }
+          10% { opacity: 1; }
+          50% { top: calc(100% - 10px); opacity: 1; }
+          90% { opacity: 1; }
+          100% { top: 10px; opacity: 0; }
+        }
+        `}
+      </style>
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
+              <h1 className="text-3xl font-bold text-center">
+                🎫 QR Code Scanner
+              </h1>
+              <p className="text-center text-blue-100 mt-2">
+                Scan ticket QR codes to view order information
+              </p>
+            </div>
 
-          <div className="p-6">
-            {/* Scanner Section */}
-            {!orderInfo && (
-              <div className="text-center">
-                <div className="relative inline-block">
-                  <video
-                    ref={videoRef}
-                    className={`w-full max-w-md rounded-lg shadow-lg ${
-                      isScanning ? 'block' : 'hidden'
-                    }`}
-                    style={{
-                      maxHeight: '400px',
-                      minHeight: '300px',
-                      backgroundColor: '#000',
-                    }}
-                    autoPlay
-                    playsInline
-                    muted
-                    controls={false}
-                  >
-                    <track kind="captions" />
-                  </video>
+            <div className="p-6">
+              {/* Scanner Section */}
+              {!orderInfo && (
+                <div className="text-center">
+                  <div className="relative inline-block">
+                    <video
+                      ref={videoRef}
+                      className={`w-full max-w-md rounded-lg shadow-lg ${
+                        isScanning ? 'block' : 'hidden'
+                      }`}
+                      style={{ maxHeight: '400px' }}
+                      muted
+                      autoPlay
+                      playsInline
+                    >
+                      <track kind="captions" />
+                    </video>
 
-                  {!isScanning && (
-                    <div className="w-full max-w-md mx-auto bg-gray-100 rounded-lg shadow-lg p-8 text-center">
-                      <div className="text-6xl mb-4">📱</div>
-                      <p className="text-gray-600 mb-6">
-                        Ready to scan QR codes from ticket emails
+                    {isScanning && (
+                      <div
+                        className="pointer-events-none absolute inset-0 flex items-center justify-center"
+                        aria-hidden="true"
+                      >
+                        <div className="relative w-72 h-72 md:w-80 md:h-80">
+                          <div className="absolute inset-0 rounded-xl border-2 border-white/80 shadow-[0_0_0_2000px_rgba(0,0,0,0.45)]" />
+
+                          <div className="absolute -top-2 left-6 text-white text-sm bg-black/60 px-2 py-0.5 rounded">
+                            Align QR inside the box
+                          </div>
+
+                          <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-green-400 rounded-tl-md" />
+                          <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-green-400 rounded-tr-md" />
+                          <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-green-400 rounded-bl-md" />
+                          <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-green-400 rounded-br-md" />
+
+                          <div className="absolute left-3 right-3 h-[2px] bg-gradient-to-b from-transparent via-green-400/80 to-transparent rounded qr-scan-anim" />
+                        </div>
+                      </div>
+                    )}
+
+                    {!isScanning && (
+                      <div className="w-full max-w-md mx-auto bg-gray-100 rounded-lg shadow-lg p-8 text-center">
+                        <div className="text-6xl mb-4">📱</div>
+                        <p className="text-gray-600 mb-6">
+                          Ready to scan QR codes from ticket emails
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {loading && (
+                    <div className="mt-4">
+                      <LoadingComponent />
+                      <p className="text-gray-600 mt-2">
+                        Processing QR code...
                       </p>
-                      {permissionStatus === 'denied' && (
-                        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                          <p className="text-yellow-800 text-sm">
-                            ⚠️ Camera access was denied. Please allow camera
-                            permissions in your browser settings.
-                          </p>
-                        </div>
-                      )}
-                      {permissionStatus === 'unknown' && (
-                        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                          <p className="text-blue-800 text-sm">
-                            📷 Click "Start Scanning" to request camera access
-                          </p>
-                        </div>
-                      )}
                     </div>
                   )}
-                </div>
 
-                {loading && (
-                  <div className="mt-4">
-                    <LoadingComponent />
-                    <p className="text-gray-600 mt-2">Processing QR code...</p>
-                  </div>
-                )}
+                  {error && (
+                    <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                      <div className="text-red-600 font-medium">❌ {error}</div>
+                    </div>
+                  )}
 
-                {isScanning && !loading && (
-                  <div className="mt-4">
-                    <p className="text-blue-600 font-medium">
-                      📷 Camera is active - Point at a QR code to scan
-                    </p>
-                  </div>
-                )}
-
-                {error && (
-                  <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-                    <div className="text-red-600 font-medium">❌ {error}</div>
-                  </div>
-                )}
-
-                <div className="mt-6 space-x-4">
-                  {!isScanning ? (
-                    <div className="space-y-3">
+                  <div className="mt-6 space-x-4">
+                    {!isScanning ? (
                       <button
                         type="button"
                         onClick={startScanning}
                         className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
                         disabled={loading}
                       >
-                        {permissionStatus === 'unknown'
-                          ? 'Allow Camera & Start Scanning'
-                          : 'Start Scanning'}
+                        Start Scanning
                       </button>
-
-                      {permissionStatus !== 'granted' && (
-                        <div>
-                          <button
-                            type="button"
-                            onClick={async () => {
-                              try {
-                                console.log(
-                                  'Requesting camera permission explicitly...',
-                                );
-                                const stream =
-                                  await navigator.mediaDevices.getUserMedia({
-                                    video: { facingMode: 'environment' },
-                                  });
-                                console.log('Permission granted!');
-                                for (const track of stream.getTracks()) {
-                                  track.stop();
-                                }
-                                setPermissionStatus('granted');
-                                setError('');
-                              } catch (err) {
-                                console.error('Permission denied:', err);
-                                setPermissionStatus('denied');
-                                setError(
-                                  'Camera permission denied. Please allow camera access.',
-                                );
-                              }
-                            }}
-                            className="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700 transition-colors ml-2"
-                            disabled={loading}
-                          >
-                            📷 Request Camera Permission
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={stopScanning}
-                      className="bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors"
-                      disabled={loading}
-                    >
-                      Stop Scanning
-                    </button>
-                  )}
-                </div>
-
-                {permissionStatus === 'denied' && (
-                  <div className="mt-4 p-4 bg-orange-50 border border-orange-200 rounded-lg">
-                    <h4 className="font-medium text-orange-800 mb-2">
-                      How to enable camera access:
-                    </h4>
-                    <ul className="text-sm text-orange-700 space-y-1 mb-3">
-                      <li>
-                        • Click the camera icon in your browser's address bar
-                      </li>
-                      <li>• Select "Allow" for camera permissions</li>
-                      <li>
-                        • Or try the button below for a fresh permission request
-                      </li>
-                    </ul>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setPermissionStatus('unknown');
-                        setError('');
-                        startScanning();
-                      }}
-                      className="bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-orange-700 transition-colors"
-                    >
-                      🔄 Try Permission Request Again
-                    </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={stopScanning}
+                        className="bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors"
+                        disabled={loading}
+                      >
+                        Stop Scanning
+                      </button>
+                    )}
                   </div>
-                )}
-              </div>
-            )}
-
-            {/* Order Information Display */}
-            {orderInfo && (
-              <div className="space-y-6">
-                {/* Success Header */}
-                <div className="text-center">
-                  <div className="text-6xl mb-4">✅</div>
-                  <h2 className="text-2xl font-bold text-green-600 mb-2">
-                    Ticket Verified Successfully!
-                  </h2>
-                  <p className="text-gray-600">Here are the ticket details:</p>
                 </div>
+              )}
 
-                {/* Order Details */}
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-3">
-                      <div>
-                        <span className="text-sm font-medium text-gray-500">
-                          Order Number
-                        </span>
-                        <p className="text-lg font-semibold">
-                          #{orderInfo.orderId}
-                        </p>
-                      </div>
-
-                      <div>
-                        <span className="text-sm font-medium text-gray-500">
-                          Customer Name
-                        </span>
-                        <p className="text-lg">{orderInfo.customerName}</p>
-                      </div>
-
-                      <div>
-                        <span className="text-sm font-medium text-gray-500">
-                          Email
-                        </span>
-                        <p className="text-lg">{orderInfo.email}</p>
-                      </div>
-
-                      <div>
-                        <span className="text-sm font-medium text-gray-500">
-                          Phone
-                        </span>
-                        <p className="text-lg">{orderInfo.phone}</p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <div>
-                        <span className="text-sm font-medium text-gray-500">
-                          Show Date
-                        </span>
-                        <p className="text-lg font-semibold">
-                          {orderInfo.showDate}
-                        </p>
-                      </div>
-
-                      <div>
-                        <span className="text-sm font-medium text-gray-500">
-                          Show Time
-                        </span>
-                        <p className="text-lg">{orderInfo.showTime}</p>
-                      </div>
-
-                      <div>
-                        <span className="text-sm font-medium text-gray-500">
-                          Doors Open
-                        </span>
-                        <p className="text-lg">{orderInfo.doorsOpen}</p>
-                      </div>
-
-                      <div>
-                        <span className="text-sm font-medium text-gray-500">
-                          Location
-                        </span>
-                        <p className="text-lg">{orderInfo.location}</p>
-                      </div>
-                    </div>
+              {/* Order Information Display */}
+              {orderInfo && (
+                <div className="space-y-6">
+                  {/* Success Header */}
+                  <div className="text-center">
+                    <div className="text-6xl mb-4">✅</div>
+                    <h2 className="text-2xl font-bold text-green-600 mb-2">
+                      Ticket Verified Successfully!
+                    </h2>
+                    <p className="text-gray-600">
+                      Here are the ticket details:
+                    </p>
                   </div>
 
-                  {/* Seats Section */}
-                  <div className="mt-6 pt-6 border-t border-gray-200">
+                  {/* Order Details */}
+                  <div className="bg-gray-50 rounded-lg p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <span className="text-sm font-medium text-gray-500">
-                          Seats
-                        </span>
-                        <p className="text-lg font-semibold text-blue-600">
-                          {orderInfo.seats}
-                        </p>
-                        {orderInfo.seatDetails.length > 0 && (
-                          <div className="mt-2 flex flex-wrap gap-2">
-                            {orderInfo.seatDetails.map((seat) => (
-                              <span
-                                key={`${seat.rowLabel}${seat.number}`}
-                                className={`px-3 py-1 rounded-full text-sm font-medium ${
-                                  seat.seatType === 'VIP'
-                                    ? 'bg-yellow-100 text-yellow-800'
-                                    : 'bg-blue-100 text-blue-800'
-                                }`}
-                              >
-                                {seat.rowLabel}
-                                {seat.number} ({seat.seatType})
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-
-                      <div>
-                        <span className="text-sm font-medium text-gray-500">
-                          Total Price
-                        </span>
-                        <p className="text-2xl font-bold text-green-600">
-                          {orderInfo.totalPrice}
-                        </p>
-                        {orderInfo.isStudent && (
-                          <p className="text-sm text-blue-600">
-                            🎓 Student discount applied (
-                            {orderInfo.studentCount} student
-                            {orderInfo.studentCount !== 1 ? 's' : ''})
+                      <div className="space-y-3">
+                        <div>
+                          <span className="text-sm font-medium text-gray-500">
+                            Order Number
+                          </span>
+                          <p className="text-lg font-semibold">
+                            #{orderInfo.orderId}
                           </p>
-                        )}
+                        </div>
+
+                        <div>
+                          <span className="text-sm font-medium text-gray-500">
+                            Customer Name
+                          </span>
+                          <p className="text-lg">{orderInfo.customerName}</p>
+                        </div>
+
+                        <div>
+                          <span className="text-sm font-medium text-gray-500">
+                            Email
+                          </span>
+                          <p className="text-lg">{orderInfo.email}</p>
+                        </div>
+
+                        <div>
+                          <span className="text-sm font-medium text-gray-500">
+                            Phone
+                          </span>
+                          <p className="text-lg">{orderInfo.phone}</p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div>
+                          <span className="text-sm font-medium text-gray-500">
+                            Show Date
+                          </span>
+                          <p className="text-lg font-semibold">
+                            {orderInfo.showDate}
+                          </p>
+                        </div>
+
+                        <div>
+                          <span className="text-sm font-medium text-gray-500">
+                            Show Time
+                          </span>
+                          <p className="text-lg">{orderInfo.showTime}</p>
+                        </div>
+
+                        <div>
+                          <span className="text-sm font-medium text-gray-500">
+                            Doors Open
+                          </span>
+                          <p className="text-lg">{orderInfo.doorsOpen}</p>
+                        </div>
+
+                        <div>
+                          <span className="text-sm font-medium text-gray-500">
+                            Location
+                          </span>
+                          <p className="text-lg">{orderInfo.location}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Seats Section */}
+                    <div className="mt-6 pt-6 border-t border-gray-200">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <span className="text-sm font-medium text-gray-500">
+                            Seats
+                          </span>
+                          <p className="text-lg font-semibold text-blue-600">
+                            {orderInfo.seats}
+                          </p>
+                          {orderInfo.seatDetails.length > 0 && (
+                            <div className="mt-2 flex flex-wrap gap-2">
+                              {orderInfo.seatDetails.map((seat) => (
+                                <span
+                                  key={`${seat.rowLabel}${seat.number}`}
+                                  className={`px-3 py-1 rounded-full text-sm font-medium ${
+                                    seat.seatType === 'VIP'
+                                      ? 'bg-yellow-100 text-yellow-800'
+                                      : 'bg-blue-100 text-blue-800'
+                                  }`}
+                                >
+                                  {seat.rowLabel}
+                                  {seat.number} ({seat.seatType})
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        <div>
+                          <span className="text-sm font-medium text-gray-500">
+                            Total Price
+                          </span>
+                          <p className="text-2xl font-bold text-green-600">
+                            {orderInfo.totalPrice}
+                          </p>
+                          {orderInfo.isStudent && (
+                            <p className="text-sm text-blue-600">
+                              🎓 Student discount applied (
+                              {orderInfo.studentCount} student
+                              {orderInfo.studentCount !== 1 ? 's' : ''})
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Payment Status */}
+                    <div className="mt-6 pt-6 border-t border-gray-200 text-center">
+                      <div
+                        className={`inline-flex items-center px-4 py-2 rounded-full ${
+                          orderInfo.paid
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
+                        }`}
+                      >
+                        {orderInfo.paid
+                          ? '✅ Payment Confirmed'
+                          : '❌ Payment Pending'}
                       </div>
                     </div>
                   </div>
 
-                  {/* Payment Status */}
-                  <div className="mt-6 pt-6 border-t border-gray-200 text-center">
-                    <div
-                      className={`inline-flex items-center px-4 py-2 rounded-full ${
-                        orderInfo.paid
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-red-100 text-red-800'
-                      }`}
+                  {/* Action Buttons */}
+                  <div className="text-center space-x-4">
+                    <button
+                      type="button"
+                      onClick={resetScanner}
+                      className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
                     >
-                      {orderInfo.paid
-                        ? '✅ Payment Confirmed'
-                        : '❌ Payment Pending'}
-                    </div>
+                      Scan Another Ticket
+                    </button>
                   </div>
                 </div>
-
-                {/* Action Buttons */}
-                <div className="text-center space-x-4">
-                  <button
-                    type="button"
-                    onClick={resetScanner}
-                    className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-                  >
-                    Scan Another Ticket
-                  </button>
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
