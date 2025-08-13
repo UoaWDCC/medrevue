@@ -168,35 +168,9 @@ const QrCodeScanner: React.FC = () => {
     setOrderInfo(null);
     setIsScanning(true);
 
-    // Reset permission status to unknown so user gets a fresh chance
-    if (permissionStatus === 'denied') {
-      setPermissionStatus('unknown');
-    }
-
     try {
-      // Request camera permission explicitly
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: 'environment', // Prefer back camera
-          },
-        });
-        // Stop the test stream - the scanner will create its own
-        for (const track of stream.getTracks()) {
-          track.stop();
-        }
-        setPermissionStatus('granted');
-      } catch (permissionError) {
-        console.error('Camera permission denied:', permissionError);
-        setPermissionStatus('denied');
-        setError(
-          'Camera permission denied. Please allow camera access and try again.',
-        );
-        setIsScanning(false);
-        return;
-      }
-
-      await scanner.start();
+      await scanner.start(); // QrScanner now requests the stream itself
+      setPermissionStatus('granted'); // if we're here, the user allowed it
 
       // Ensure video element is properly configured
       if (videoRef.current) {
@@ -221,9 +195,20 @@ const QrCodeScanner: React.FC = () => {
       }
     } catch (err) {
       console.error('Failed to start scanner:', err);
-      setError(
-        'Failed to start camera. Please check permissions and try again.',
-      );
+      // Check if it's a permission error
+      if (
+        err instanceof Error &&
+        (err.name === 'NotAllowedError' || err.message.includes('permission'))
+      ) {
+        setPermissionStatus('denied');
+        setError(
+          'Camera permission denied. Please allow camera access and try again.',
+        );
+      } else {
+        setError(
+          'Failed to start camera. Please check permissions and try again.',
+        );
+      }
       setIsScanning(false);
     }
   };
