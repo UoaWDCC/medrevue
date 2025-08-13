@@ -1,6 +1,6 @@
 import QrScanner from 'qr-scanner';
 import type React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { LoadingComponent } from '../components/LoadingComponent';
 
 const API_BASE_URL =
@@ -36,6 +36,54 @@ const QrCodeScanner: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [hasCamera, setHasCamera] = useState(true);
 
+  // Move handleScan outside useEffect to avoid dependency issues
+  const handleScan = useCallback(
+    async (qrData: string) => {
+      if (loading) return; // Prevent multiple scans
+
+      setLoading(true);
+      setError('');
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/v1/qrcode/scan`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ qrData }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to scan QR code');
+        }
+
+        setOrderInfo(data.order);
+        setIsScanning(false);
+        // Stop the scanner and camera
+        if (scanner) {
+          scanner.stop();
+        }
+        // Also stop all video tracks to ensure camera is released
+        if (videoRef.current?.srcObject) {
+          const stream = videoRef.current.srcObject as MediaStream;
+          for (const track of stream.getTracks()) {
+            track.stop();
+          }
+          videoRef.current.srcObject = null;
+        }
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : 'Unknown error occurred';
+        setError(errorMessage);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [loading, scanner],
+  );
+
   useEffect(() => {
     let qrScanner: QrScanner | null = null;
 
@@ -57,6 +105,7 @@ const QrCodeScanner: React.FC = () => {
           {
             highlightScanRegion: true,
             highlightCodeOutline: true,
+            preferredCamera: 'environment', // Use back camera on mobile
           },
         );
 
@@ -74,42 +123,7 @@ const QrCodeScanner: React.FC = () => {
         qrScanner.destroy();
       }
     };
-  }, []);
-
-  const handleScan = async (qrData: string) => {
-    if (loading) return; // Prevent multiple scans
-
-    setLoading(true);
-    setError('');
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/v1/qrcode/scan`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ qrData }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to scan QR code');
-      }
-
-      setOrderInfo(data.order);
-      setIsScanning(false);
-      if (scanner) {
-        scanner.stop();
-      }
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : 'Unknown error occurred';
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [handleScan]);
 
   const startScanning = async () => {
     if (!scanner) return;
@@ -120,6 +134,28 @@ const QrCodeScanner: React.FC = () => {
 
     try {
       await scanner.start();
+
+      // Ensure video element is properly configured
+      if (videoRef.current) {
+        videoRef.current.playsInline = true;
+        videoRef.current.autoplay = true;
+        videoRef.current.muted = true;
+
+        // Wait a bit for the stream to be ready and force play
+        setTimeout(() => {
+          if (videoRef.current?.srcObject) {
+            videoRef.current.play().catch((playError) => {
+              console.error('Failed to play video:', playError);
+              // Try to play again after a short delay
+              setTimeout(() => {
+                if (videoRef.current?.srcObject) {
+                  videoRef.current.play().catch(console.error);
+                }
+              }, 500);
+            });
+          }
+        }, 200);
+      }
     } catch (err) {
       console.error('Failed to start scanner:', err);
       setError('Failed to start camera. Please check permissions.');
@@ -130,6 +166,14 @@ const QrCodeScanner: React.FC = () => {
   const stopScanning = () => {
     if (scanner) {
       scanner.stop();
+    }
+    // Stop all video tracks to ensure camera is released
+    if (videoRef.current?.srcObject) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      for (const track of stream.getTracks()) {
+        track.stop();
+      }
+      videoRef.current.srcObject = null;
     }
     setIsScanning(false);
   };
@@ -182,6 +226,8 @@ const QrCodeScanner: React.FC = () => {
                       isScanning ? 'block' : 'hidden'
                     }`}
                     style={{ maxHeight: '400px' }}
+                    autoPlay
+                    playsInline
                     muted
                   >
                     <track kind="captions" />
@@ -201,6 +247,14 @@ const QrCodeScanner: React.FC = () => {
                   <div className="mt-4">
                     <LoadingComponent />
                     <p className="text-gray-600 mt-2">Processing QR code...</p>
+                  </div>
+                )}
+
+                {isScanning && !loading && (
+                  <div className="mt-4">
+                    <p className="text-blue-600 font-medium">
+                      📷 Camera is active - Point at a QR code to scan
+                    </p>
                   </div>
                 )}
 
