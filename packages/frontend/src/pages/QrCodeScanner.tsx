@@ -35,6 +35,9 @@ const QrCodeScanner: React.FC = () => {
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [hasCamera, setHasCamera] = useState(true);
+  const [permissionStatus, setPermissionStatus] = useState<
+    'unknown' | 'granted' | 'denied'
+  >('unknown');
 
   // Move handleScan outside useEffect to avoid dependency issues
   const handleScan = useCallback(
@@ -125,6 +128,39 @@ const QrCodeScanner: React.FC = () => {
     };
   }, [handleScan]);
 
+  // Check camera permissions on component mount
+  useEffect(() => {
+    const checkCameraPermission = async () => {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setHasCamera(false);
+        setError('Camera API not supported in this browser');
+        return;
+      }
+
+      try {
+        // Check if permissions API is available
+        if ('permissions' in navigator) {
+          const permission = await navigator.permissions.query({
+            name: 'camera' as PermissionName,
+          });
+          if (permission.state === 'granted') {
+            setPermissionStatus('granted');
+          } else if (permission.state === 'denied') {
+            setPermissionStatus('denied');
+          }
+        }
+      } catch (err) {
+        console.log(
+          'Permission API not available or error checking permissions:',
+          err,
+        );
+        // Fallback: permissions will be checked when user clicks start
+      }
+    };
+
+    checkCameraPermission();
+  }, []);
+
   const startScanning = async () => {
     if (!scanner) return;
 
@@ -132,7 +168,34 @@ const QrCodeScanner: React.FC = () => {
     setOrderInfo(null);
     setIsScanning(true);
 
+    // Reset permission status to unknown so user gets a fresh chance
+    if (permissionStatus === 'denied') {
+      setPermissionStatus('unknown');
+    }
+
     try {
+      // Request camera permission explicitly
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: 'environment', // Prefer back camera
+          },
+        });
+        // Stop the test stream - the scanner will create its own
+        for (const track of stream.getTracks()) {
+          track.stop();
+        }
+        setPermissionStatus('granted');
+      } catch (permissionError) {
+        console.error('Camera permission denied:', permissionError);
+        setPermissionStatus('denied');
+        setError(
+          'Camera permission denied. Please allow camera access and try again.',
+        );
+        setIsScanning(false);
+        return;
+      }
+
       await scanner.start();
 
       // Ensure video element is properly configured
@@ -158,7 +221,9 @@ const QrCodeScanner: React.FC = () => {
       }
     } catch (err) {
       console.error('Failed to start scanner:', err);
-      setError('Failed to start camera. Please check permissions.');
+      setError(
+        'Failed to start camera. Please check permissions and try again.',
+      );
       setIsScanning(false);
     }
   };
@@ -239,6 +304,21 @@ const QrCodeScanner: React.FC = () => {
                       <p className="text-gray-600 mb-6">
                         Ready to scan QR codes from ticket emails
                       </p>
+                      {permissionStatus === 'denied' && (
+                        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                          <p className="text-yellow-800 text-sm">
+                            ⚠️ Camera access was denied. Please allow camera
+                            permissions in your browser settings.
+                          </p>
+                        </div>
+                      )}
+                      {permissionStatus === 'unknown' && (
+                        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                          <p className="text-blue-800 text-sm">
+                            📷 Click "Start Scanning" to request camera access
+                          </p>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -272,7 +352,9 @@ const QrCodeScanner: React.FC = () => {
                       className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
                       disabled={loading}
                     >
-                      Start Scanning
+                      {permissionStatus === 'unknown'
+                        ? 'Allow Camera & Start Scanning'
+                        : 'Start Scanning'}
                     </button>
                   ) : (
                     <button
@@ -285,6 +367,21 @@ const QrCodeScanner: React.FC = () => {
                     </button>
                   )}
                 </div>
+
+                {permissionStatus === 'denied' && (
+                  <div className="mt-4 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                    <h4 className="font-medium text-orange-800 mb-2">
+                      How to enable camera access:
+                    </h4>
+                    <ul className="text-sm text-orange-700 space-y-1">
+                      <li>
+                        • Click the camera icon in your browser's address bar
+                      </li>
+                      <li>• Select "Allow" for camera permissions</li>
+                      <li>• Refresh the page and try again</li>
+                    </ul>
+                  </div>
+                )}
               </div>
             )}
 
