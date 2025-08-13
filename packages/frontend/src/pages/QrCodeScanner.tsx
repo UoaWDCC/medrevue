@@ -57,6 +57,8 @@ const QrCodeScanner: React.FC = () => {
           {
             highlightScanRegion: true,
             highlightCodeOutline: true,
+            preferredCamera: 'environment',
+            returnDetailedScanResult: true,
           },
         );
 
@@ -112,22 +114,27 @@ const QrCodeScanner: React.FC = () => {
   };
 
   const startScanning = async () => {
-    if (!scanner) return;
-
     setError('');
     setOrderInfo(null);
     setIsScanning(true);
-
-    try {
-      // Prefer rear camera for better scanning on mobile
-      await scanner.setCamera('environment').catch(() => undefined);
-      await scanner.start();
-    } catch (err) {
-      console.error('Failed to start scanner:', err);
-      setError('Failed to start camera. Please check permissions.');
-      setIsScanning(false);
-    }
   };
+
+  // Ensure the camera starts once the scanner is ready and user requested scanning
+  useEffect(() => {
+    const startIfReady = async () => {
+      if (!isScanning || !scanner) return;
+      try {
+        await scanner.setCamera('environment').catch(() => undefined);
+        await scanner.start();
+        await videoRef.current?.play().catch(() => undefined);
+      } catch (err) {
+        console.error('Failed to start scanner:', err);
+        setError('Failed to start camera. Please check permissions.');
+        setIsScanning(false);
+      }
+    };
+    void startIfReady();
+  }, [isScanning, scanner]);
 
   const stopScanning = () => {
     if (scanner) {
@@ -190,13 +197,12 @@ const QrCodeScanner: React.FC = () => {
               {/* Scanner Section */}
               {!orderInfo && (
                 <div className="text-center">
-                  <div className="relative inline-block">
+                  <div className="relative mx-auto w-72 h-72 md:w-96 md:h-96">
                     <video
                       ref={videoRef}
-                      className={`w-full max-w-md rounded-lg shadow-lg ${
+                      className={`absolute inset-0 w-full h-full object-cover rounded-lg shadow-lg ${
                         isScanning ? 'block' : 'hidden'
                       }`}
-                      style={{ maxHeight: '400px' }}
                       muted
                       autoPlay
                       playsInline
@@ -209,7 +215,7 @@ const QrCodeScanner: React.FC = () => {
                         className="pointer-events-none absolute inset-0 flex items-center justify-center"
                         aria-hidden="true"
                       >
-                        <div className="relative w-72 h-72 md:w-80 md:h-80">
+                        <div className="relative w-full h-full">
                           <div className="absolute inset-0 rounded-xl border-2 border-white/80 shadow-[0_0_0_2000px_rgba(0,0,0,0.45)]" />
 
                           <div className="absolute -top-2 left-6 text-white text-sm bg-black/60 px-2 py-0.5 rounded">
@@ -231,6 +237,9 @@ const QrCodeScanner: React.FC = () => {
                         <div className="text-6xl mb-4">📱</div>
                         <p className="text-gray-600 mb-6">
                           Ready to scan QR codes from ticket emails
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          Camera will activate after pressing Start Scanning.
                         </p>
                       </div>
                     )}
