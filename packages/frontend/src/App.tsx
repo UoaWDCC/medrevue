@@ -7,6 +7,7 @@ import CancelPage from './pages/CancelPage';
 import HomePage from './pages/Home';
 import OrderStatsDashboard from './pages/OrderStatsDashboard';
 import QrCodePage from './pages/QrCodePage';
+import QrCodeScanner from './pages/QrCodeScanner';
 import ReturnPolicyPage from './pages/ReturnPolicy';
 import { SponsorPage } from './pages/SponsorPage';
 import SuccessPage from './pages/SuccessPage';
@@ -132,6 +133,15 @@ const App: React.FC = () => {
             <>
               <Menu />
               <OrderStatsDashboard />
+            </>
+          }
+        />
+        <Route
+          path="/dashboard/qrcode/scanner"
+          element={
+            <>
+              <Menu />
+              <QrCodeScanner />
             </>
           }
         />

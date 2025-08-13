@@ -162,4 +162,83 @@ router.get(
   },
 );
 
+// New endpoint for QR code scanning - returns order details
+router.post('/scan', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { qrData } = req.body;
+
+    if (!qrData || typeof qrData !== 'string') {
+      res.status(400).json({ error: 'Missing or invalid QR data' });
+      return;
+    }
+
+    // Parse QR data format: orderId.signature
+    const parts = qrData.split('.');
+    if (parts.length !== 2) {
+      res.status(400).json({ error: 'Invalid QR code format' });
+      return;
+    }
+
+    const [orderId, signature] = parts;
+
+    const qrCodeSecret = process.env.QRCODE_SECRET;
+    if (!qrCodeSecret) {
+      res.status(500).json({ error: 'QRCODE_SECRET not configured' });
+      return;
+    }
+
+    // Verify the signature
+    const hmac = crypto.createHmac('sha256', qrCodeSecret);
+    hmac.update(orderId);
+    const expectedSignature = hmac.digest('hex');
+
+    if (signature !== expectedSignature) {
+      res.status(403).json({ error: 'Invalid QR code signature' });
+      return;
+    }
+
+    // Fetch the order
+    const order = await Order.findById(orderId).exec();
+    if (!order) {
+      res.status(404).json({ error: 'Order not found' });
+      return;
+    }
+
+    // Format the response similar to email content
+    const seats = order.selectedSeats
+      .map((s) => `${s.rowLabel}${s.number}`)
+      .join(', ');
+
+    const totalPrice = new Intl.NumberFormat('en-NZ', {
+      style: 'currency',
+      currency: 'NZD',
+    }).format(order.totalPrice);
+
+    const orderInfo = {
+      orderId: orderId,
+      customerName: `${order.firstName} ${order.lastName}`,
+      email: order.email,
+      phone: order.phone,
+      showDate: order.selectedDate,
+      showTime: '7:30 PM - 10:00 PM',
+      doorsOpen: '6:45 PM',
+      location: 'SkyCity Theatre',
+      seats: seats,
+      totalPrice: totalPrice,
+      isStudent: order.isStudent,
+      studentCount: order.studentCount,
+      paid: order.paid,
+      seatDetails: order.selectedSeats,
+    };
+
+    res.status(200).json({
+      success: true,
+      order: orderInfo,
+    });
+  } catch (error) {
+    console.error('QR scan error:', error);
+    res.status(500).json({ error: 'Failed to process QR code' });
+  }
+});
+
 export default router;
