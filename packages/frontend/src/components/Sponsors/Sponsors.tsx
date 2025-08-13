@@ -22,7 +22,7 @@ export const Sponsors: React.FC = () => {
     // Layout changes depending on screen size
     <div className="flex flex-col justify-center md:space-y-10 space-y-5 text-center">
       <div>
-        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-black font-[Poppins]">
+        <p className="md:mb-5 mb-3 md:text-4xl text-xl text-black font-[Poppins]">
           PLATINUM
         </p>
         <a
@@ -39,10 +39,9 @@ export const Sponsors: React.FC = () => {
       </div>
   
       <div>
-        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-black font-[Poppins]">
+        <p className="md:mb-5 mb-3 md:text-4xl text-xl text-black font-[Poppins]">
           GOLD
         </p>
-        
         <div className="flex flex-row justify-center items-center gap-7 md:mb-15 mb-10">
           <img
             src={respmedLogo}
@@ -64,7 +63,7 @@ export const Sponsors: React.FC = () => {
       </div>
 
       <div>
-        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-black font-[Poppins]">
+        <p className="md:mb-5 mb-3 md:text-4xl text-xl text-black font-[Poppins]">
           SILVER
         </p>
         <a
@@ -81,10 +80,10 @@ export const Sponsors: React.FC = () => {
       </div>
 
       <div>
-        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-black font-[Poppins]">
+        <p className="md:mb-5 mb-3 md:text-4xl text-xl text-black font-[Poppins]">
           BRONZE
         </p>
-        <div className="flex flex-col items-center gap-3 md:mb-15 mb-10">
+        <div className="flex flex-col items-center gap-7 md:mb-15 mb-10">
           <div className="flex flex-row justify-center items-center gap-5">
             <a
               href="https://www.medicalprotection.org"
@@ -118,7 +117,7 @@ export const Sponsors: React.FC = () => {
               <img
                 src={anzcaLogo}
                 alt="anzca"
-                className="md:h-20 h-10 object-contain bg-white"
+                className="md:h-25 h-15 object-contain bg-white"
               />
             </a>
             <a
@@ -129,7 +128,7 @@ export const Sponsors: React.FC = () => {
               <img
                 src={afterLogo}
                 alt="After"
-                className="md:h-20 h-10 object-contain bg-white"
+                className="md:h-25 h-15 object-contain bg-white"
               />
             </a>
           </div>
@@ -150,34 +149,32 @@ export const Sponsors: React.FC = () => {
       </div>
 
       <div>
-        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-black font-[Poppins]">
-          SPECIAL SPONSOR
+        <p className="md:mb-5 mb-3 md:text-4xl text-xl text-black font-[Poppins]">
+          SPECIAL SPONSORS
         </p>
-        <div className="flex flex-col items-center gap-3 md:mb-15 mb-10">
-          <div className="flex flex-row justify-center items-center gap-5">
-            <a
-              href="https://blstringer.co.nz/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src={BLStringerLogo}
-                alt="BL Stringer"
-                className="md:h-20 h-10 object-contain bg-white"
-              />
-            </a>
-            <a
-              href="https://www.thecoffeeclub.co.nz/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src={coffeeClubLogo}
-                alt="The Coffee Club"
-                className="md:h-20 h-10 object-contain bg-white"
-              />
-            </a>
-          </div>
+        <div className="flex flex-col items-center gap-7 md:mb-15 mb-10">
+          <a
+            href="https://blstringer.co.nz/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src={BLStringerLogo}
+              alt="BL Stringer"
+              className="md:h-20 h-10 object-contain bg-white"
+            />
+          </a>
+          <a
+            href="https://www.thecoffeeclub.co.nz/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src={coffeeClubLogo}
+              alt="The Coffee Club"
+              className="md:h-40 h-20 object-contain bg-white"
+            />
+          </a>
         </div>
       </div>
     </div>
