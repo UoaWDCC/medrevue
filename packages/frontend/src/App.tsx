@@ -8,6 +8,7 @@ import HomePage from './pages/Home';
 import { SponsorPage } from './pages/SponsorPage';
 import SuccessPage from './pages/SuccessPage';
 import UserDetail from './pages/UserDetail';
+import AdminPanelPage from './pages/admin_panel/admin_panel';
 import SeatSelectionPage from './pages/seat_selection';
 
 const App: React.FC = () => {
@@ -23,6 +24,7 @@ const App: React.FC = () => {
             </>
           }
         />
+        <Route path="admin" element={<AdminPanelPage />} />
         <Route
           path="show"
           element={
