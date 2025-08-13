@@ -22,7 +22,7 @@ export const Sponsors: React.FC = () => {
     // Layout changes depending on screen size
     <div className="flex flex-col justify-center md:space-y-10 space-y-5 text-center">
       <div>
-        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-[#E5CE63] font-[Poppins]">
+        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-black font-[Poppins]">
           PLATINUM
         </p>
         <a
@@ -33,16 +33,17 @@ export const Sponsors: React.FC = () => {
           <img
             src={weLogo}
             alt="We Getting to the Guts of it"
-            className="md:h-40 h-25 object-contain mx-auto bg-white"
+            className="md:h-40 h-25 object-contain mx-auto bg-white md:mb-15 mb-10"
           />
         </a>
       </div>
-
+  
       <div>
-        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-[#E5CE63] font-[Poppins]">
+        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-black font-[Poppins]">
           GOLD
         </p>
-        <div className="flex flex-col sm:flex-row justify-center items-center md:gap-8 gap-4">
+        
+        <div className="flex flex-row justify-center items-center gap-7 md:mb-15 mb-10">
           <img
             src={respmedLogo}
             alt="RESPMED"
@@ -63,7 +64,7 @@ export const Sponsors: React.FC = () => {
       </div>
 
       <div>
-        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-[#E5CE63] font-[Poppins]">
+        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-black font-[Poppins]">
           SILVER
         </p>
         <a
@@ -74,16 +75,16 @@ export const Sponsors: React.FC = () => {
           <img
             src={pizzaclubLogo}
             alt="Pizza Club"
-            className="md:h-20 h-10 object-contain mx-auto bg-white"
+            className="md:h-20 h-10 object-contain mx-auto bg-white md:mb-15 mb-10"
           />
         </a>
       </div>
 
       <div>
-        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-[#E5CE63] font-[Poppins]">
+        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-black font-[Poppins]">
           BRONZE
         </p>
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-3 md:mb-15 mb-10">
           <div className="flex flex-row justify-center items-center gap-5">
             <a
               href="https://www.medicalprotection.org"
@@ -96,6 +97,19 @@ export const Sponsors: React.FC = () => {
                 className="md:h-20 h-10 object-contain bg-white"
               />
             </a>
+            <a
+              href="https://www.onehealth.co.nz"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={oneHealthLogo}
+                alt="One Health"
+                className="md:h-20 h-10 object-contain bg-white"
+              />
+            </a>
+          </div>
+          <div className="flex flex-row justify-center items-center gap-5">
             <a
               href="https://www.anzca.edu.au"
               target="_blank"
@@ -118,17 +132,6 @@ export const Sponsors: React.FC = () => {
                 className="md:h-20 h-10 object-contain bg-white"
               />
             </a>
-            <a
-              href="https://www.onehealth.co.nz"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src={oneHealthLogo}
-                alt="One Health"
-                className="md:h-20 h-10 object-contain bg-white"
-              />
-            </a>
           </div>
           <div className="flex flex-row justify-center items-center gap-5">
             <a
@@ -147,10 +150,10 @@ export const Sponsors: React.FC = () => {
       </div>
 
       <div>
-        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-[#E5CE63] font-[Poppins]">
+        <p className="md:mb-5 mb-3 md:text-3xl text-2xl text-black font-[Poppins]">
           SPECIAL SPONSOR
         </p>
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-3 md:mb-15 mb-10">
           <div className="flex flex-row justify-center items-center gap-5">
             <a
               href="https://blstringer.co.nz/"

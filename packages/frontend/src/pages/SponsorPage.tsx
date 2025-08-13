@@ -16,6 +16,8 @@ export const SponsorPage: React.FC = () => {
       <section className="bg-white px-4 py-3 flex flex-col items-center md:mb-20 mb-10 md:mt-10 mt-5">
         <Sponsors />
       </section>
+      <section className="bg-[#E5CE63] h-5">
+      </section>
     </div>
   );
 };
