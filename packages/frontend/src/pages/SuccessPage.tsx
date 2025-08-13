@@ -117,7 +117,10 @@ const SuccessPage: React.FC = () => {
   if (status === 'missing') {
     return (
       <div className="min-h-screen w-full bg-[#070507] text-[#FFFBE8] flex items-center justify-center">
-        <p>No order information found.</p>
+        <p>
+          No order information found. If you’ve just made a payment, please
+          don’t place another order. Wait for the confirmation email to arrive.
+        </p>
       </div>
     );
   }
