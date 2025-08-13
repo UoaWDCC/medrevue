@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@stripe/stripe-js": "^7.8.0",
-    "react-icons": "^5.5.0"
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.8.0"
   }
 }

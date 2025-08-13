@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react';
 import './admin_panel.css';
 import { CiLock, CiMail } from 'react-icons/ci';
 import { MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 export default function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (message.text) {
@@ -29,6 +31,9 @@ export default function App() {
       setMessage({ text: 'Login failed.', type: 'error' });
     } else {
       setMessage({ text: 'Login successful!', type: 'success' });
+      setTimeout(() => {
+        navigate('/admin/dashboard');
+      }, 500);
     }
   };
 

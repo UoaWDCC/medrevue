@@ -12,6 +12,7 @@ import { SponsorPage } from './pages/SponsorPage';
 import SuccessPage from './pages/SuccessPage';
 import UserDetail from './pages/UserDetail';
 import AdminPanelPage from './pages/admin_panel/admin_panel';
+import BookingOverview from './pages/booking_overview/BookingOverview';
 import SeatSelectionPage from './pages/seat_selection';
 import Show2025 from './pages/show/2025show';
 
@@ -129,7 +130,7 @@ const App: React.FC = () => {
           }
         />
         <Route
-          path="/dashboard/orders/stats"
+          path="/admin/dashboard"
           element={
             <>
               <Menu />
@@ -137,6 +138,7 @@ const App: React.FC = () => {
             </>
           }
         />
+        <Route path="/admin/booking" element={<BookingOverview />} />
       </Routes>
       <Footer />
       <Cookie />
