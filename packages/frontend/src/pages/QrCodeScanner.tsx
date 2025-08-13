@@ -112,6 +112,7 @@ const QrCodeScanner: React.FC = () => {
           },
         );
 
+        console.log('QR Scanner initialized successfully');
         setScanner(qrScanner);
       } catch (err) {
         console.error('Failed to initialize scanner:', err);
@@ -162,39 +163,77 @@ const QrCodeScanner: React.FC = () => {
   }, []);
 
   const startScanning = async () => {
-    if (!scanner) return;
+    if (!scanner) {
+      console.error('Scanner not initialized');
+      setError('Scanner not initialized. Please refresh the page.');
+      return;
+    }
 
+    console.log('Starting scan process...');
     setError('');
     setOrderInfo(null);
     setIsScanning(true);
 
     try {
-      await scanner.start(); // QrScanner now requests the stream itself
-      setPermissionStatus('granted'); // if we're here, the user allowed it
+      // Try to start the scanner directly - it will request permission if needed
+      console.log('Starting QR scanner...');
+      await scanner.start();
 
-      // Ensure video element is properly configured
+      // If we get here, permission was granted
+      setPermissionStatus('granted');
+      console.log('Scanner started successfully');
+
+      // Debug: Check if the video element has a stream
+      setTimeout(() => {
+        if (videoRef.current) {
+          console.log('Video element debug info:', {
+            hasStream: !!videoRef.current.srcObject,
+            videoWidth: videoRef.current.videoWidth,
+            videoHeight: videoRef.current.videoHeight,
+            readyState: videoRef.current.readyState,
+            paused: videoRef.current.paused,
+          });
+        }
+      }, 1000);
+
+      // Ensure video element is properly configured and displays the stream
       if (videoRef.current) {
         videoRef.current.playsInline = true;
         videoRef.current.autoplay = true;
         videoRef.current.muted = true;
 
-        // Wait a bit for the stream to be ready and force play
-        setTimeout(() => {
+        // Wait for the QR scanner to assign the stream to the video element
+        const waitForVideoStream = () => {
           if (videoRef.current?.srcObject) {
+            console.log(
+              'Video has stream from QR scanner, attempting to play...',
+            );
             videoRef.current.play().catch((playError) => {
               console.error('Failed to play video:', playError);
-              // Try to play again after a short delay
-              setTimeout(() => {
-                if (videoRef.current?.srcObject) {
-                  videoRef.current.play().catch(console.error);
-                }
-              }, 500);
             });
+          } else {
+            console.log('Waiting for QR scanner to assign video stream...');
+            setTimeout(waitForVideoStream, 100);
           }
-        }, 200);
+        };
+
+        // Start waiting for the video stream
+        setTimeout(waitForVideoStream, 300);
+
+        // Also force a style update to ensure visibility
+        videoRef.current.style.display = 'block';
+        videoRef.current.style.width = '100%';
+        videoRef.current.style.maxWidth = '400px';
+        videoRef.current.style.height = 'auto';
       }
     } catch (err) {
       console.error('Failed to start scanner:', err);
+      console.error('Error details:', {
+        name: err instanceof Error ? err.name : 'Unknown',
+        message: err instanceof Error ? err.message : String(err),
+        stack: err instanceof Error ? err.stack : undefined,
+      });
+
       // Check if it's a permission error
       if (
         err instanceof Error &&
@@ -204,9 +243,13 @@ const QrCodeScanner: React.FC = () => {
         setError(
           'Camera permission denied. Please allow camera access and try again.',
         );
+      } else if (err instanceof Error && err.name === 'NotFoundError') {
+        setError('No camera found on this device.');
+      } else if (err instanceof Error && err.name === 'NotReadableError') {
+        setError('Camera is already in use by another application.');
       } else {
         setError(
-          'Failed to start camera. Please check permissions and try again.',
+          `Failed to start camera: ${err instanceof Error ? err.message : String(err)}`,
         );
       }
       setIsScanning(false);
@@ -231,6 +274,7 @@ const QrCodeScanner: React.FC = () => {
   const resetScanner = () => {
     setOrderInfo(null);
     setError('');
+    setPermissionStatus('unknown'); // Reset permission status for fresh attempt
     startScanning();
   };
 
@@ -275,10 +319,15 @@ const QrCodeScanner: React.FC = () => {
                     className={`w-full max-w-md rounded-lg shadow-lg ${
                       isScanning ? 'block' : 'hidden'
                     }`}
-                    style={{ maxHeight: '400px' }}
+                    style={{
+                      maxHeight: '400px',
+                      minHeight: '300px',
+                      backgroundColor: '#000',
+                    }}
                     autoPlay
                     playsInline
                     muted
+                    controls={false}
                   >
                     <track kind="captions" />
                   </video>
@@ -331,16 +380,53 @@ const QrCodeScanner: React.FC = () => {
 
                 <div className="mt-6 space-x-4">
                   {!isScanning ? (
-                    <button
-                      type="button"
-                      onClick={startScanning}
-                      className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-                      disabled={loading}
-                    >
-                      {permissionStatus === 'unknown'
-                        ? 'Allow Camera & Start Scanning'
-                        : 'Start Scanning'}
-                    </button>
+                    <div className="space-y-3">
+                      <button
+                        type="button"
+                        onClick={startScanning}
+                        className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                        disabled={loading}
+                      >
+                        {permissionStatus === 'unknown'
+                          ? 'Allow Camera & Start Scanning'
+                          : 'Start Scanning'}
+                      </button>
+
+                      {permissionStatus !== 'granted' && (
+                        <div>
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              try {
+                                console.log(
+                                  'Requesting camera permission explicitly...',
+                                );
+                                const stream =
+                                  await navigator.mediaDevices.getUserMedia({
+                                    video: { facingMode: 'environment' },
+                                  });
+                                console.log('Permission granted!');
+                                for (const track of stream.getTracks()) {
+                                  track.stop();
+                                }
+                                setPermissionStatus('granted');
+                                setError('');
+                              } catch (err) {
+                                console.error('Permission denied:', err);
+                                setPermissionStatus('denied');
+                                setError(
+                                  'Camera permission denied. Please allow camera access.',
+                                );
+                              }
+                            }}
+                            className="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700 transition-colors ml-2"
+                            disabled={loading}
+                          >
+                            📷 Request Camera Permission
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   ) : (
                     <button
                       type="button"
@@ -358,13 +444,26 @@ const QrCodeScanner: React.FC = () => {
                     <h4 className="font-medium text-orange-800 mb-2">
                       How to enable camera access:
                     </h4>
-                    <ul className="text-sm text-orange-700 space-y-1">
+                    <ul className="text-sm text-orange-700 space-y-1 mb-3">
                       <li>
                         • Click the camera icon in your browser's address bar
                       </li>
                       <li>• Select "Allow" for camera permissions</li>
-                      <li>• Refresh the page and try again</li>
+                      <li>
+                        • Or try the button below for a fresh permission request
+                      </li>
                     </ul>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPermissionStatus('unknown');
+                        setError('');
+                        startScanning();
+                      }}
+                      className="bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-orange-700 transition-colors"
+                    >
+                      🔄 Try Permission Request Again
+                    </button>
                   </div>
                 )}
               </div>
