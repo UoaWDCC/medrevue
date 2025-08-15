@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router';
 export const Menu: React.FC = () => {
   const location = useLocation();
   const [open, setOpen] = useState(false);
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     void location.pathname;
@@ -11,56 +12,81 @@ export const Menu: React.FC = () => {
   }, [location]);
 
   return (
-    <header className="relative flex justify-between items-center h-20 w-full px-5 z-50 bg-[#1a1a1a]">
+    <header
+      className={`flex justify-between items-center h-20 w-full px-10 z-50 ${
+        isHomePage
+          ? 'absolute top-0 left-0 bg-transparent'
+          : 'relative bg-[#0f0f0f]'
+      }`}
+    >
       <Link
         to="/"
-        className="font-poppins font-bold text-2xl leading-[42px] text-[#f2f2f2] no-underline"
+        className="font-poppins font-bold text-xl leading-[42px] text-[#e5ce63] no-underline z-60"
       >
         MedRevue
       </Link>
       <button
         type="button"
-        className="md:hidden text-[#f2f2f2]"
+        className="lg:hidden text-[#e5ce63] z-60"
         onClick={() => setOpen((o) => !o)}
-        aria-label="Toggle Menu"
+        aria-label={open ? 'Close Menu' : 'Open Menu'}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="2"
-          stroke="currentColor"
-          className="w-6 h-6"
-          role="img"
-        >
-          <title>Menu</title>
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M4.5 6.75h15m-15 4.5h15m-15 4.5h15"
-          />
-        </svg>
+        {open ? (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="2"
+            stroke="currentColor"
+            className="w-8 h-8"
+            role="img"
+          >
+            <title>Close Menu</title>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="2"
+            stroke="currentColor"
+            className="w-8 h-8"
+            role="img"
+          >
+            <title>Menu</title>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4.5 6.75h15m-15 4.5h15m-15 4.5h15"
+            />
+          </svg>
+        )}
       </button>
       <nav
         className={`${
           open ? 'flex' : 'hidden'
-        } md:flex flex-col md:flex-row gap-6 md:gap-20 items-center absolute md:static top-full left-0 w-full bg-[#1a1a1a] md:w-auto p-5 md:p-0 z-50`}
+        } fixed top-0 left-0 h-screen w-screen bg-[rgba(0,0,0,0.95)] flex-col items-center justify-center gap-8 z-50 lg:static lg:h-auto lg:w-auto lg:bg-transparent lg:flex lg:flex-row lg:gap-20 lg:justify-start lg:items-center`}
       >
         <Link
           to="/"
-          className="font-inter text-2xl font-normal leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
+          className="font-inter text-m font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
         >
           Home
         </Link>
         <Link
           to="/show"
-          className="font-inter text-2xl font-normal leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
+          className="font-inter text-m font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
         >
           2025 Show
         </Link>
         <Link
           to="/sponsors"
-          className="font-inter text-2xl font-normal leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
+          className="font-inter text-m font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
         >
           Sponsors
         </Link>
@@ -68,26 +94,21 @@ export const Menu: React.FC = () => {
           href="https://fundraise.msf.org.au/fundraisers/aucklandmedicalrevue/auckland-medical-revue?utm_source=qr&utm_medium=print"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-inter text-2xl font-normal leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
+          className="font-inter text-m font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
         >
           Donate
         </a>
-        {/* <Link
-          to="/gallery"
-          className="font-inter text-2xl font-normal leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
-        >
-          Gallery
-        </Link> */}
-        {/* <Link
-          to="/about"
-          className="font-inter text-2xl font-normal leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
-        >
-          About
-        </Link> */}
+
         {location.pathname !== '/buy' && (
           <Link
             to="/buy"
-            className="bg-[#e5ce63] rounded-lg py-[10px] px-6 font-inter text-2xl font-normal leading-[36px] text-[#1a1a1a] no-underline transition-colors duration-300 hover:bg-[#fff0a2]"
+            className="
+              order-first       
+              lg:order-none      
+              bg-[#e5ce63] rounded-xl w-fit py-[2px] px-2
+              font-inter text-m font-bold leading-[36px] text-[#1a1a1a]
+              no-underline transition-colors duration-300 hover:bg-[#fff0a2]
+            "
           >
             Buy Tickets
           </Link>
