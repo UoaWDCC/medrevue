@@ -17,17 +17,19 @@ export const Menu: React.FC = () => {
         isHomePage
           ? 'absolute top-0 left-0 bg-transparent'
           : 'relative bg-[#0f0f0f]'
-      }`}
+      } ${open ? 'lg:static fixed top-0 left-0' : ''}`}
     >
       <Link
         to="/"
-        className="font-poppins font-bold text-xl leading-[42px] text-[#e5ce63] no-underline z-60"
+        className="font-poppins font-bold text-2xl leading-[42px] text-[#e5ce63] no-underline z-60"
       >
         MedRevue
       </Link>
       <button
         type="button"
-        className="lg:hidden text-[#e5ce63] z-60"
+        className={`lg:hidden text-[#e5ce63] z-60 ${
+          open ? 'absolute top-42px right-10' : 'relative'
+        }`}
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? 'Close Menu' : 'Open Menu'}
       >
@@ -74,19 +76,19 @@ export const Menu: React.FC = () => {
       >
         <Link
           to="/"
-          className="font-inter text-m font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
+          className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
         >
           Home
         </Link>
         <Link
           to="/show"
-          className="font-inter text-m font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
+          className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
         >
           2025 Show
         </Link>
         <Link
           to="/sponsors"
-          className="font-inter text-m font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
+          className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
         >
           Sponsors
         </Link>
@@ -94,7 +96,7 @@ export const Menu: React.FC = () => {
           href="https://fundraise.msf.org.au/fundraisers/aucklandmedicalrevue/auckland-medical-revue?utm_source=qr&utm_medium=print"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-inter text-m font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
+          className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
         >
           Donate
         </a>
@@ -105,9 +107,9 @@ export const Menu: React.FC = () => {
             className="
               order-first       
               lg:order-none      
-              bg-[#e5ce63] rounded-xl w-fit py-[2px] px-2
-              font-inter text-m font-bold leading-[36px] text-[#1a1a1a]
-              no-underline transition-colors duration-300 hover:bg-[#fff0a2]
+              bg-[#e5ce63] rounded-lg w-fit px-2
+              font-inter text-xl font-bold leading-[36px] text-[#1a1a1a]
+              no-underline transition-colors duration-300 hover:bg-[#fff0a2]    
             "
           >
             Buy Tickets
