@@ -1,4 +1,4 @@
-import type { Seat } from './SeatPlanning';
+import type { SeatType } from '@medrevue/types';
 
 export interface RowArrangement {
   label: string;
@@ -7,7 +7,7 @@ export interface RowArrangement {
 }
 
 export interface SeatData {
-  [rowLabel: string]: Seat[];
+  [rowLabel: string]: SeatType[];
 }
 
 interface SeatingArrangement {
@@ -79,8 +79,8 @@ export const SEATING_ARRANGEMENT: SeatingArrangement = {
     { label: 'M', startSeat: 3, endSeat: 12 },
     { label: 'N', startSeat: 1, endSeat: 12 },
     { label: 'O', startSeat: 3, endSeat: 12 },
-    { label: 'P', startSeat: 2, endSeat: 12 },
-    { label: 'Q', startSeat: 1, endSeat: 13 },
+    { label: 'P', startSeat: 1, endSeat: 12 },
+    { label: 'Q', startSeat: 2, endSeat: 13 },
     { label: 'R', startSeat: 1, endSeat: 13 },
     { label: 'S', startSeat: 1, endSeat: 13 },
     { label: 'T', startSeat: 1, endSeat: 13 },
@@ -88,20 +88,41 @@ export const SEATING_ARRANGEMENT: SeatingArrangement = {
   ],
 };
 
+const MID_SEAT_RANGE: Record<string, { start: number; end: number }> =
+  SEATING_ARRANGEMENT.middle.reduce(
+    (acc, row) => {
+      acc[row.label] = { start: row.startSeat, end: row.endSeat };
+      return acc;
+    },
+    {} as Record<string, { start: number; end: number }>,
+  );
+
 const generateMockSeatData = () => {
   const seatData: SeatData = {};
   for (const wing of Object.values(SEATING_ARRANGEMENT)) {
     for (const row of wing) {
+      const midRange = MID_SEAT_RANGE[row.label];
       for (let i = row.startSeat; i <= row.endSeat; i++) {
         if (!seatData[row.label]) {
           seatData[row.label] = [];
         }
+        const isVip =
+          (row.label === 'H' || row.label === 'I' || row.label === 'J') &&
+          midRange &&
+          i >= midRange.start &&
+          i <= midRange.end;
+        const available = !(
+          row.label === 'J' &&
+          midRange &&
+          i >= midRange.start &&
+          i <= midRange.end
+        );
         seatData[row.label].push({
           number: i,
           rowLabel: row.label,
-          available: Math.random() > 0.2,
+          available,
           selected: false,
-          seatType: Math.random() > 0.1 ? 'normal' : 'vip',
+          seatType: isVip ? 'VIP' : 'Standard',
         });
       }
     }

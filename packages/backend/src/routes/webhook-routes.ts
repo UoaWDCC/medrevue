@@ -1,7 +1,6 @@
 import express, { type Request, type Response } from 'express';
 import mongoose from 'mongoose';
 import Stripe from 'stripe';
-import { updateOrderPaid } from '../data/order-dao';
 
 // Initialize Stripe with your secret key
 // Replace 'your_secret_key' with your actual Stripe secret key
@@ -67,17 +66,6 @@ router.post(
       return;
     }
     res.status(200).json({ received: true });
-    updateOrderPaid(email)
-      .then((doc) => {
-        if (!doc) {
-          console.log(`No order found for email: ${email}`);
-        } else {
-          console.log(`Order updated for email: ${email}`);
-        }
-      })
-      .catch((err) => {
-        console.error(`Error updating order for email ${email}:`, err);
-      });
   },
 );
 

@@ -1,7 +1,11 @@
+import type { SeatType } from '@medrevue/types';
+import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   initializeSeatData,
+  setSeatUnavailable,
+  setSelectedDate,
   toggleSeatSelection,
 } from '../../redux/slices/seatSelectionSlice';
 import type { AppDispatch, RootState } from '../../redux/store';
@@ -10,16 +14,10 @@ import {
   type RowArrangement,
   SEATING_ARRANGEMENT,
   type SeatData,
-  mockSeatData,
 } from './SeatingArrangement';
 
-export interface Seat {
-  number: number;
-  rowLabel: string;
-  available: boolean;
-  selected?: boolean;
-  seatType: 'normal' | 'vip';
-}
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000';
 
 // Variables to adjust x offset of rows relative to center wing
 const SQUISH_MAGNITUDE = 7;
@@ -29,6 +27,13 @@ export const SeatPlanning: React.FC = () => {
   const rowXOffsets: { [key: string]: number } = {};
 
   const dispatch = useDispatch<AppDispatch>();
+  // Use Redux for showDates and selectedDate
+  const showDates = useSelector(
+    (state: RootState) => state.seatSelection.showDates,
+  );
+  const selectedDate = useSelector(
+    (state: RootState) => state.seatSelection.selectedDate,
+  );
   const seatData = useSelector(
     (state: RootState) => state.seatSelection.seatData,
   );
@@ -49,14 +54,73 @@ export const SeatPlanning: React.FC = () => {
     rowXOffsets[rowLabel] = offset;
   }
 
-  // Initialize the Redux seat data with mock data
   useEffect(() => {
-    dispatch(initializeSeatData(mockSeatData));
-  }, [dispatch]);
+    const fetchSeatData = async () => {
+      try {
+        const response = await axios.get<SeatData>(
+          `${API_BASE_URL}/api/v1/seats/all`,
+          {
+            params: { date: selectedDate },
+            withCredentials: true,
+          },
+        );
+        dispatch(initializeSeatData(response.data));
+      } catch (error) {
+        console.error('Failed to fetch seat data:', error);
+      }
+    };
+
+    if (selectedDate) {
+      fetchSeatData();
+    }
+  }, [dispatch, selectedDate]);
+
+  // useEffect(() => {
+  //   if (!initialized) {
+  //     dispatch(initializeSeatData(mockSeatData));
+  //   }
+  // }, [dispatch, initialized]);
 
   // Handle seat selection
-  const onSeatSelect = (seat: Seat) => {
-    dispatch(toggleSeatSelection(seat));
+  const onSeatSelect = async (seat: SeatType) => {
+    // If the seat is not already selected attempt to reserve it via API
+    if (!seat.selected) {
+      try {
+        await axios.post(
+          `${API_BASE_URL}/api/v1/seats/select`,
+          {
+            seatNumber: `${seat.rowLabel}${seat.number}`,
+            date: selectedDate,
+          },
+          { withCredentials: true },
+        );
+        dispatch(toggleSeatSelection(seat));
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 409) {
+          dispatch(
+            setSeatUnavailable({
+              rowLabel: seat.rowLabel,
+              number: seat.number,
+            }),
+          );
+        }
+        console.error('Failed to reserve seat:', error);
+      }
+    } else {
+      try {
+        await axios.post(
+          `${API_BASE_URL}/api/v1/seats/unselect`,
+          {
+            seatNumber: `${seat.rowLabel}${seat.number}`,
+            date: selectedDate,
+          },
+          { withCredentials: true },
+        );
+        dispatch(toggleSeatSelection(seat));
+      } catch (error) {
+        console.error('Failed to release seat:', error);
+      }
+    }
   };
 
   // Render each wing of seats separately
@@ -89,6 +153,20 @@ export const SeatPlanning: React.FC = () => {
   return (
     <div className="flex flex-col items-center w-full">
       {/* Stage container */}
+      <div className="flex flex-row gap-4 mb-16 w-full h-20 text-white rounded-t-xl items-center justify-center">
+        {showDates.map((date) => (
+          <button
+            key={date.value}
+            className={`px-8 py-4 text-white rounded transition ${
+              selectedDate === date.value ? 'bg-blue-500' : 'bg-gray-700'
+            } hover:bg-gray-600`}
+            type="button"
+            onClick={() => dispatch(setSelectedDate(date.value))}
+          >
+            {date.label}
+          </button>
+        ))}
+      </div>
       <div className="w-[32%] h-20 text-white bg-gray-700 rounded-t-xl flex items-center justify-center">
         <span className="text-gray-400 text-xl font-bold tracking-widest">
           Stage

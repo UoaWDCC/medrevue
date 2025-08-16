@@ -1,8 +1,8 @@
+import type { SeatType } from '@medrevue/types';
 import type React from 'react';
-import type { Seat } from './SeatPlanning';
 
 interface SeatButtonProps {
-  seat: Seat;
+  seat: SeatType;
   yOffset?: number;
   isGap?: boolean;
   onSeatSelect: () => void;
@@ -42,7 +42,7 @@ const SeatButton: React.FC<SeatButtonProps> = ({
       onClick={() => onSeatSelect()}
       title={`Row ${seat.rowLabel}, Seat ${seat.number}`}
       style={{ transform: yOffset ? `translateY(${yOffset}px)` : undefined }}
-      className={`w-[12px] h-[12px] text-[5px] rounded-full transition-all duration-200 flex justify-center items-center ${seat.seatType === 'normal' ? regularClass : vipClass} ${availableClass}`}
+      className={`w-[12px] h-[12px] text-[5px] rounded-full transition-all duration-200 flex justify-center items-center ${seat.seatType === 'Standard' ? regularClass : vipClass} ${availableClass}`}
     >
       <span>{seat.selected && seat.number}</span>
     </button>

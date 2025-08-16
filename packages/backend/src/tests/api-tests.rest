@@ -4,30 +4,3 @@
 # @description This is a test API endpoint to check the server's response.
 GET {{baseUrl}}/tests/hello
 Content-Type: application/json
-###
-# @title Create Order
-# @description This endpoint creates a new order in the system.
-POST {{baseUrl}}/order/create-order
-content-type: application/json
-
-{
- "userID": "45",
- "numberOfTickets": 4,
- "seats" : ["21B","21C", "24B", "30X"]
-}
-
-###
-GET {{baseUrl}}/order/get-order
-Content-Type: application/json
-
-{
-    "orderID": "6815a0888267de7036fb3c1d"
-}
-
-### 
-PATCH {{baseUrl}}/order/order-paid
-Content-Type: application/json
-
-{
-    "orderID": "6815a0888267de7036fb3c1d"
-}

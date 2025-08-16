@@ -1,0 +1,44 @@
+@baseUrl = http://localhost:3000/api/v1
+
+### Create a new payment
+POST {{baseUrl}}/stripe/payment
+Content-Type: application/json
+
+{
+    "amount": 100.50
+}
+
+
+### Create a new checkout session
+POST {{baseUrl}}/stripe/checkout-session
+Content-Type: application/json
+
+{
+    "lineItems": [
+        {
+            "name": "Row A Seat 18",
+            "price": 60.00,
+            "quantity": 1
+        },
+        {
+            "name": "Row C Seat 6",
+            "price": 60.00,
+            "quantity": 1
+        },
+        {
+            "name": "VIP Row A Seat 12",
+            "price": 120.00,
+            "quantity": 1
+        }
+    ],
+    "successUrl": "http://localhost:3000/success",
+    "cancelUrl": "http://localhost:3000/cancel",
+    "expires_at": 1750416857
+}
+
+### Get the status of a checkout session
+GET {{baseUrl}}/stripe/checkout-session/{:sessionId}
+Content-Type: application/json
+
+### Expired checkout session
+GET {{baseUrl}}/stripe/checkout-session/{:sessionId}/expireme
