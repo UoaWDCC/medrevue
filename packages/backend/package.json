@@ -5,7 +5,8 @@
   "scripts": {
     "start": "tsc && node dist/index.js",
     "dev": "nodemon ts-node src/index.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
