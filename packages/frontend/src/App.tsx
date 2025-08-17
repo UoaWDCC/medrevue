@@ -19,6 +19,8 @@ import SeatSelectionPage from './pages/seat_selection';
 import Show2025 from './pages/show/2025show';
 
 const App: React.FC = () => {
+  const isAdminPage = location.pathname.startsWith('/admin');
+
   return (
     <>
       <Routes>
@@ -160,7 +162,8 @@ const App: React.FC = () => {
           }
         />
       </Routes>
-      <Footer />
+
+      {!isAdminPage && <Footer />}
       <Cookie />
     </>
   );

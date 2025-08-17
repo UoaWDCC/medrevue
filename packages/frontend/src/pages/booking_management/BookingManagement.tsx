@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './BookingManagement.css';
 
 interface SwapSeat {
@@ -14,6 +14,12 @@ export default function App() {
   const [swapSeats, setSwapSeats] = useState<SwapSeat[]>([
     { id: crypto.randomUUID(), orderId: '', seatNumber: '', day: '' },
   ]);
+
+  const [reserveInput, setReserveInput] = useState({
+    guestName: '',
+    seatNumber: '',
+    day: '',
+  });
 
   const handleCancelBooking = () => {
     console.log('Canceling booking for:', cancelInput);
@@ -53,10 +59,77 @@ export default function App() {
     );
   };
 
+  const handleReserveSeat = () => {
+    console.log('Reserving seat:', reserveInput);
+  };
+
+  const handleReserveInputChange = (
+    field: 'guestName' | 'seatNumber' | 'day',
+    value: string,
+  ) => {
+    setReserveInput((prev) => ({ ...prev, [field]: value }));
+  };
+
   return (
     <div className="manage-page-container">
       <div className="manage-page">
         <h1 className="page-title">Admin Booking Management</h1>
+
+        <div className="section-card">
+          <h2 className="section-title">Reserve Seat</h2>
+          <div className="input-group">
+            <label htmlFor="reserve-name" className="label">
+              Guest Name:
+            </label>
+            <input
+              id="reserve-name"
+              type="text"
+              placeholder="Enter guest's name"
+              value={reserveInput.guestName}
+              onChange={(e) =>
+                handleReserveInputChange('guestName', e.target.value)
+              }
+              className="input-field"
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="reserve-seat" className="label">
+              Seat Number:
+            </label>
+            <input
+              id="reserve-seat"
+              type="text"
+              placeholder="e.g., A12"
+              value={reserveInput.seatNumber}
+              onChange={(e) =>
+                handleReserveInputChange('seatNumber', e.target.value)
+              }
+              className="input-field"
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="reserve-day" className="label">
+              Day:
+            </label>
+            <input
+              id="reserve-day"
+              type="text"
+              placeholder="e.g., Fri, 14 August"
+              value={reserveInput.day}
+              onChange={(e) => handleReserveInputChange('day', e.target.value)}
+              className="input-field"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={handleReserveSeat}
+            className="reserve-button"
+          >
+            Reserve Seat
+          </button>
+        </div>
+
+        <div className="divider" />
 
         <div className="section-card">
           <h2 className="section-title">Cancel Seat Booking</h2>

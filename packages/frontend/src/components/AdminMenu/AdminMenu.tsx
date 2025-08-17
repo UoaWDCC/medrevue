@@ -2,26 +2,16 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 
 export const AdminMenu: React.FC = () => {
-  const location = useLocation();
   const [open, setOpen] = useState(false);
-  const isHomePage = location.pathname === '/';
-
-  useEffect(() => {
-    void location.pathname;
-    setOpen(false);
-  }, [location]);
 
   return (
-    <header
-      className={`flex justify-between items-center h-20 w-full px-10 z-50 ${
-        isHomePage
-          ? 'absolute top-0 left-0 bg-transparent'
-          : 'relative bg-[#0f0f0f]'
-      } ${open ? 'lg:static fixed top-0 left-0' : ''}`}
-    >
+    <header className="fixed top-0 left-0 w-full h-20 flex justify-between items-center px-10 bg-[#0f0f0f] z-50">
+      {/* Logo */}
       <span className="font-poppins font-bold text-2xl leading-[42px] text-[#e5ce63] no-underline z-60">
         MedRevue
       </span>
+
+      {/* Mobile Menu Button */}
       <button
         type="button"
         className={`lg:hidden text-[#e5ce63] z-60 ${
@@ -66,6 +56,8 @@ export const AdminMenu: React.FC = () => {
           </svg>
         )}
       </button>
+
+      {/* Nav Links */}
       <nav
         className={`${
           open ? 'flex' : 'hidden'
