@@ -86,12 +86,12 @@ const SeatSelectionPage: React.FC = () => {
   return (
     <div className="relative select-none overflow-hidden overscroll-none cursor-default h-screen">
       {/* Background Blur */}
-      <img
+      {/* <img
         src={BackgroundBlur}
         alt="decorative blur"
         className="w-full h-screen absolute top-0 left-0 pointer-events-none z-10"
         draggable="false"
-      />
+      /> */}
       {/* Main container */}
       <div className="relative flex flex-col md:flex-row items-center justify-between h-full pb-[10vh] bg-[#070507] z-1 gap-x-8 p-4">
         {/* Seat Selection Container */}
