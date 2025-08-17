@@ -37,7 +37,7 @@ export const Sponsors: React.FC = () => {
           />
         </a>
       </div>
-  
+
       <div>
         <p className="md:mb-5 mb-3 md:text-4xl text-xl text-black font-[Poppins]">
           GOLD
