@@ -8,6 +8,8 @@
     "test:backend": "npm run test --workspace @medrevue/backend",
     "dev:frontend": "npm run dev -workspace @medrevue/frontend",
     "dev:backend": "npm run dev -workspace @medrevue/backend",
+    "build:frontend": "npm run build -workspace @medrevue/frontend",
+    "start:backend": "npm run start -workspace @medrevue/backend",
     "format": "biome format --write .",
     "format:check": "biome format .",
     "lint": "biome lint --write --no-errors-on-unmatched --files-ignore-unknown=true .",

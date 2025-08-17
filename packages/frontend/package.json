@@ -13,13 +13,21 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@medrevue/types": "1.0.0",
     "@reduxjs/toolkit": "^2.6.1",
+    "@stripe/react-stripe-js": "^3.7.0",
+    "@stripe/stripe-js": "^7.3.1",
     "@tailwindcss/vite": "^4.0.17",
+    "axios": "^1.9.0",
     "clsx": "^2.1.1",
+    "gsap": "^3.13.0",
+    "qr-scanner": "^1.4.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.56.4",
     "react-redux": "^9.2.0",
     "react-router": "^7.4.1",
+    "react-zoom-pan-pinch": "^3.7.0",
     "tailwind-merge": "^3.2.0",
     "tailwindcss": "^4.0.17"
   },

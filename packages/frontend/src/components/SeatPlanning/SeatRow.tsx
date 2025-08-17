@@ -1,13 +1,13 @@
+import type { SeatType } from '@medrevue/types';
 import SeatButton from './SeatButton';
-import type { Seat } from './SeatPlanning';
 import type { RowArrangement } from './SeatingArrangement';
 
 interface SeatRowProps {
   row: RowArrangement;
-  seats: Seat[];
+  seats: SeatType[];
   direction?: 'start' | 'center' | 'end';
   xOffset?: number;
-  onSeatSelect: (seat: Seat) => void;
+  onSeatSelect: (seat: SeatType) => void;
 }
 
 // Variables to adjust y offset of seats

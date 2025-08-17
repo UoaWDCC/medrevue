@@ -22,7 +22,7 @@ describe('POST /api/v1/order/create-order successful', () => {
     const response = await request(app)
       .post('/api/v1/order/create-order')
       .send({
-        userID: '45',
+        email: 'john@mail.com',
         numberOfTickets: 4,
         seats: ['21B', '21C', '24B', '30X'],
       });
@@ -35,7 +35,7 @@ describe('POST /api/v1/order/create-order successful', () => {
   });
 });
 
-describe('POST /api/v1/order/create-order missing userID', () => {
+describe('POST /api/v1/order/create-order missing email', () => {
   test('Should return a 400 error', async () => {
     const response = await request(app)
       .post('/api/v1/order/create-order')
@@ -45,7 +45,7 @@ describe('POST /api/v1/order/create-order missing userID', () => {
       });
     expect(response.status).toBe(400);
     expect(response.body).toEqual({
-      error: 'Missing user id',
+      error: 'Missing email',
     });
   });
 });
@@ -54,7 +54,7 @@ describe('POST /api/v1/order/create-order missing numberOfTickets', () => {
     const response = await request(app)
       .post('/api/v1/order/create-order')
       .send({
-        userID: '45',
+        email: 'john@mail.com',
         seats: ['21B', '21C', '24B', '30X'],
       });
     expect(response.status).toBe(400);
@@ -69,7 +69,7 @@ describe('POST /api/v1/order/create-order missing seats', () => {
     const response = await request(app)
       .post('/api/v1/order/create-order')
       .send({
-        userID: '45',
+        email: 'john@mail.com',
         numberOfTickets: 4,
       });
     expect(response.status).toBe(400);
@@ -79,14 +79,14 @@ describe('POST /api/v1/order/create-order missing seats', () => {
   });
 });
 
-describe('GET /api/v1/order/get-order orderID not in database', () => {
+describe('GET /api/v1/order/get-order email not in database', () => {
   test('Should return a 400 error', async () => {
     const response = await request(app).get('/api/v1/order/get-order').send({
-      orderID: '123456789012345678901234',
+      email: 'jane@mail.com',
     });
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
-      error: 'OrderID not in database',
+      error: 'Email not in database',
     });
   });
 });
@@ -95,18 +95,17 @@ describe('Create order and then get order', () => {
     const createResponse = await request(app)
       .post('/api/v1/order/create-order')
       .send({
-        userID: '45',
+        email: 'john@mail.com',
         numberOfTickets: 4,
         seats: ['21B', '21C', '24B', '30X'],
       });
-    const orderID = createResponse.body.data.orderID;
     const getResponse = await request(app).get('/api/v1/order/get-order').send({
-      orderID: orderID,
+      email: 'john@mail.com',
     });
     expect(getResponse.status).toBe(200);
     expect(getResponse.body.order).toEqual(
       expect.objectContaining({
-        userID: '45',
+        email: 'john@mail.com',
         numberOfTickets: 4,
         seats: ['21B', '21C', '24B', '30X'],
         paid: false,
@@ -120,23 +119,22 @@ describe('Create order, get order, pay order', () => {
     const createResponse = await request(app)
       .post('/api/v1/order/create-order')
       .send({
-        userID: '45',
+        email: 'john@mail.com',
         numberOfTickets: 4,
         seats: ['21B', '21C', '24B', '30X'],
       });
-    const orderID = createResponse.body.data.orderID;
     const getResponse = await request(app).get('/api/v1/order/get-order').send({
-      orderID: orderID,
+      email: 'john@mail.com',
     });
     const patchResponse = await request(app)
       .patch('/api/v1/order/order-paid')
       .send({
-        orderID: orderID,
+        email: 'john@mail.com',
       });
     expect(patchResponse.status).toBe(200);
     expect(patchResponse.body).toEqual({
       order: expect.objectContaining({
-        userID: '45',
+        email: 'john@mail.com',
         numberOfTickets: 4,
         seats: ['21B', '21C', '24B', '30X'],
         paid: true,
@@ -145,14 +143,14 @@ describe('Create order, get order, pay order', () => {
   });
 });
 
-describe('patch /api/v1/order/order-paid orderID not in database', () => {
+describe('patch /api/v1/order/order-paid email not in database', () => {
   test('Should return a 404 error', async () => {
     const response = await request(app).patch('/api/v1/order/order-paid').send({
-      orderID: '123456789012345678901234',
+      email: 'bob@mail.com',
     });
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
-      error: 'OrderID not in database',
+      error: 'Email not in database',
     });
   });
 });

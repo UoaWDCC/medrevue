@@ -1,0 +1,9 @@
+{
+  "name": "@medrevue/types",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "types": "index.ts"
+}

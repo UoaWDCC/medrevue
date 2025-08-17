@@ -17,6 +17,17 @@ router.use('/seats', seatRoutes);
 
 // Import order route
 import ordersRoutes from './api-orders';
-router.use('/order', ordersRoutes);
+router.use('/orders', ordersRoutes);
+
+// Import qr code route
+import qrCodeRoutes from './api-qrcode';
+router.use('/qrcode', qrCodeRoutes);
+
+// Import payment route
+import stripeRoutes from './api-stripe';
+router.use('/stripe', stripeRoutes);
+
+//import webhookRoutes from './webhook-routes';
+//router.use('/webhooks', webhookRoutes);
 
 export default router;

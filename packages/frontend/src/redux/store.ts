@@ -1,10 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from './slices/counterSlice';
 import seatSelectionReducer from './slices/seatSelectionSlice';
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
     seatSelection: seatSelectionReducer,
   },
 });
