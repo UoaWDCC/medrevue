@@ -1,30 +1,17 @@
-import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router';
+import { useState } from 'react';
+import { Link } from 'react-router';
 
-export const Menu: React.FC = () => {
-  const location = useLocation();
+export const AdminMenu: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const isHomePage = location.pathname === '/';
-
-  useEffect(() => {
-    void location.pathname;
-    setOpen(false);
-  }, [location]);
 
   return (
-    <header
-      className={`flex justify-between items-center h-20 w-full px-10 z-50 ${
-        isHomePage
-          ? 'absolute top-0 left-0 bg-transparent'
-          : 'relative bg-[#0f0f0f]'
-      } ${open ? 'lg:static fixed top-0 left-0' : ''}`}
-    >
-      <Link
-        to="/"
-        className="font-poppins font-bold text-2xl leading-[42px] text-[#e5ce63] no-underline z-60"
-      >
+    <header className="fixed top-0 left-0 w-full h-20 flex justify-between items-center px-10 bg-[#0f0f0f] z-50">
+      {/* Logo */}
+      <span className="font-poppins font-bold text-2xl leading-[42px] text-[#e5ce63] no-underline z-60">
         MedRevue
-      </Link>
+      </span>
+
+      {/* Mobile Menu Button */}
       <button
         type="button"
         className={`lg:hidden text-[#e5ce63] z-60 ${
@@ -69,52 +56,31 @@ export const Menu: React.FC = () => {
           </svg>
         )}
       </button>
+
+      {/* Nav Links */}
       <nav
         className={`${
           open ? 'flex' : 'hidden'
         } fixed top-0 left-0 h-screen w-screen bg-[rgba(0,0,0,0.95)] flex-col items-center justify-center gap-8 z-50 lg:static lg:h-auto lg:w-auto lg:bg-transparent lg:flex lg:flex-row lg:gap-20 lg:justify-start lg:items-center`}
       >
         <Link
-          to="/"
+          to="/admin/dashboard"
           className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
         >
-          Home
+          Dashboard
         </Link>
         <Link
-          to="/show"
+          to="/admin/booking"
           className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
         >
-          2025 Show
+          Booking
         </Link>
         <Link
-          to="/sponsors"
+          to="/admin/manage"
           className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
         >
-          Sponsors
+          Manage
         </Link>
-        <a
-          href="https://fundraise.msf.org.au/fundraisers/aucklandmedicalrevue/auckland-medical-revue?utm_source=qr&utm_medium=print"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
-        >
-          Donate
-        </a>
-
-        {location.pathname !== '/buy' && (
-          <Link
-            to="/buy"
-            className="
-              order-first       
-              lg:order-none      
-              bg-[#e5ce63] rounded-lg w-fit px-2
-              font-inter text-xl font-bold leading-[36px] text-[#1a1a1a]
-              no-underline transition-colors duration-300 hover:bg-[#fff0a2]    
-            "
-          >
-            Buy Tickets
-          </Link>
-        )}
       </nav>
     </header>
   );
