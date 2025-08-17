@@ -27,12 +27,12 @@ const SeatButton: React.FC<SeatButtonProps> = ({
   // Classes for seats based on availability and type
   const availableClass = seat.available
     ? 'cursor-pointer'
-    : 'cursor-not-allowed !bg-red-400 border-none';
+    : 'cursor-not-allowed !bg-[#cfce9e] border-none';
   const regularClass = seat.selected
-    ? 'bg-transparent border-2 border-red-500'
+    ? 'bg-transparent border-2 border-yellow-200'
     : 'bg-transparent border-2 border-white';
   const vipClass = seat.selected
-    ? 'bg-transparent border-2 border-red-500'
+    ? 'bg-transparent border-2 border-orange-500'
     : 'bg-transparent border-2 border-yellow-500';
 
   return (
