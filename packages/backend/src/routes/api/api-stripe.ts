@@ -10,7 +10,7 @@ const stripeKey = process.env.STRIPE_SECRET_KEY;
 if (!stripeKey) throw new Error('Missing STRIPE_SECRET_KEY in environment');
 
 const stripe = new Stripe(stripeKey, {
-  apiVersion: '2025-05-28.basil',
+  apiVersion: '2025-07-30.basil',
 });
 
 // POST /api/payment — Create a new payment

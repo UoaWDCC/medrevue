@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router';
+import { useState } from 'react';
+import { Link } from 'react-router';
 
 export const AdminMenu: React.FC = () => {
   const [open, setOpen] = useState(false);
