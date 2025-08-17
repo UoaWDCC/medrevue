@@ -1,5 +1,6 @@
 import type React from 'react';
 import { Link, Route, Routes } from 'react-router';
+import { AdminMenu } from './components/AdminMenu';
 import { Cookie } from './components/Cookie';
 import { Footer } from './components/Footer';
 import { Menu } from './components/Menu';
@@ -129,18 +130,35 @@ const App: React.FC = () => {
             </>
           }
         />
+        <Route path="admin" element={<AdminPanelPage />} />
+
         <Route
           path="/admin/dashboard"
           element={
             <>
-              <Menu />
+              <AdminMenu />
               <OrderStatsDashboard />
             </>
           }
         />
-        <Route path="admin" element={<AdminPanelPage />} />
-        <Route path="/admin/booking" element={<BookingOverview />} />
-        <Route path="/admin/manage" element={<BookingManagement />} />
+        <Route
+          path="/admin/booking"
+          element={
+            <>
+              <AdminMenu />
+              <BookingOverview />
+            </>
+          }
+        />
+        <Route
+          path="/admin/manage"
+          element={
+            <>
+              <AdminMenu />
+              <BookingManagement />
+            </>
+          }
+        />
       </Routes>
       <Footer />
       <Cookie />
