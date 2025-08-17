@@ -11,7 +11,7 @@ export const Menu: React.FC = () => {
   }, [location]);
 
   return (
-    <header className="relative flex justify-between items-center h-20 w-full px-5 z-50 bg-[#1a1a1a]">
+    <header className="relative flex justify-between items-center h-16 lg:h-20 w-full px-5 z-50 bg-[#1a1a1a]">
       <Link
         to="/"
         className="font-poppins font-bold text-2xl leading-[42px] text-[#f2f2f2] no-underline"
@@ -20,7 +20,7 @@ export const Menu: React.FC = () => {
       </Link>
       <button
         type="button"
-        className="md:hidden text-[#f2f2f2]"
+        className="lg:hidden text-[#f2f2f2]"
         onClick={() => setOpen((o) => !o)}
         aria-label="Toggle Menu"
       >
@@ -44,7 +44,7 @@ export const Menu: React.FC = () => {
       <nav
         className={`${
           open ? 'flex' : 'hidden'
-        } md:flex flex-col md:flex-row gap-6 md:gap-20 items-center absolute md:static top-full left-0 w-full bg-[#1a1a1a] md:w-auto p-5 md:p-0 z-50`}
+        } lg:flex flex-col lg:flex-row gap-8 lg:gap-16 items-center absolute lg:static top-full left-0 w-full bg-[#1a1a1a] lg:w-auto p-5 lg:p-0 z-50`}
       >
         <Link
           to="/"
@@ -87,7 +87,7 @@ export const Menu: React.FC = () => {
         {location.pathname !== '/buy' && (
           <Link
             to="/buy"
-            className="bg-[#e5ce63] rounded-lg py-[10px] px-6 font-inter text-2xl font-normal leading-[36px] text-[#1a1a1a] no-underline transition-colors duration-300 hover:bg-[#fff0a2]"
+            className="bg-[#e5ce63] rounded-lg py-[8px] px-6 font-inter text-2xl font-normal leading-[36px] text-[#1a1a1a] no-underline transition-colors duration-300 hover:bg-[#fff0a2]"
           >
             Buy Tickets
           </Link>

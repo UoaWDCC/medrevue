@@ -205,11 +205,11 @@ const HomePage: React.FC = () => {
           backgroundPosition: 'center 60%',
         }}
       >
-        <h1 className="absolute top-[30%] left-1/2 -translate-x-1/2 text-center lg:left-[10%] lg:-translate-x-0 lg:text-left transform -translate-y-30 text-[#E5CE63] font-bold font-poppins lg:whitespace-nowrap lg:-translate-y-10 sm:-translate-y-2 text-[clamp(4.5rem,8vw,6rem)]">
+        <h1 className="absolute top-[30%] left-1/2 -translate-x-1/2 text-center lg:left-[10%] lg:-translate-x-0 lg:text-left transform -translate-y-30 text-[#E5CE63] font-bold font-poppins lg:whitespace-nowrap lg:-translate-y-2 text-[clamp(4.5rem,8vw,6rem)]">
           Auckland MedRevue
         </h1>
 
-        <h2 className="text-[#FFF0A2] absolute top-[46%] left-1/2 -translate-x-1/2 text-center lg:left-[10%] lg:-translate-x-0 lg:text-left transform -translate-y-5 font-bold font-inter lg:whitespace-nowrap lg:-translate-y-0 sm:-translate-y-2 lg:font-medium text-[clamp(1rem,3vw,1.5rem)]">
+        <h2 className="text-[#FFF0A2] absolute top-[46%] left-1/2 -translate-x-1/2 text-center lg:left-[10%] lg:-translate-x-0 lg:text-left transform -translate-y-5 font-bold font-inter lg:whitespace-nowrap lg:-translate-y-2 lg:font-medium text-[clamp(1rem,3vw,1.5rem)]">
           A University of Auckland non-profit production
         </h2>
 
