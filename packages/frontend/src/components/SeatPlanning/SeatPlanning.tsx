@@ -23,7 +23,7 @@ const SQUISH_MAGNITUDE = 7;
 const SQUISH_OFFSET = 24;
 
 export const SeatPlanning: React.FC<{
-  centerOnLoad: (x: number, y: number) => void;
+  centerOnLoad?: (x: number, y: number) => void;
 }> = ({ centerOnLoad }) => {
   const rowXOffsets: { [key: string]: number } = {};
 
@@ -55,8 +55,12 @@ export const SeatPlanning: React.FC<{
     rowXOffsets[rowLabel] = offset;
   }
 
+  // Call centerOnLoad on mount if provided. Guard to avoid calling when the
+  // prop is omitted (some pages render SeatPlanning without passing it).
   useEffect(() => {
-    centerOnLoad(0, 0);
+    if (typeof centerOnLoad === 'function') {
+      centerOnLoad(0, 0);
+    }
   }, [centerOnLoad]);
 
   useEffect(() => {
