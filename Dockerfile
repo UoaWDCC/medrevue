@@ -19,11 +19,6 @@ COPY .github /app/.git
 COPY ./packages/backend /app/packages/backend
 COPY ./packages/types /app/packages/types
 RUN npm ci
-# #TODO: fix issue where running npm ci in root directory does not install in packages/backend 
-#TODO: seemed to have fixed it now, but still requires some testing
-# WORKDIR /app/packages/backend
-# RUN npm install
-#this installs into the root dir's node_modules
 
 FROM backend-deps AS backend-dev
 # #specify the env variable for development 
@@ -61,6 +56,8 @@ WORKDIR /app/packages/backend
 RUN npm run build
 
 FROM base AS fullstack-prod
+#install redis
+RUN apt-get update && apt-get -y install redis-server
 COPY --from=backend-build /app/packages/backend/dist ./app/packages/backend/dist
 #this has to match the directory structure in routes.ts, hence the need for nesting 
 COPY --from=frontend-build /app/dist ./app/packages/frontend/dist
