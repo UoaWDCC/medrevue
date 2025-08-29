@@ -452,6 +452,38 @@ router.get(
   },
 );
 
+//cancel the seat booking
+router.post('/:id/cancel', async (req: Request, res: Response) => {
+  //only cancel if the seat date has not already passed
+  const { id } = req.params;
+  const { refund } = req.query;
+
+  if (!id) {
+    res.status(400).json({ error: 'Missing the order ID' });
+    return;
+  }
+  if (!/^[a-fA-F0-9]{24}$/.test(id)) {
+    res.status(404).json({ message: 'Order not found' });
+    return;
+  }
+  const order = await retrieveOrderById(id);
+  if (!order) {
+    res.status(404).json({ message: 'Order not found' });
+    return;
+  }
+  //TODO: delete the seat booking -- might need to update redis cache afterwards
+  await deleteSeatBooking(order);
+  //TODO: invalidate QR code for the user who has already made the seat booking
+
+  //TODO: delete the order
+  await deleteOrder(order);
+
+  if (refund === 'true') {
+  }
+
+  res.sendStatus(500);
+});
+
 // Manually trigger a confirmation email resend
 router.post(
   '/:id/send-email',
