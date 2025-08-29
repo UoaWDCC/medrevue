@@ -47,26 +47,26 @@ services:
     ports:
       - "6379:6379"
     profiles: ["test:backend"]
-  redis_prod:
-    image: redis:latest
-    container_name: "redis_prod"
-    ports:
-      - "6379:6379"
-    profiles: ["prod"]
-    volumes:
-      - redis_data_prod:/data
-  app_prod:
-    env_file: "./packages/backend/.env.production.local"
-    environment:
-      REDIS_HOST: "redis_prod"
-    depends_on:
-      - redis_prod
-    build:
-      target: fullstack-prod
-    container_name: medrevue-production
-    profiles: ["prod"]
-    ports:
-      - "3000:3000"
+  # redis_prod:
+  #   image: redis:latest
+  #   container_name: "redis_prod"
+  #   ports:
+  #     - "6379:6379"
+  #   profiles: ["prod"]
+  #   volumes:
+  #     - redis_data_prod:/data
+  # app_prod:
+  #   env_file: "./packages/backend/.env.production.local"
+  #   environment:
+  #     REDIS_HOST: "redis_prod"
+  #   depends_on:
+  #     - redis_prod
+  #   build:
+  #     target: fullstack-prod
+  #   container_name: medrevue-production
+  #   profiles: ["prod"]
+  #   ports:
+  #     - "3000:3000"
   app_frontend_dev:
     env_file: "./packages/frontend/.env.development.local"
     build:
@@ -83,4 +83,4 @@ services:
 
 volumes:
   redis_data_dev:
-  redis_data_prod:
+  # redis_data_prod:

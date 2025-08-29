@@ -65,7 +65,10 @@ COPY --from=backend-build /app/node_modules ./app/packages/backend/node_modules
 ENV NODE_ENV="production"
 ENV DOCKER_USE="true" 
 WORKDIR /app/packages/backend/dist
-CMD ["node", "index.js"]
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+CMD ["/start.sh"]
 
 
 

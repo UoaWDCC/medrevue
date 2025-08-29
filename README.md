@@ -69,6 +69,22 @@ And run the shell using:
 docker run --rm -it --entrypoint bash <TAG NAME OR ID>
 ```
 
+### Running Production
+
+We do not use Docker Compose for production. Instead, we have Redis running on the same container.
+
+First build the image directly and give the image the tag medrevue_prod:
+
+```bash
+ docker build --target fullstack-prod -t medrevue_prod .
+```
+
+And then do the following if you are running in your local machine and want to specify the production env file directly.
+
+```bash
+docker run -p 3000:3000 --env-file ./packages/backend/.env.production.local medrevue_prod:latest
+```
+
 ### Env Files
 
 Depending on the profile, you might need to reconfigure different .env files, otherwise Docker will not be able to access/link your env variables.
