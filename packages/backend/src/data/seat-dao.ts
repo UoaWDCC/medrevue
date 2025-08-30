@@ -29,8 +29,29 @@ async function markSeatsUnavailable(
   ).exec();
 }
 
+async function markSeatsAvailable(
+  date: string,
+  seats: {
+    rowLabel: string;
+    number: number;
+  }[],
+): Promise<void> {
+  if (seats.length === 0) return;
+  await Seat.updateMany(
+    {
+      $or: seats.map((seat) => ({
+        date,
+        rowLabel: seat.rowLabel,
+        number: seat.number,
+      })),
+    },
+    { available: true, selected: false },
+  ).exec();
+}
+
 export {
   retrieveSeatListByDate,
   retrieveUnavailableSeatsByDate,
   markSeatsUnavailable,
+  markSeatsAvailable,
 };
