@@ -13,7 +13,7 @@ import {
   retrieveOrderList,
   updateOrder,
 } from '../../data/order-dao';
-import { markSeatsUnavailable } from '../../data/seat-dao';
+import { markSeatsAvailable, markSeatsUnavailable } from '../../data/seat-dao';
 import { verifyInternalRequest } from '../../middleware/verify-internal-request';
 import redisClient from '../../redis/redisClient';
 import { refreshSeatCache } from '../../redis/seatCache';
@@ -453,6 +453,7 @@ router.get(
 );
 
 //cancel the seat booking
+//TODO: prevent non-authorized users from cancelling bookings.
 router.post('/:id/cancel', async (req: Request, res: Response) => {
   //only cancel if the seat date has not already passed
   const { id } = req.params;
@@ -471,17 +472,42 @@ router.post('/:id/cancel', async (req: Request, res: Response) => {
     res.status(404).json({ message: 'Order not found' });
     return;
   }
-  //TODO: delete the seat booking -- might need to update redis cache afterwards
-  await deleteSeatBooking(order);
-  //TODO: invalidate QR code for the user who has already made the seat booking
 
-  //TODO: delete the order
-  await deleteOrder(order);
+  await markSeatsAvailable(
+    order.selectedDate,
+    order.selectedSeats.map((s) => ({
+      rowLabel: s.rowLabel,
+      number: s.number,
+    })),
+  );
+
+  for (const seat of order.selectedSeats) {
+    const lockKey = `seatlock:${order.selectedDate}:${seat.rowLabel}-${seat.number}`;
+    await redisClient.del(lockKey);
+  }
+  await redisClient.del(`seats:${order.selectedDate}`);
+  await refreshSeatCache(order.selectedDate);
+
+  //TODO: do we need to invalidate QR code for the user who has already made the seat booking
 
   if (refund === 'true') {
+    const paymentIntent = (
+      await stripe.checkout.sessions.retrieve(order.checkoutSessionId)
+    ).payment_intent as string | null;
+
+    if (!paymentIntent) {
+      res.status(404).json({ error: 'Payment Intent is null, cannot refund.' });
+    }
+
+    //TODO: the above request shouldnt expand the payment intent, but might need some testing beforehand.
+    await stripe.refunds.create({
+      charge: paymentIntent as string,
+    });
   }
 
-  res.sendStatus(500);
+  await deleteOrder(id);
+
+  res.sendStatus(200);
 });
 
 // Manually trigger a confirmation email resend
