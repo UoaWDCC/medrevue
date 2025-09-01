@@ -2,7 +2,7 @@ import express, { type Express } from 'express';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import request from 'supertest';
-import { beforeAll, describe, expect, test } from 'vitest';
+import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import apiUserRouter from '../api-users';
 
 let app: Express;
@@ -15,6 +15,10 @@ beforeAll(async () => {
   const mongod = await MongoMemoryServer.create();
   const uri = mongod.getUri();
   await mongoose.connect(uri);
+});
+
+afterAll(async () => {
+  await mongoose.disconnect();
 });
 
 describe('POST /api/v1/user/register', () => {
