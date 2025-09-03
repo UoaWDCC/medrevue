@@ -455,7 +455,7 @@ router.get(
 //cancel the seat booking
 //TODO: prevent non-authorized users from cancelling bookings.
 router.post('/:id/cancel', async (req: Request, res: Response) => {
-  //only cancel if the seat date has not already passed
+  //TODO only cancel if the seat date has not already passed
   const { id } = req.params;
   const { refund } = req.query;
 
@@ -471,6 +471,24 @@ router.post('/:id/cancel', async (req: Request, res: Response) => {
   if (!order) {
     res.status(404).json({ message: 'Order not found' });
     return;
+  }
+
+  if (refund === 'true') {
+    const paymentIntent = (
+      await stripe.checkout.sessions.retrieve(order.checkoutSessionId)
+    ).payment_intent as string | null;
+
+    if (!paymentIntent) {
+      res.status(404).json({
+        error:
+          'Payment Intent is null, unable to refund and unable to delete order.',
+      });
+    }
+
+    //TODO: the above request shouldnt expand the payment intent, but might need some testing beforehand.
+    await stripe.refunds.create({
+      charge: paymentIntent as string,
+    });
   }
 
   await markSeatsAvailable(
@@ -489,21 +507,6 @@ router.post('/:id/cancel', async (req: Request, res: Response) => {
   await refreshSeatCache(order.selectedDate);
 
   //TODO: do we need to invalidate QR code for the user who has already made the seat booking
-
-  if (refund === 'true') {
-    const paymentIntent = (
-      await stripe.checkout.sessions.retrieve(order.checkoutSessionId)
-    ).payment_intent as string | null;
-
-    if (!paymentIntent) {
-      res.status(404).json({ error: 'Payment Intent is null, cannot refund.' });
-    }
-
-    //TODO: the above request shouldnt expand the payment intent, but might need some testing beforehand.
-    await stripe.refunds.create({
-      charge: paymentIntent as string,
-    });
-  }
 
   await deleteOrder(id);
 
