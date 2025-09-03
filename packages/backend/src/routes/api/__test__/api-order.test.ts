@@ -52,7 +52,6 @@ beforeAll(async () => {
   const mongod = await MongoMemoryServer.create();
   const uri = mongod.getUri();
   await mongoose.connect(uri);
-  await seedSeats(true);
 });
 
 beforeEach(async () => {
@@ -311,8 +310,50 @@ describe('POST /api/v1/order/:id/cancel successful', () => {
     const orderNotFound = await request(app).get(`/api/v1/order/${orderId}`);
     expect(orderNotFound.statusCode).toBe(404);
   });
+});
 
-  test.todo(
-    'Should throw an error if an existing order does not have payment intent.',
-  );
+describe('POST /api/v1/order/:id/cancel error', () => {
+  test('Should throw an error if an existing order does not have payment intent but refund is requested.', async () => {
+    const test = await request(app).get('/api/v1/test/hello');
+    const sessionCookie = test.header['set-cookie'][0];
+    await setSeatLock(sessionCookie, '2025-08-15', [
+      { rowLabel: 'A', number: 32, seatType: 'Standard' },
+      { rowLabel: 'B', number: 17, seatType: 'Standard' },
+      { rowLabel: 'C', number: 18, seatType: 'VIP' },
+      { rowLabel: 'D', number: 39, seatType: 'Standard' },
+    ]);
+    const createOrder = await request(app)
+      .post('/api/v1/order')
+      .send({
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'test@test.com',
+        phone: '+1234567890',
+        isStudent: true,
+        studentCount: 0,
+        selectedDate: '2025-08-15',
+        selectedSeats: [
+          { rowLabel: 'A', number: 32, seatType: 'Standard' },
+          { rowLabel: 'B', number: 17, seatType: 'Standard' },
+          { rowLabel: 'C', number: 18, seatType: 'VIP' },
+          { rowLabel: 'D', number: 39, seatType: 'Standard' },
+        ],
+        totalPrice: 120.0,
+      })
+      .set('Cookie', sessionCookie);
+
+    const orderId = createOrder.body.orderId;
+
+    const response = await request(app)
+      .post(`/api/v1/order/${orderId}/cancel`)
+      .query({ refund: 'true' });
+    expect(response.body).toMatchObject({
+      error:
+        'Payment Intent is null, unable to refund and unable to delete order.',
+    });
+    expect(response.statusCode).toBe(404);
+
+    const orderNotFound = await request(app).get(`/api/v1/order/${orderId}`);
+    expect(orderNotFound.statusCode).toBe(200);
+  });
 });
