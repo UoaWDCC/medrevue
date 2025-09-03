@@ -7,12 +7,14 @@ dotenv.config();
 
 const dates = ['2025-08-14', '2025-08-15', '2025-08-16'];
 
-const seedSeats = async () => {
+export const seedSeats = async (test = false) => {
   try {
-    await mongoose.connect(
-      process.env.DB_URL || 'mongodb://localhost:27017/medrevue',
-    );
-    console.log('✅ Connected to MongoDB');
+    if (test === false) {
+      await mongoose.connect(
+        process.env.DB_URL || 'mongodb://localhost:27017/medrevue',
+      );
+      console.log('✅ Connected to MongoDB');
+    }
 
     await Seat.deleteMany({});
     console.log('🗑️  Cleared existing seats');
@@ -28,13 +30,11 @@ const seedSeats = async () => {
         }));
 
       await Seat.insertMany(allSeats);
-      console.log(`✅ Inserted ${allSeats.length} seats`);
+      console.log(`✅ Inserted ${allSeats.length} seats for date ${date}`);
     }
-    process.exit(0);
   } catch (error) {
     console.error('❌ Error seeding seats:', error);
-    process.exit(1);
   }
 };
 
-seedSeats();
+// seedSeats();
