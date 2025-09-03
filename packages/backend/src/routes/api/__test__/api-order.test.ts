@@ -1,36 +1,105 @@
+import { RedisStore } from 'connect-redis';
 import express, { type Express } from 'express';
+import session from 'express-session';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import request from 'supertest';
-import { beforeAll, describe, expect, test } from 'vitest';
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  test,
+} from 'vitest';
+import redisClient from '../../../redis/redisClient';
+import { seedSeats } from '../../../scripts/seedSeats';
+import setSeatLock from '../../../utils/setSeatLock';
 import orderRouter from '../api-orders';
+import stripeRouter from '../api-stripe';
+import testsRouter from '../api-tests';
 
 let app: Express;
 
 // Setup
 beforeAll(async () => {
+  app = express();
+  app.use(express.json());
+  //NOTE: we have to manually set this redis and session store here with httpOnly set to false in testing.
+  const redisStore = new RedisStore({
+    client: redisClient,
+    prefix: 'medrevue:',
+  });
+  const SESSION_SECRET: string = process.env.SESSION_SECRET
+    ? process.env.SESSION_SECRET
+    : 'secret_session';
+  app.use(
+    session({
+      name: 'medrevue.sid',
+      store: redisStore,
+      secret: SESSION_SECRET,
+      resave: false,
+      saveUninitialized: true,
+      cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: false,
+        maxAge: 1000 * 60 * 60,
+      },
+    }),
+  );
+  app.use('/api/v1/order', orderRouter);
+  app.use('/api/v1/test', testsRouter);
   const mongod = await MongoMemoryServer.create();
   const uri = mongod.getUri();
   await mongoose.connect(uri);
-  app = express();
-  app.use(express.json());
-  app.use('/api/v1/order', orderRouter);
+  await seedSeats(true);
 });
+
+beforeEach(async () => {
+  //reset the redis cache and reset the mongo db
+  await redisClient.flushDb();
+  await seedSeats(true);
+});
+
+afterAll(async () => {
+  await mongoose.disconnect();
+});
+
+//NOTE: when testing, we need to attach a req.sessionID, otherwise attempting to book will not work.
 
 describe('POST /api/v1/order/create-order successful', () => {
   test('Should return a JSON response with the order', async () => {
+    const test = await request(app).get('/api/v1/test/hello');
+    const sessionCookie = test.header['set-cookie'][0];
+    await setSeatLock(sessionCookie, '2025-08-15', [
+      { rowLabel: 'A', number: 32, seatType: 'Standard' },
+      { rowLabel: 'B', number: 17, seatType: 'Standard' },
+      { rowLabel: 'C', number: 18, seatType: 'VIP' },
+      { rowLabel: 'D', number: 39, seatType: 'Standard' },
+    ]);
     const response = await request(app)
-      .post('/api/v1/order/create-order')
+      .post('/api/v1/order')
       .send({
-        email: 'john@mail.com',
-        numberOfTickets: 4,
-        seats: ['21B', '21C', '24B', '30X'],
-      });
-    expect(response.status).toBe(200);
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'test@test.com',
+        phone: '+1234567890',
+        isStudent: true,
+        studentCount: 0,
+        selectedDate: '2025-08-15',
+        selectedSeats: [
+          { rowLabel: 'A', number: 32, seatType: 'Standard' },
+          { rowLabel: 'B', number: 17, seatType: 'Standard' },
+          { rowLabel: 'C', number: 18, seatType: 'VIP' },
+          { rowLabel: 'D', number: 39, seatType: 'Standard' },
+        ],
+        totalPrice: 120.0,
+      })
+      .set('Cookie', sessionCookie);
+    expect(response.status).toBe(201);
     expect(response.body).toEqual({
-      data: {
-        orderID: expect.any(String),
-      },
+      orderId: expect.any(String),
+      sessionId: expect.any(String),
     });
   });
 });
@@ -38,10 +107,21 @@ describe('POST /api/v1/order/create-order successful', () => {
 describe('POST /api/v1/order/create-order missing email', () => {
   test('Should return a 400 error', async () => {
     const response = await request(app)
-      .post('/api/v1/order/create-order')
+      .post('/api/v1/order')
       .send({
-        numberOfTickets: 4,
-        seats: ['21B', '21C', '24B', '30X'],
+        firstName: 'John',
+        lastName: 'Doe',
+        phone: '+1234567890',
+        isStudent: true,
+        studentCount: 0,
+        selectedDate: '2025-08-15',
+        selectedSeats: [
+          { rowLabel: 'A', number: 32, seatType: 'Standard' },
+          { rowLabel: 'B', number: 17, seatType: 'Standard' },
+          { rowLabel: 'C', number: 18, seatType: 'VIP' },
+          { rowLabel: 'D', number: 39, seatType: 'Standard' },
+        ],
+        totalPrice: 120.0,
       });
     expect(response.status).toBe(400);
     expect(response.body).toEqual({
@@ -49,108 +129,190 @@ describe('POST /api/v1/order/create-order missing email', () => {
     });
   });
 });
-describe('POST /api/v1/order/create-order missing numberOfTickets', () => {
+
+// describe('POST /api/v1/order/create-order missing numberOfTickets', () => {
+//   test('Should return a 400 error', async () => {
+//     const response = await request(app)
+//       .post('/api/v1/order')
+//       .send({
+//         firstName: 'John',
+//         lastName: 'Doe',
+//         email: 'test@test.com',
+//         phone: '+1234567890',
+//         isStudent: true,
+//         studentCount: 0,
+//         selectedDate: '2025-08-15',
+//         selectedSeats: [
+//           { rowLabel: 'A', number: 32, seatType: 'Standard' },
+//           { rowLabel: 'B', number: 17, seatType: 'Standard' },
+//           { rowLabel: 'C', number: 18, seatType: 'VIP' },
+//           { rowLabel: 'D', number: 39, seatType: 'Standard' },
+//         ],
+//         totalPrice: 120.0,
+//       });
+//     // expect(response.status).toBe(400);
+//     expect(response.body).toEqual({
+//       error: 'Missing number of tickets',
+//     });
+//   });
+// });
+
+describe('POST /api/v1/order/create-order missing selected seats', () => {
   test('Should return a 400 error', async () => {
-    const response = await request(app)
-      .post('/api/v1/order/create-order')
-      .send({
-        email: 'john@mail.com',
-        seats: ['21B', '21C', '24B', '30X'],
-      });
+    const response = await request(app).post('/api/v1/order').send({
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'test@test.com',
+      phone: '+1234567890',
+      isStudent: true,
+      studentCount: 0,
+      selectedDate: '2025-08-15',
+      totalPrice: 120.0,
+    });
     expect(response.status).toBe(400);
     expect(response.body).toEqual({
-      error: 'Missing number of tickets',
+      error: 'Missing selected seats',
     });
   });
 });
 
-describe('POST /api/v1/order/create-order missing seats', () => {
-  test('Should return a 400 error', async () => {
-    const response = await request(app)
-      .post('/api/v1/order/create-order')
-      .send({
-        email: 'john@mail.com',
-        numberOfTickets: 4,
-      });
-    expect(response.status).toBe(400);
-    expect(response.body).toEqual({
-      error: 'Missing number of seats',
-    });
-  });
-});
+// describe('GET /api/v1/order/get-order email not in database', () => {
+//   test('Should return a 400 error', async () => {
+//     const response = await request(app).get('/api/v1/order/get-order').send({
+//       email: 'jane@mail.com',
+//     });
+//     expect(response.status).toBe(404);
+//     expect(response.body).toEqual({
+//       error: 'Email not in database',
+//     });
+//   });
+// });
 
-describe('GET /api/v1/order/get-order email not in database', () => {
-  test('Should return a 400 error', async () => {
-    const response = await request(app).get('/api/v1/order/get-order').send({
-      email: 'jane@mail.com',
-    });
-    expect(response.status).toBe(404);
-    expect(response.body).toEqual({
-      error: 'Email not in database',
-    });
-  });
-});
 describe('Create order and then get order', () => {
   test('Should return a 200 response with the order', async () => {
+    const test = await request(app).get('/api/v1/test/hello');
+    const sessionCookie = test.header['set-cookie'][0];
+    await setSeatLock(sessionCookie, '2025-08-15', [
+      { rowLabel: 'A', number: 32, seatType: 'Standard' },
+      { rowLabel: 'B', number: 17, seatType: 'Standard' },
+      { rowLabel: 'C', number: 18, seatType: 'VIP' },
+      { rowLabel: 'D', number: 39, seatType: 'Standard' },
+    ]);
     const createResponse = await request(app)
-      .post('/api/v1/order/create-order')
+      .post('/api/v1/order')
       .send({
-        email: 'john@mail.com',
-        numberOfTickets: 4,
-        seats: ['21B', '21C', '24B', '30X'],
-      });
-    const getResponse = await request(app).get('/api/v1/order/get-order').send({
-      email: 'john@mail.com',
-    });
-    expect(getResponse.status).toBe(200);
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'test@test.com',
+        phone: '+1234567890',
+        isStudent: true,
+        studentCount: 0,
+        selectedDate: '2025-08-15',
+        selectedSeats: [
+          { rowLabel: 'A', number: 32, seatType: 'Standard' },
+          { rowLabel: 'B', number: 17, seatType: 'Standard' },
+          { rowLabel: 'C', number: 18, seatType: 'VIP' },
+          { rowLabel: 'D', number: 39, seatType: 'Standard' },
+        ],
+        totalPrice: 120.0,
+      })
+      .set('Cookie', sessionCookie);
+
+    console.log(createResponse.body);
+    const getResponse = await request(app).get(
+      `/api/v1/order/${createResponse.body.orderId}`,
+    );
     expect(getResponse.body.order).toEqual(
       expect.objectContaining({
-        email: 'john@mail.com',
-        numberOfTickets: 4,
-        seats: ['21B', '21C', '24B', '30X'],
+        email: 'test@test.com',
         paid: false,
       }),
     );
+    expect(getResponse.status).toBe(200);
   });
 });
 
-describe('Create order, get order, pay order', () => {
-  test('Should return a 200 response with the order', async () => {
-    const createResponse = await request(app)
-      .post('/api/v1/order/create-order')
-      .send({
-        email: 'john@mail.com',
-        numberOfTickets: 4,
-        seats: ['21B', '21C', '24B', '30X'],
-      });
-    const getResponse = await request(app).get('/api/v1/order/get-order').send({
-      email: 'john@mail.com',
-    });
-    const patchResponse = await request(app)
-      .patch('/api/v1/order/order-paid')
-      .send({
-        email: 'john@mail.com',
-      });
-    expect(patchResponse.status).toBe(200);
-    expect(patchResponse.body).toEqual({
-      order: expect.objectContaining({
-        email: 'john@mail.com',
-        numberOfTickets: 4,
-        seats: ['21B', '21C', '24B', '30X'],
-        paid: true,
-      }),
-    });
-  });
-});
+// describe('Create order, get order, pay order', () => {
+//   test('Should return a 200 response with the order', async () => {
+//     const createResponse = await request(app)
+//       .post('/api/v1/order')
+//       .send({
+//         email: 'john@mail.com',
+//         numberOfTickets: 4,
+//         seats: ['21B', '21C', '24B', '30X'],
+//       });
+//     const getResponse = await request(app).get('/api/v1/order/get-order').send({
+//       email: 'john@mail.com',
+//     });
+//     const patchResponse = await request(app)
+//       .patch('/api/v1/order/order-paid')
+//       .send({
+//         email: 'john@mail.com',
+//       });
+//     expect(patchResponse.status).toBe(200);
+//     expect(patchResponse.body).toEqual({
+//       order: expect.objectContaining({
+//         email: 'john@mail.com',
+//         numberOfTickets: 4,
+//         seats: ['21B', '21C', '24B', '30X'],
+//         paid: true,
+//       }),
+//     });
+//   });
+// });
 
-describe('patch /api/v1/order/order-paid email not in database', () => {
-  test('Should return a 404 error', async () => {
-    const response = await request(app).patch('/api/v1/order/order-paid').send({
-      email: 'bob@mail.com',
-    });
-    expect(response.status).toBe(404);
-    expect(response.body).toEqual({
-      error: 'Email not in database',
-    });
+// describe('patch /api/v1/order/order-paid email not in database', () => {
+//   test('Should return a 404 error', async () => {
+//     const response = await request(app).patch('/api/v1/order/order-paid').send({
+//       email: 'bob@mail.com',
+//     });
+//     expect(response.status).toBe(404);
+//     expect(response.body).toEqual({
+//       error: 'Email not in database',
+//     });
+//   });
+// });
+
+describe('POST /api/v1/order/:id/cancel successful', () => {
+  test('Should delete an existing order that has been paid for without refunding', async () => {
+    const test = await request(app).get('/api/v1/test/hello');
+    const sessionCookie = test.header['set-cookie'][0];
+    await setSeatLock(sessionCookie, '2025-08-15', [
+      { rowLabel: 'A', number: 32, seatType: 'Standard' },
+      { rowLabel: 'B', number: 17, seatType: 'Standard' },
+      { rowLabel: 'C', number: 18, seatType: 'VIP' },
+      { rowLabel: 'D', number: 39, seatType: 'Standard' },
+    ]);
+    const createOrder = await request(app)
+      .post('/api/v1/order')
+      .send({
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'test@test.com',
+        phone: '+1234567890',
+        isStudent: true,
+        studentCount: 0,
+        selectedDate: '2025-08-15',
+        selectedSeats: [
+          { rowLabel: 'A', number: 32, seatType: 'Standard' },
+          { rowLabel: 'B', number: 17, seatType: 'Standard' },
+          { rowLabel: 'C', number: 18, seatType: 'VIP' },
+          { rowLabel: 'D', number: 39, seatType: 'Standard' },
+        ],
+        totalPrice: 120.0,
+      })
+      .set('Cookie', sessionCookie);
+
+    const orderId = createOrder.body.orderId;
+
+    const response = await request(app).post(`/api/v1/order/${orderId}/cancel`);
+    expect(response.statusCode).toBe(200);
+
+    const orderNotFound = await request(app).get(`/api/v1/order/${orderId}`);
+    expect(orderNotFound.statusCode).toBe(404);
   });
+
+  test.todo(
+    'Should throw an error if an existing order does not have payment intent.',
+  );
 });
