@@ -4,6 +4,7 @@ import {
   type DuplicateTicketReport,
   checkDuplicateTickets,
   checkSpecificSeatDuplicate,
+  createAdminOrder,
   createOrder,
   deleteOrder,
   getEnhancedOrderStatistics,
@@ -34,7 +35,8 @@ const stripeKey = process.env.STRIPE_SECRET_KEY;
 if (!stripeKey) throw new Error('Missing STRIPE_SECRET_KEY in environment');
 
 const stripe = new Stripe(stripeKey, {
-  apiVersion: '2025-07-30.basil',
+  // apiVersion: '2025-07-30.basil',
+  apiVersion: '2025-08-27.basil',
 });
 
 const router = express.Router();
@@ -484,6 +486,138 @@ router.delete(
     const { id } = req.params;
     await deleteOrder(id);
     res.sendStatus(204);
+  },
+);
+
+// Admin create order
+interface AdminOrderRequest extends Request {
+  body: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    isStudent: boolean;
+    studentCount: number;
+    selectedDate: string;
+    selectedSeats: {
+      rowLabel: string;
+      number: number;
+      seatType: 'Standard' | 'VIP';
+    }[];
+  };
+}
+router.post(
+  '/admin/create',
+  verifyInternalRequest,
+  async (req: AdminOrderRequest, res: Response): Promise<void> => {
+    try {
+      const {
+        firstName,
+        lastName,
+        email,
+        phone,
+        isStudent,
+        studentCount,
+        selectedDate,
+        selectedSeats,
+      } = req.body;
+      // Validate required fields
+      if (!firstName) {
+        res.status(400).json({ error: 'Missing first name' });
+        return;
+      }
+      if (!lastName) {
+        res.status(400).json({ error: 'Missing last name' });
+        return;
+      }
+      if (!email) {
+        res.status(400).json({ error: 'Missing email' });
+        return;
+      }
+      if (!phone) {
+        res.status(400).json({ error: 'Missing phone' });
+        return;
+      }
+      if (typeof isStudent !== 'boolean') {
+        res.status(400).json({ error: 'Missing isStudent' });
+        return;
+      }
+      if (typeof studentCount !== 'number') {
+        res.status(400).json({ error: 'Missing student count' });
+        return;
+      }
+      if (!selectedDate) {
+        res.status(400).json({ error: 'Missing selected date' });
+        return;
+      }
+      if (!Array.isArray(selectedSeats) || selectedSeats.length === 0) {
+        res.status(400).json({ error: 'Missing selected seats' });
+        return;
+      }
+      for (const seat of selectedSeats) {
+        if (
+          typeof seat.rowLabel !== 'string' ||
+          typeof seat.number !== 'number' ||
+          (seat.seatType !== 'Standard' && seat.seatType !== 'VIP')
+        ) {
+          res.status(400).json({ error: 'Invalid seat format' });
+          return;
+        }
+      }
+      for (const seat of selectedSeats) {
+        const lockKey = `seatlock:${selectedDate}:${seat.rowLabel}-${seat.number}`;
+        await redisClient.expire(lockKey, 30 * 60);
+        const exists = await redisClient.exists(lockKey);
+
+        if (exists) {
+          const value = await redisClient.get(lockKey);
+          console.log(
+            `Seat ${seat.rowLabel}-${seat.number} on ${selectedDate} is locked with value: ${value}`,
+          );
+          res.status(409).json({ error: 'Seat already reserved' });
+          return;
+        }
+        await redisClient.set(lockKey, req.sessionID, { EX: 1 * 60 });
+      }
+      const invalidSeats = await verifySeats(
+        selectedDate,
+        selectedSeats.map((s) => ({ rowLabel: s.rowLabel, number: s.number })),
+        req.sessionID,
+      );
+      if (invalidSeats.length > 0) {
+        res
+          .status(409)
+          .json({ error: 'Seats no longer available', invalidSeats });
+        return;
+      }
+      // Create the order in the database
+      const order = await createAdminOrder(
+        firstName,
+        lastName,
+        email,
+        phone,
+        isStudent,
+        studentCount,
+        selectedDate,
+        selectedSeats,
+      );
+      // mark the seats selected as unavailable
+      await markSeatsUnavailable(
+        selectedDate,
+        selectedSeats.map((s) => ({ rowLabel: s.rowLabel, number: s.number })),
+      );
+
+      res.status(201).json(order);
+      // UNSURE
+      // If the order has been created, do we remove the redis locks here?
+      for (const seat of selectedSeats) {
+        const lockKey = `seatlock:${selectedDate}:${seat.rowLabel}-${seat.number}`;
+        await redisClient.del(lockKey);
+      }
+    } catch (error) {
+      console.error('Error creating admin order:', error);
+      res.status(500).json({ message: 'Failed to create admin order' });
+    }
   },
 );
 

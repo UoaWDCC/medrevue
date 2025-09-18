@@ -137,3 +137,5 @@ dist
 
 # macOS system files
 .DS_Store
+
+start-backend.sh

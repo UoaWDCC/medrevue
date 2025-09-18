@@ -10,12 +10,18 @@ import webhookRoutes from './routes/webhook-routes';
 
 // Load environment variables from the .env file
 dotenv.config();
-
+const production = process.env.NODE_ENV === 'production';
 console.log(process.env.STRIPE_WEBHOOK_ENDPOINT_SECRET);
 const PORT: number = Number(process.env.PORT) || 3000;
-const DB_URL: string = process.env.DB_URL
-  ? process.env.DB_URL
-  : 'mongodb://localhost:27017/medrevue';
+
+// const DB_URL: string = process.env.DB_URL
+//   ? process.env.DB_URL
+//   : 'mongodb://localhost:27017/medrevue';
+let DB_URL = 'mongodb://localhost:27017/medrevue';
+if (production && process.env.DB_URL) {
+  // Use the provided DB_URL in production
+  DB_URL = process.env.DB_URL;
+}
 const SESSION_SECRET: string = process.env.SESSION_SECRET
   ? process.env.SESSION_SECRET
   : 'secret_session';

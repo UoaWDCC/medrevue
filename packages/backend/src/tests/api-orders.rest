@@ -37,3 +37,22 @@ Content-Type: application/json
 ### 
 GET {{baseUrl}}/orders/order-status/{:orderId}
 Content-Type: application/json
+
+
+###
+GET {{baseUrl}}/orders/admin/create
+Content-Type: application/json
+
+{
+    "firstName": "Alice",
+    "lastName": "Smith",
+    "email": "alice@example.com",
+    "phone": "+64211234567",
+    "isStudent": true,
+    "studentCount": 1,
+    "selectedDate": "2025-08-14",
+    "selectedSeats": [
+      { "rowLabel": "A", "number": 33, "seatType": "Standard" },
+      { "rowLabel": "A", "number": 34, "seatType": "Standard" }
+    ]
+  }

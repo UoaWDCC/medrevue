@@ -9,9 +9,12 @@ const dates = ['2025-08-14', '2025-08-15', '2025-08-16'];
 
 const seedSeats = async () => {
   try {
-    await mongoose.connect(
-      process.env.DB_URL || 'mongodb://localhost:27017/medrevue',
-    );
+    let DB_URL = 'mongodb://localhost:27017/medrevue';
+    if (process.env.NODE_ENV === 'production' && process.env.DB_URL) {
+      DB_URL = process.env.DB_URL;
+    }
+    console.log('Using DB_URL:', DB_URL);
+    await mongoose.connect(DB_URL);
     console.log('✅ Connected to MongoDB');
 
     await Seat.deleteMany({});

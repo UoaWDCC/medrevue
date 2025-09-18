@@ -8,7 +8,8 @@ const stripeKey = process.env.STRIPE_SECRET_KEY;
 if (!stripeKey) throw new Error('Missing STRIPE_SECRET_KEY in environment');
 
 const stripe = new Stripe(stripeKey, {
-  apiVersion: '2025-07-30.basil',
+  // apiVersion: '2025-07-30.basil',
+  apiVersion: '2025-08-27.basil',
 });
 
 const baseFrontendUrl =
@@ -110,6 +111,38 @@ async function createOrder(
     console.error('Error creating order:', error);
     throw new Error('Failed to create order');
   }
+}
+
+async function createAdminOrder(
+  firstName: string,
+  lastName: string,
+  email: string,
+  phone: string,
+  isStudent: boolean,
+  studentCount: number,
+  selectedDate: string,
+  selectedSeats: {
+    rowLabel: string;
+    number: number;
+    seatType: 'Standard' | 'VIP';
+  }[],
+) {
+  const price = 0;
+  const paid = true;
+  const dbOrder = new Order({
+    firstName,
+    lastName,
+    email,
+    phone,
+    isStudent,
+    studentCount,
+    selectedDate,
+    selectedSeats,
+    totalPrice: price,
+    checkoutSessionId: 'admin-created',
+    paid: paid,
+  });
+  return await dbOrder.save();
 }
 
 async function retrieveOrderList(): Promise<IOrder[]> {
@@ -490,6 +523,7 @@ async function checkSpecificSeatDuplicate(
 
 export {
   createOrder,
+  createAdminOrder,
   retrieveOrderList,
   retrieveOrderByEmail,
   retrieveOrderById,
