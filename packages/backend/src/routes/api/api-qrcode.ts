@@ -34,11 +34,15 @@ router.get(
         return;
       }
 
-      // Verify order exists
+      // Verify order exists AND has been paid for
       const order = await Order.findById(orderId).exec();
       if (!order) {
         res.status(404).json({ error: 'Order not found' });
         return;
+      }
+
+      if (order.paid === false) {
+        res.status(403).json({ error: 'This order has not been paid for.' });
       }
 
       // Generate QR code with the same payload as in email
