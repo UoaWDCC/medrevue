@@ -3,6 +3,7 @@ import express, { type Express } from 'express';
 import session from 'express-session';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
+import { Stripe } from 'stripe';
 import request from 'supertest';
 import {
   afterAll,
@@ -14,12 +15,20 @@ import {
 } from 'vitest';
 import redisClient from '../../../redis/redisClient';
 import { seedSeats } from '../../../scripts/seedSeats';
+import getSessionCookie from '../../../utils/getSessionCookie';
 import setSeatLock from '../../../utils/setSeatLock';
 import orderRouter from '../api-orders';
 import stripeRouter from '../api-stripe';
 import testsRouter from '../api-tests';
 
 let app: Express;
+
+const stripeKey = process.env.STRIPE_SECRET_KEY;
+if (!stripeKey) throw new Error('Missing STRIPE_SECRET_KEY in environment');
+
+const stripe = new Stripe(stripeKey, {
+  apiVersion: '2025-07-30.basil',
+});
 
 // Setup
 beforeAll(async () => {
@@ -65,11 +74,11 @@ afterAll(async () => {
 });
 
 //NOTE: when testing, we need to attach a req.sessionID, otherwise attempting to book will not work.
+//
 
 describe('POST /api/v1/order/create-order successful', () => {
   test('Should return a JSON response with the order', async () => {
-    const test = await request(app).get('/api/v1/test/hello');
-    const sessionCookie = test.header['set-cookie'][0];
+    const sessionCookie = await getSessionCookie(app);
     await setSeatLock(sessionCookie, '2025-08-15', [
       { rowLabel: 'A', number: 32, seatType: 'Standard' },
       { rowLabel: 'B', number: 17, seatType: 'Standard' },
@@ -189,8 +198,7 @@ describe('POST /api/v1/order/create-order missing selected seats', () => {
 
 describe('Create order and then get order', () => {
   test('Should return a 200 response with the order', async () => {
-    const test = await request(app).get('/api/v1/test/hello');
-    const sessionCookie = test.header['set-cookie'][0];
+    const sessionCookie = await getSessionCookie(app);
     await setSeatLock(sessionCookie, '2025-08-15', [
       { rowLabel: 'A', number: 32, seatType: 'Standard' },
       { rowLabel: 'B', number: 17, seatType: 'Standard' },
@@ -273,9 +281,8 @@ describe('Create order and then get order', () => {
 // });
 
 describe('POST /api/v1/order/:id/cancel successful', () => {
-  test('Should delete an existing order that has been paid for without refunding', async () => {
-    const test = await request(app).get('/api/v1/test/hello');
-    const sessionCookie = test.header['set-cookie'][0];
+  test('Should delete an existing order that has been not been paid for for without refunding', async () => {
+    const sessionCookie = await getSessionCookie(app);
     await setSeatLock(sessionCookie, '2025-08-15', [
       { rowLabel: 'A', number: 32, seatType: 'Standard' },
       { rowLabel: 'B', number: 17, seatType: 'Standard' },
@@ -304,8 +311,10 @@ describe('POST /api/v1/order/:id/cancel successful', () => {
 
     const orderId = createOrder.body.orderId;
 
-    const response = await request(app).post(`/api/v1/order/${orderId}/cancel`);
-    expect(response.statusCode).toBe(200);
+    const response = await request(app).post(
+      `/api/v1/order/${orderId}/cancel?refund=false`,
+    );
+    expect(response.statusCode).toBe(204);
 
     const orderNotFound = await request(app).get(`/api/v1/order/${orderId}`);
     expect(orderNotFound.statusCode).toBe(404);
@@ -314,8 +323,7 @@ describe('POST /api/v1/order/:id/cancel successful', () => {
 
 describe('POST /api/v1/order/:id/cancel error', () => {
   test('Should throw an error if an existing order does not have payment intent but refund is requested.', async () => {
-    const test = await request(app).get('/api/v1/test/hello');
-    const sessionCookie = test.header['set-cookie'][0];
+    const sessionCookie = await getSessionCookie(app);
     await setSeatLock(sessionCookie, '2025-08-15', [
       { rowLabel: 'A', number: 32, seatType: 'Standard' },
       { rowLabel: 'B', number: 17, seatType: 'Standard' },
@@ -348,8 +356,7 @@ describe('POST /api/v1/order/:id/cancel error', () => {
       .post(`/api/v1/order/${orderId}/cancel`)
       .query({ refund: 'true' });
     expect(response.body).toMatchObject({
-      error:
-        'Payment Intent is null, unable to refund and unable to delete order.',
+      message: 'Payment Intent is null, unable to refund and cancel order.',
     });
     expect(response.statusCode).toBe(404);
 

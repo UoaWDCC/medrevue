@@ -1,8 +1,28 @@
 @baseUrl = http://localhost:3000/api/v1
 
+# Get a session ID
+# @name sID
+GET {{baseUrl}}/test/hello
+
+###
+@sessionID = {{ sID.response.headers.set-cookie }}
+# Reserve seats before making the order
+POST {{baseUrl}}/seats/select
+Cookie: sessionID
+content-type: application/json
+
+{
+    "seatNumber": "A2",
+    "date": "2025-09-15"
+}
+
+###
+@sessionID = {{ sID.response.headers.set-cookie }}
 # @title Create Order
 # @description This endpoint creates a new order in the system.
+# NOTE: this doesn't work at the moment because you need to set the seat lock before being able to make any kind of order.
 POST {{baseUrl}}/orders/
+Cookie: sessionID
 content-type: application/json
 
 {
@@ -14,18 +34,14 @@ content-type: application/json
     "studentCount": 0,
     "selectedDate": "2025-09-15",
     "selectedSeats": [
-        { "rowLabel": "A", "number": 2, "seatType": "Standard" },
-        { "rowLabel": "B", "number": 3, "seatType": "Standard" },
-        { "rowLabel": "C", "number": 2, "seatType": "VIP" },
-        { "rowLabel": "D", "number": 10, "seatType": "Standard" }
+        { "rowLabel": "A", "number": 2, "seatType": "Standard" }
     ],
-    "totalPrice": 120.00
+    "totalPrice": 30.00
 }
 
 ###
 GET {{baseUrl}}/orders/{:orderId}
 Content-Type: application/json
-
 
 ### 
 PUT {{baseUrl}}/orders/{:orderId}
@@ -38,3 +54,4 @@ Content-Type: application/json
 ### 
 GET {{baseUrl}}/orders/order-status/{:orderId}
 Content-Type: application/json
+
