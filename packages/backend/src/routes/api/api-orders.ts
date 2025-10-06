@@ -453,9 +453,7 @@ router.get(
 );
 
 //cancel the seat booking
-//TODO: prevent non-authorized users from cancelling bookings.
 router.post('/:id/cancel', async (req: Request, res: Response) => {
-  //TODO only cancel if the seat date has not already passed
   const { id } = req.params;
   const { refund } = req.query;
 
@@ -480,15 +478,18 @@ router.post('/:id/cancel', async (req: Request, res: Response) => {
 
     if (!paymentIntent) {
       res.status(404).json({
-        error:
-          'Payment Intent is null, unable to refund and unable to delete order.',
+        message: 'Payment Intent is null, unable to refund and cancel order.',
       });
+      return;
     }
 
-    //TODO: the above request shouldnt expand the payment intent, but might need some testing beforehand.
     await stripe.refunds.create({
       charge: paymentIntent as string,
     });
+
+    order.paid = false;
+
+    await updateOrder(order);
   }
 
   await markSeatsAvailable(
@@ -503,14 +504,14 @@ router.post('/:id/cancel', async (req: Request, res: Response) => {
     const lockKey = `seatlock:${order.selectedDate}:${seat.rowLabel}-${seat.number}`;
     await redisClient.del(lockKey);
   }
+
   await redisClient.del(`seats:${order.selectedDate}`);
   await refreshSeatCache(order.selectedDate);
 
-  //TODO: do we need to invalidate QR code for the user who has already made the seat booking
-
-  await deleteOrder(id);
-
-  res.sendStatus(200);
+  if (order.paid === false) {
+    await deleteOrder(id);
+  }
+  res.sendStatus(204);
 });
 
 // Manually trigger a confirmation email resend
