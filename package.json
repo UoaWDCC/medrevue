@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "test:frontend": "npm run test --workspace @medrevue/frontend",
     "test:backend": "npm run test --workspace @medrevue/backend",
@@ -10,6 +11,7 @@
     "dev:backend": "npm run dev -workspace @medrevue/backend",
     "build:frontend": "npm run build -workspace @medrevue/frontend",
     "start:backend": "npm run start -workspace @medrevue/backend",
+    "build": "npm run build --workspace @medrevue/frontend && shx mkdir -p packages/backend/public/frontend && shx cp -r packages/frontend/dist/* packages/backend/public/frontend && npm run build --workspace @medrevue/backend",
     "format": "biome format --write .",
     "format:check": "biome format .",
     "lint": "biome lint --write --no-errors-on-unmatched --files-ignore-unknown=true .",
@@ -24,7 +26,9 @@
     "type": "git",
     "url": "git+https://github.com/UoaWDCC/medrevue.git"
   },
-  "workspaces": ["./packages/*"],
+  "workspaces": [
+    "./packages/*"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -38,7 +42,8 @@
     "@commitlint/config-conventional": "^19.8.0",
     "@types/mongoose": "^5.11.96",
     "husky": "^9.1.7",
-    "lint-staged": "^15.5.0"
+    "lint-staged": "^15.5.0",
+    "shx": "^0.4.0"
   },
   "dependencies": {
     "@stripe/stripe-js": "^7.8.0",
