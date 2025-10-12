@@ -23,15 +23,12 @@ const SQUISH_MAGNITUDE = 7;
 const SQUISH_OFFSET = 24;
 
 export const SeatPlanning: React.FC<{
-  centerOnLoad: (x: number, y: number) => void;
+  centerOnLoad?: (x: number, y: number) => void;
 }> = ({ centerOnLoad }) => {
   const rowXOffsets: { [key: string]: number } = {};
 
   const dispatch = useDispatch<AppDispatch>();
-  // Use Redux for showDates and selectedDate
-  const showDates = useSelector(
-    (state: RootState) => state.seatSelection.showDates,
-  );
+  // Use Redux for selectedDate
   const selectedDate = useSelector(
     (state: RootState) => state.seatSelection.selectedDate,
   );
@@ -56,7 +53,7 @@ export const SeatPlanning: React.FC<{
   }
 
   useEffect(() => {
-    centerOnLoad(0, 0);
+    centerOnLoad?.(0, 0);
   }, [centerOnLoad]);
 
   useEffect(() => {

@@ -24,6 +24,7 @@ RUN apt-get update -qq && \
 COPY yarn.lock package.json ./
 COPY packages/frontend/package.json packages/frontend/
 COPY packages/backend/package.json packages/backend/
+COPY packages/types/package.json packages/types/
 # Install dev dependencies
 RUN yarn install --frozen-lockfile --production=false
 
