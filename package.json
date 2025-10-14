@@ -10,7 +10,7 @@
     "dev:frontend": "npm run dev -workspace @medrevue/frontend",
     "dev:backend": "npm run dev -workspace @medrevue/backend",
     "build:frontend": "npm run build -workspace @medrevue/frontend",
-    "start:backend": "npm run start -workspace @medrevue/backend",
+    "start": "service redis-server start && npm run start -workspace @medrevue/backend",
     "build": "npm run build --workspace @medrevue/frontend && shx mkdir -p packages/backend/public/frontend && shx cp -r packages/frontend/dist/* packages/backend/public/frontend && npm run build --workspace @medrevue/backend",
     "format": "biome format --write .",
     "format:check": "biome format .",

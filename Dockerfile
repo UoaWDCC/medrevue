@@ -44,6 +44,11 @@ FROM base
 # Copy built application
 COPY --from=build /app /app
 
+# Install Redis
+RUN apt-get update -qq && \
+    apt-get install -y redis-server && \
+    rm -rf /var/lib/apt/lists/*
+
 # # Print the final image file structure
 # RUN apt-get update -qq && \
 #     apt-get install tree
@@ -51,4 +56,4 @@ COPY --from=build /app /app
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD [ "npm", "run", "start:backend" ]
+CMD [ "npm", "run", "start" ]
