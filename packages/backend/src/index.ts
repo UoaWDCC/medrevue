@@ -1,3 +1,4 @@
+import path from 'node:path';
 import { RedisStore } from 'connect-redis';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -7,7 +8,6 @@ import mongoose from 'mongoose';
 import redisClient from './redis/redisClient';
 import routes from './routes/routes';
 import webhookRoutes from './routes/webhook-routes';
-import path from 'path';
 
 // Load environment variables from the .env file
 dotenv.config();

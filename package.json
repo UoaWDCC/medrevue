@@ -26,9 +26,7 @@
     "type": "git",
     "url": "git+https://github.com/UoaWDCC/medrevue.git"
   },
-  "workspaces": [
-    "./packages/*"
-  ],
+  "workspaces": ["./packages/*"],
   "keywords": [],
   "author": "",
   "license": "ISC",
