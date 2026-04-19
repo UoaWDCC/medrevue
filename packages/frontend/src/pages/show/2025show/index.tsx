@@ -78,10 +78,13 @@ const Show2025: React.FC = () => (
               font-inter text-md font-semibold leading-[36px] text-[#1a1a1a]
               no-underline transition-colors duration-300 hover:bg-[#fff0a2] mt-6
             "
+            onClick={() => {}}
+            aria-label="Buy tickets"
           >
-            <a href="/buy" className="no-underline" aria-label="Buy tickets">
+            Buy Tickets
+            {/* <a href="/buy" className="no-underline" aria-label="Buy tickets">
               Buy Tickets
-            </a>
+            </a> */}
           </button>
         </div>
       </div>

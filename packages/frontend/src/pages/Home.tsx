@@ -295,7 +295,7 @@ const HomePage: React.FC = () => {
 
             <Button
               onClick={() => {
-                navigate('/buy');
+                navigate('#');
               }}
               className="p-0 bg-transparent hover:bg-transparent w-[200px] h-[55px] md:w-[290px] md:h-[65px] relative"
             >

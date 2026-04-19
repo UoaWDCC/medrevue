@@ -103,7 +103,7 @@ export const Menu: React.FC = () => {
 
         {location.pathname !== '/buy' && (
           <Link
-            to="/buy"
+            to="#"
             className="
               order-first       
               lg:order-none      
