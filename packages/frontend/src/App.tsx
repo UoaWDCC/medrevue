@@ -1,22 +1,23 @@
 import type React from 'react';
-import { Link, Route, Routes } from 'react-router';
-import { AdminMenu } from './components/AdminMenu';
+// import { Link, Route, Routes } from 'react-router';
+import { Route, Routes } from 'react-router';
+// import { AdminMenu } from './components/AdminMenu';
 import { Cookie } from './components/Cookie';
 import { Footer } from './components/Footer';
 import { Menu } from './components/Menu';
-import CancelPage from './pages/CancelPage';
+// import CancelPage from './pages/CancelPage';
 import HomePage from './pages/Home';
-import OrderStatsDashboard from './pages/OrderStatsDashboard';
-import QrCodePage from './pages/QrCodePage';
-import QrCodeScanner from './pages/QrCodeScanner';
+// import OrderStatsDashboard from './pages/OrderStatsDashboard';
+// import QrCodePage from './pages/QrCodePage';
+// import QrCodeScanner from './pages/QrCodeScanner';
 import ReturnPolicyPage from './pages/ReturnPolicy';
 import { SponsorPage } from './pages/SponsorPage';
-import SuccessPage from './pages/SuccessPage';
-import UserDetail from './pages/UserDetail';
-import AdminPanelPage from './pages/admin_panel/admin_panel';
-import BookingManagement from './pages/booking_management/BookingManagement';
-import BookingOverview from './pages/booking_overview/BookingOverview';
-import SeatSelectionPage from './pages/seat_selection';
+// import SuccessPage from './pages/SuccessPage';
+// import UserDetail from './pages/UserDetail';
+// import AdminPanelPage from './pages/admin_panel/admin_panel';
+// import BookingManagement from './pages/booking_management/BookingManagement';
+// import BookingOverview from './pages/booking_overview/BookingOverview';
+// import SeatSelectionPage from './pages/seat_selection';
 import Show2025 from './pages/show/2025show';
 
 const App: React.FC = () => {
