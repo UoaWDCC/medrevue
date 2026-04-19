@@ -62,7 +62,7 @@ const App: React.FC = () => {
             </>
           }
         />
-        <Route
+        {/* <Route
           path="buy"
           element={
             <>
@@ -70,7 +70,7 @@ const App: React.FC = () => {
               <SeatSelectionPage />
             </>
           }
-        />
+        /> */}
         <Route
           path="sponsors"
           element={
@@ -80,7 +80,7 @@ const App: React.FC = () => {
             </>
           }
         />
-        <Route
+        {/* <Route
           path="/seat-selection"
           element={
             <Link to="/seat-selection">
@@ -114,7 +114,7 @@ const App: React.FC = () => {
               <CancelPage />
             </>
           }
-        />
+        /> */}
         <Route
           path="/return-policy"
           element={
@@ -124,7 +124,7 @@ const App: React.FC = () => {
             </>
           }
         />
-        <Route
+        {/* <Route
           path="/qrcode/:orderId/:signature"
           element={
             <>
@@ -170,7 +170,7 @@ const App: React.FC = () => {
               <BookingManagement />
             </>
           }
-        />
+        /> */}
       </Routes>
 
       {!isAdminPage && <Footer />}
