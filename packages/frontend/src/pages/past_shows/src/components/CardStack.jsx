@@ -1,14 +1,14 @@
 import { useEffect, useRef } from 'react'; // Ensure it only runs after the DOM is created
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Ticket from './Ticket.jsx'
-import './TicketCollection.css'
+import Card from './Card.jsx'
+import './CardStack.css'
 
 
 gsap.registerPlugin(ScrollTrigger);
 
 
-export default function TicketCollection() {
+export default function CardStack() {
 
     const tickets = [
         { name: 'Hi' },
@@ -73,7 +73,7 @@ export default function TicketCollection() {
         <div className="ticket-collection" ref={containerRef}>
             {
                 tickets.map(ticket => (
-                    <Ticket key={ticket.name} info={ticket} />
+                    <Card key={ticket.name} info={ticket} />
                 ))
             }
         </div>
