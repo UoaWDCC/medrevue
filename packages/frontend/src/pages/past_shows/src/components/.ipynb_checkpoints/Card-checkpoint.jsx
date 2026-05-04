@@ -1,6 +1,6 @@
-import './Ticket.css'
+import './Card.css'
 
-export default function Ticket({ info }) {
+export default function Card({ info }) {
     
     return(
         
