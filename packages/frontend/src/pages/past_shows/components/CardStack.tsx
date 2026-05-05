@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'; // Ensure it only runs after the DOM is created
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Card from './Card.jsx'
+import Card, { PastShowCardProps } from './Card'
 import './CardStack.css'
 
 
@@ -10,13 +10,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function CardStack() {
 
-    const tickets = [
+    const cards: PastShowCardProps[] = [
         { name: 'Hi' },
         { name: 'Bye' },
         { name: 'Goodnight' }
     ];
 
-    const containerRef = useRef(null); // Initialise with { current: null }
+    const containerRef = useRef<HTMLDivElement>(null); // Initialise with { current: null }
 
     // useEffect(callback, deps)
     //     callback: the function that runs after the component mounts
@@ -26,15 +26,15 @@ export default function CardStack() {
         // Scope animation to containerRef
         const ctx = gsap.context(() => {
 
-            // Grab all ticket elements as an array so we can index them
-            const ticketsArray = gsap.utils.toArray('.ticket');
+            // Grab all card elements as an array so we can index them
+            const cardsArray = gsap.utils.toArray<HTMLElement>('.card');
 
             // Set initial position
             gsap.set(
-                ticketsArray,
+                cardsArray,
                 {
-                    zIndex: i => ticketsArray.length - i,
-                    y: i => 12 * i,
+                    zIndex: (i: number) => cardsArray.length - i,
+                    y: (i: number) => 12 * i,
                 }
             )
 
@@ -43,16 +43,16 @@ export default function CardStack() {
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: 'top top',
-                    end: `+=${(tickets.length) * window.innerHeight} top`,
+                    end: `+=${(cards.length - 1) * window.innerHeight} top`,
                     scrub: 1,
                     pin: true,
                 }
             })
 
-            // Set animation for each ticket
-            ticketsArray.map(ticket => {
+            // Set animation for each card
+            cardsArray.map(card => {
                 tl.to(
-                    ticket,
+                    card,
                     {
                         y: -window.innerHeight,
                         opacity: 0,
@@ -70,10 +70,10 @@ export default function CardStack() {
 
     return (
         
-        <div className="ticket-collection" ref={containerRef}>
+        <div className="card-stack" ref={containerRef}>
             {
-                tickets.map(ticket => (
-                    <Card key={ticket.name} info={ticket} />
+                cards.map(card => (
+                    <Card key={card.name} info={card} />
                 ))
             }
         </div>
