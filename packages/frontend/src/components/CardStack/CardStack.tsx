@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useEffect, useRef } from 'react'; // Ensure it only runs after the DOM is created
-import Card, { type PastShowCardProps } from './Card';
+import PastShowCard, { type PastShowCardProps } from './PastShowCard';
 import './CardStack.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -58,7 +58,7 @@ export default function CardStack() {
   return (
     <div className="card-stack" ref={containerRef}>
       {cards.map((card) => (
-        <Card key={card.name} info={card} />
+        <PastShowCard key={card.name} info={card} />
       ))}
     </div>
   );

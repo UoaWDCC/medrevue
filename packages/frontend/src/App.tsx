@@ -6,6 +6,7 @@ import { Menu } from './components/Menu';
 import HomePage from './pages/Home';
 import ReturnPolicyPage from './pages/ReturnPolicy';
 import { SponsorPage } from './pages/SponsorPage';
+import PastShowsPage from './pages/past_shows/PastShowsPage';
 import Show2025 from './pages/show/2025show';
 
 const App: React.FC = () => {
@@ -66,6 +67,15 @@ const App: React.FC = () => {
             <>
               <Menu />
               <ReturnPolicyPage />
+            </>
+          }
+        />
+        <Route
+          path="/past_shows"
+          element={
+            <>
+              <Menu />
+              <PastShowsPage />
             </>
           }
         />

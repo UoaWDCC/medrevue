@@ -1,5 +1,5 @@
-import Card from './components/Card';
-import CardStack from './components/CardStack';
+import Card from '../../components/CardStack/Card';
+import CardStack from '../../components/CardStack/CardStack';
 import './PastShowsPage.css';
 
 export default function PastShowsPage() {
