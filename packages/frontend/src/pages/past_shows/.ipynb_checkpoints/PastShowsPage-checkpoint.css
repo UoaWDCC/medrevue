@@ -1,0 +1,9 @@
+body {
+  overflow-x: hidden;
+}
+
+.hero {
+  background: #ffc6bf;
+  width: 100vw;
+  height: 90vh;
+}
