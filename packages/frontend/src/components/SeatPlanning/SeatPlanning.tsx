@@ -28,10 +28,7 @@ export const SeatPlanning: React.FC<{
   const rowXOffsets: { [key: string]: number } = {};
 
   const dispatch = useDispatch<AppDispatch>();
-  // Use Redux for showDates and selectedDate
-  const showDates = useSelector(
-    (state: RootState) => state.seatSelection.showDates,
-  );
+  // Use Redux for selectedDate
   const selectedDate = useSelector(
     (state: RootState) => state.seatSelection.selectedDate,
   );

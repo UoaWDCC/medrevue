@@ -1,7 +1,8 @@
+import path from 'node:path';
 import { RedisStore } from 'connect-redis';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import express, { type Express, type Request, type Response } from 'express';
+import express, { type Express } from 'express';
 import session from 'express-session';
 import mongoose from 'mongoose';
 import redisClient from './redis/redisClient';
@@ -56,10 +57,15 @@ app.use(
 
 // Allow larger JSON payloads
 app.use(express.json({ limit: '50mb' }));
-// Serve static files from the 'public' directory
-app.use(express.static('public'));
+// Serve static files from the 'public/frontend' directory
+app.use(express.static('public/frontend'));
 
 app.use('/', routes);
+
+// Redirect all non-api routes to the React SPA
+app.use('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'frontend', 'index.html'));
+});
 
 (async () => {
   // Start the DB running. Then, once it's connected, start the server.

@@ -8,7 +8,6 @@ import './SeatSelectionStyles.css';
 import type { SeatType } from '@medrevue/types';
 import { useNavigate } from 'react-router';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
-import BackgroundBlur from '../../assets/BackgroundBlur.svg';
 import {
   initializeSeatData,
   setSelectedDate,

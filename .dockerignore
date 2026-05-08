@@ -1,0 +1,9 @@
+**/*.git
+**/.husky
+**/node_modules
+**/dist
+**/build
+**/.dockerignore
+**/.env
+**/Dockerfile
+**/fly.toml
