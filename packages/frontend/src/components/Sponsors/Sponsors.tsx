@@ -154,6 +154,17 @@ export const Sponsors: React.FC = () => {
         </p>
         <div className="flex flex-col items-center gap-7 md:mb-15 mb-10">
           <a
+            href="https://institute.medworld.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src={medworldLogo}
+              alt="MedWorld Institute"
+              className="md:h-20 h-10 object-contain bg-white"
+            />
+          </a>
+          <a
             href="https://blstringer.co.nz/"
             target="_blank"
             rel="noopener noreferrer"
@@ -178,5 +189,105 @@ export const Sponsors: React.FC = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+export const PreviousSponsors: React.FC = () => {
+  const Logo = ({ src, alt }: { src: string; alt: string }) => (
+    <div className="h-[240px] w-full flex items-center justify-center">
+      <img
+        src={src}
+        alt={alt}
+        className="h-full w-auto max-w-[220px] object-contain"
+      />
+    </div>
+  );
+
+  return (
+    <section
+      className="
+        w-full
+        px-4 sm:px-8 lg:px-16
+        py-10
+        grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
+        gap-y-10
+        gap-x-6 sm:gap-x-12 lg:gap-x-24
+        justify-items-center
+      "
+    >
+      <a
+        href="https://waitemataendoscopy.co.nz"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Logo src={weLogo} alt="We Getting to the Guts of it" />
+      </a>
+
+      <Logo src={respmedLogo} alt="RESPMED" />
+
+      <a
+        href="https://www.tamakihealth.co.nz"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Logo src={tamakihealthLogo} alt="Tamaki Health" />
+      </a>
+
+      <a
+        href="https://pizzaclub.co.nz"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Logo src={pizzaclubLogo} alt="Pizza Club" />
+      </a>
+
+      <a
+        href="https://www.medicalprotection.org"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Logo src={mpsLogo} alt="MPS" />
+      </a>
+
+      <a
+        href="https://www.onehealth.co.nz"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Logo src={oneHealthLogo} alt="One Health" />
+      </a>
+
+      <a
+        href="https://www.anzca.edu.au"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Logo src={anzcaLogo} alt="ANZCA" />
+      </a>
+
+      <a
+        href="https://www.after.net.nz"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Logo src={afterLogo} alt="After" />
+      </a>
+
+      <a
+        href="https://blstringer.co.nz/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Logo src={BLStringerLogo} alt="BL Stringer" />
+      </a>
+
+      <a
+        href="https://www.thecoffeeclub.co.nz/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Logo src={coffeeClubLogo} alt="The Coffee Club" />
+      </a>
+    </section>
   );
 };

@@ -3,7 +3,7 @@ import charityIcon from '../assets/charity.svg';
 import exposureIcon from '../assets/exposure.svg';
 import peopleIcon from '../assets/people.svg';
 // import { Link } from 'react-router';
-import { Sponsors } from '../components/Sponsors/Sponsors.tsx';
+import { PreviousSponsors } from '../components/Sponsors/Sponsors.tsx';
 
 export const SponsorPage: React.FC = () => {
   return (
@@ -119,7 +119,11 @@ export const SponsorPage: React.FC = () => {
 
         {/* Sponsors Content */}
         <section className="bg-[var(--colour-background-white)] px-4 py-3 flex flex-col items-center md:mb-20 mb-10 md:mt-15 mt-10">
-          <Sponsors />
+          <h2 className="flex items-center gap-3 text-[40px] leading-none font-semibold font-(family-name:--font-sans) text-black">
+            Previous Sponsors
+          </h2>
+
+          <PreviousSponsors />
         </section>
 
         {/* Bottom Divider */}
