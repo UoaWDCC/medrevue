@@ -199,10 +199,31 @@ const HomePage: React.FC = () => {
     <div className="overflow-y-auto bg-[#070507] overflow-x-hidden">
       <section
         ref={bgRef}
-        className="relative w-full h-160 md:h-screen bg-[#070507] flex items-center px-8 md:px-32 ml-0 md:ml-12 overflow-x-hidden"
+        className="relative w-full h-[115vh] bg-[#070507] flex items-center px-8 md:px-32 ml-0 md:ml-12 overflow-hidden"
       >
+        {/* Background Decorations */}
+        <div
+          aria-hidden="true"
+          className="absolute top-[150px] right-[180px] w-[240px] h-[240px] bg-[#d36ae0] rounded-full opacity-75"
+        />
+
+        <div
+          aria-hidden="true"
+          className="absolute bottom-[150px] right-[400px] w-[300px] h-[300px] bg-[#bdaa52] rounded-full opacity-75"
+        />
+
+        <div
+          aria-hidden="true"
+          className="absolute right-[580px] top-1/2 w-[140px] h-[140px] bg-[#3d9c2d] rounded-full opacity-80"
+        />
+
+        <div
+          aria-hidden="true"
+          className="absolute right-[180px] top-[400px] w-[50px] h-[50px] bg-[#bdaa52] rounded-full opacity-90"
+        />
+
         {/* Left: Text content */}
-        <div className="flex-1 flex flex-col gap-6">
+        <div className="relative z-10 flex-1 flex flex-col gap-6">
           <h1 className="text-left text-[#E5CE63] font-bold font-poppins text-[clamp(3.5rem,8vw,6rem)] leading-[0.9]">
             Auckland
             <br />
@@ -221,7 +242,7 @@ const HomePage: React.FC = () => {
         </div>
 
         {/* Right: Image */}
-        <div className="flex-1 flex justify-center">
+        <div className="relative z-10 flex-1 flex justify-center">
           <img
             src={medrevuePoster}
             alt="Med Revue"
@@ -259,12 +280,12 @@ const HomePage: React.FC = () => {
         </div>
 
         {/* Right Side */}
-        <div className="w-1/2 bg-white border-l-40 border-[#b89b10] flex flex-col items-start px-8 md:px-32 pt-10 gap-10">
+        <div className="w-1/2 bg-white border-l-40 border-[#b89b10] flex flex-col items-center px-8 md:px-32 pt-10 gap-10">
           {/* Right content here */}
           <h1 className="text-center text-[#070507] font-bold font-poppins text-[clamp(1rem,5vw,2rem)] leading-[0.9]">
             About Med Revue:
           </h1>
-          <h2 className="text-[#070507] font-semibold font-inter text-[clamp(1rem,3vw,2rem)] leading-[1.5]">
+          <h2 className="w-full text-center text-[#252325] font-inter text-[clamp(2.5rem,2vw,5rem)] leading-[1.5]">
             Auckland Medical Revue is a student-led theatrical production
             created by medical students at the University of Auckland. Each
             year, we bring together performance and purpose to raise funds and
@@ -274,7 +295,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Third Section */}
-      <section className="relative w-full h-160 border-t-100 border-black md:h-screen flex overflow-x-hidden">
+      <section className="relative w-full h-100 border-t-100 border-black flex overflow-x-hidden">
         <div className="w-full h-full bg-[#ffffff] flex flex-col items-center px-8 md:px-32 pt-10">
           <h1 className="text-center text-[#070507] font-bold font-poppins text-[clamp(1rem,5vw,2rem)] leading-[0.9]">
             Sponsors
