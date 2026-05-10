@@ -224,7 +224,10 @@ const HomePage: React.FC = () => {
 
         {/* Left: Text content */}
         <div className="relative z-10 flex-1 flex flex-col gap-6">
-          <h1 className="text-left text-[#E5CE63] font-bold font-poppins text-[clamp(3.5rem,8vw,6rem)] leading-[0.9]">
+          <h1
+            ref={headerSlideRef}
+            className="text-left text-[#E5CE63] font-bold font-poppins text-[clamp(3.5rem,8vw,6rem)] leading-[0.9]"
+          >
             Auckland
             <br />
             MedRevue
@@ -233,17 +236,96 @@ const HomePage: React.FC = () => {
             <span className="text-[#df19c1]">26</span>
           </h1>
 
-          <div className="text-[#FFFBE8] font-inter font-semibold text-[clamp(1.5rem,3vw,1.5rem)]">
+          <div className="text-[#FFFBE8] font-inter font-semibold text-[clamp(0.9rem,1.5vw,1.1rem)]">
             <h1>A University of Auckland non-profit production.</h1>
             <h2>13 Aug - 15 Aug 2026</h2>
             <h2>SkyCity Theatre</h2>
             <h2>Auckland</h2>
+          </div>
+
+          {/* Buttons: Tickets and Sponsors */}
+          {/* Buttons */}
+          <div className="flex flex-row gap-3 items-center mt-2">
+            {/* Order Tickets */}
+            <Button
+              onClick={() => navigate('/buy')}
+              className="p-0 bg-transparent hover:bg-transparent w-[130px] h-[42px]"
+            >
+              <svg
+                viewBox="0 0 160 50"
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-full h-full"
+              >
+                <rect
+                  x="1.5"
+                  y="1.5"
+                  width="157"
+                  height="47"
+                  rx="24"
+                  fill="#E5CE63"
+                  stroke="#E5CE63"
+                  strokeWidth="2"
+                />
+
+                <title>Order Tickets</title>
+
+                <text
+                  x="80"
+                  y="30"
+                  textAnchor="middle"
+                  fill="#070507"
+                  fontSize="14"
+                  fontWeight="700"
+                  fontFamily="Poppins"
+                >
+                  Order Tickets
+                </text>
+              </svg>
+            </Button>
+
+            {/* Sponsor Us */}
+            <Button
+              onClick={() => navigate('/sponsors')}
+              className="p-0 bg-transparent hover:bg-transparent w-[130px] h-[42px]"
+            >
+              <svg
+                viewBox="0 0 160 50"
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-full h-full"
+              >
+                <rect
+                  x="1.5"
+                  y="1.5"
+                  width="157"
+                  height="47"
+                  rx="24"
+                  fill="transparent"
+                  stroke="#E5CE63"
+                  strokeWidth="2"
+                />
+
+                <title>Sponsor Us</title>
+
+                <text
+                  x="80"
+                  y="30"
+                  textAnchor="middle"
+                  fill="#E5CE63"
+                  fontSize="14"
+                  fontWeight="700"
+                  fontFamily="Poppins"
+                >
+                  Sponsor Us
+                </text>
+              </svg>
+            </Button>
           </div>
         </div>
 
         {/* Right: Image */}
         <div className="relative z-10 flex-1 flex justify-center">
           <img
+            ref={posterRef}
             src={medrevuePoster}
             alt="Med Revue"
             className="w-96 h-auto rounded-lg border-4 border-[#E5CE63]"
@@ -252,7 +334,10 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Second Section */}
-      <section className="relative w-full h-160 md:h-screen flex overflow-x-hidden">
+      <section
+        ref={secondSectionRef}
+        className="relative w-full h-160 md:h-screen flex overflow-x-hidden"
+      >
         {/* Left Side */}
         <div className="w-1/2 bg-[#E5CE63] flex items-center px-8 md:px-32">
           <div className="grid grid-cols-2 gap-4 w-full max-w-md">
@@ -282,15 +367,25 @@ const HomePage: React.FC = () => {
         {/* Right Side */}
         <div className="w-1/2 bg-white border-l-40 border-[#b89b10] flex flex-col items-center px-8 md:px-32 pt-10 gap-10">
           {/* Right content here */}
-          <h1 className="text-center text-[#070507] font-bold font-poppins text-[clamp(1rem,5vw,2rem)] leading-[0.9]">
+          <h1
+            ref={textRef}
+            className="text-center text-[#070507] font-bold font-poppins text-[clamp(1rem,5vw,2rem)] leading-[0.9]"
+          >
             About Med Revue:
           </h1>
-          <h2 className="w-full text-center text-[#252325] font-inter text-[clamp(2.5rem,2vw,5rem)] leading-[1.5]">
-            Auckland Medical Revue is a student-led theatrical production
-            created by medical students at the University of Auckland. Each
-            year, we bring together performance and purpose to raise funds and
-            awareness for charities across Aotearoa.
-          </h2>
+          <div
+            ref={divFadeInRef}
+            className="w-full text-center text-[#252325] font-inter text-[clamp(2.5rem,2vw,5rem)] leading-[1.5]"
+          >
+            <p>
+              Auckland Medical Revue is a student-led theatrical production
+              created by medical students at the University of Auckland.
+            </p>
+            <p>
+              Each year, we bring together performance and purpose to raise
+              funds and awareness for charities across Aotearoa.
+            </p>
+          </div>
         </div>
       </section>
 
