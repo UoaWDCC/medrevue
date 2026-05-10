@@ -1,4 +1,3 @@
-import Card from '../../components/CardStack/Card';
 import CardStack from '../../components/CardStack/CardStack';
 import './PastShowsPage.css';
 
