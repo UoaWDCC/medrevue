@@ -1,14 +1,36 @@
 import { useEffect, useRef } from 'react'; // Ensure it only runs after the DOM is created
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Card, { PastShowCardProps } from './Card'
-import './CardStack.css'
+import {
+  PastShowCard,
+  type PastShowCardProps,
+} from '../PastShowCard/PastShowCard';
+import './CardStack.css';
 
 
 gsap.registerPlugin(ScrollTrigger);
 
 
 export default function CardStack() {
+
+  const cards: PastShowCardProps[] = [
+    {
+      title: 'Hi',
+      year: '2024',
+      posterUrl: 'https://via.placeholder.com/300x450', // Example placeholder
+      galleryUrls: [], // Adding the required empty array to satisfy TypeScript
+    },
+    {
+      title: 'Bye',
+      year: '2023',
+      posterUrl: 'https://picsum.photos/300/450', // Another common placeholder
+      galleryUrls: [],
+    },
+    {
+      title: 'Goodnight',
+      year: '2022',
+      posterUrl: 'https://via.placeholder.com/300x450',
+      galleryUrls: [],
+    },
+  ];
 
     const cards: PastShowCardProps[] = [
         { name: 'Hi' },
@@ -80,4 +102,12 @@ export default function CardStack() {
         
     )
     
+}
+  return (
+    <div className="card-stack" ref={containerRef}>
+      {cards.map((card) => (
+        <PastShowCard key={card.title} {...card} />
+      ))}
+    </div>
+  );
 }
