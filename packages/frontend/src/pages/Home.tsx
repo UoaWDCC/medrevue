@@ -336,10 +336,10 @@ const HomePage: React.FC = () => {
       {/* Second Section */}
       <section
         ref={secondSectionRef}
-        className="relative w-full h-160 md:h-screen flex overflow-x-hidden"
+        className="relative w-full md:h-screen flex overflow-x-hidden"
       >
         {/* Left Side */}
-        <div className="w-1/2 bg-[#E5CE63] flex items-center px-8 md:px-32">
+        <div className="w-1/2 h-[85vh] bg-[#E5CE63] flex items-center px-8 md:px-32">
           <div className="grid grid-cols-2 gap-4 w-full max-w-md">
             <img
               src="https://via.placeholder.com/300x300/FFD700/000000?text=Photo+1"
@@ -365,17 +365,17 @@ const HomePage: React.FC = () => {
         </div>
 
         {/* Right Side */}
-        <div className="w-1/2 bg-white border-l-40 border-[#b89b10] flex flex-col items-center px-8 md:px-32 pt-10 gap-10">
+        <div className="w-1/2 h-[85vh] bg-white border-l-40 border-[#b89b10] flex flex-col items-center px-8 md:px-16 pt-10 gap-10">
           {/* Right content here */}
           <h1
             ref={textRef}
             className="text-center text-[#070507] font-bold font-poppins text-[clamp(1rem,5vw,2rem)] leading-[0.9]"
           >
-            About Med Revue:
+            About Med Revue
           </h1>
           <div
             ref={divFadeInRef}
-            className="w-full text-center text-[#252325] font-inter text-[clamp(2.5rem,2vw,5rem)] leading-[1.5]"
+            className="w-full text-center text-[#252325] font-inter text-[clamp(1.5rem,2.4vw,4rem)] leading-[1.7]"
           >
             <p>
               Auckland Medical Revue is a student-led theatrical production
@@ -390,7 +390,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Third Section */}
-      <section className="relative w-full h-100 border-t-100 border-black flex overflow-x-hidden">
+      <section className="relative w-full h-[45vh] flex overflow-x-hidden">
         <div className="w-full h-full bg-[#ffffff] flex flex-col items-center px-8 md:px-32 pt-10">
           <h1 className="text-center text-[#070507] font-bold font-poppins text-[clamp(1rem,5vw,2rem)] leading-[0.9]">
             Sponsors
