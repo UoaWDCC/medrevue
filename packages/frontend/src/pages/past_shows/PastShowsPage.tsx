@@ -20,11 +20,14 @@ export default function PastShowsPage() {
   return (
     <div className="overflow-x-hidden">
       <section className="bg-[var(--colour-background-primary)] w-screen h-[100vh] flex flex-col justify-center items-center">
-        <h1 className="text-[56px] pb-5 text-[var(--colour-background-secondary)]">
+        <h1 className="font-bold text-[56px] pb-5 text-[var(--colour-background-secondary)]">
           Our 2026 Show
         </h1>
         <CurrentShowCard {...currentShowInfo} />
       </section>
+      <h1 className="font-bold text-[56px] pb-5 text-[#000000] text-center">
+        Past Shows
+      </h1>
       <CardStack />
     </div>
   );
