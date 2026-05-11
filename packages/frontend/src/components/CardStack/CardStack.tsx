@@ -7,13 +7,23 @@ gsap.registerPlugin(ScrollTrigger);
 
 const CardStack = () => {
   const cards: PastShowCardProps[] = [
-    { year: '2024', title: 'Grease', posterUrl: 'hi', galleryUrls: [] },
-    { year: '2023', title: 'Wicked', posterUrl: 'bye', galleryUrls: [] },
+    {
+      year: '2024',
+      title: 'Grease',
+      posterUrl: 'hi',
+      galleryUrls: ['placeholder.png', 'placeholder.png', 'placeholder.png'],
+    },
+    {
+      year: '2023',
+      title: 'Wicked',
+      posterUrl: 'bye',
+      galleryUrls: ['placeholder.png', 'placeholder.png', 'placeholder.png'],
+    },
     {
       year: '2022',
       title: 'Hamilton',
       posterUrl: 'goodnight',
-      galleryUrls: [],
+      galleryUrls: ['placeholder.png', 'placeholder.png', 'placeholder.png'],
     },
   ];
 
