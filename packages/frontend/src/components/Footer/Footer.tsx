@@ -3,18 +3,19 @@ import { FaFacebookF, FaInstagram } from 'react-icons/fa';
 import { FaTiktok } from 'react-icons/fa6';
 
 /** * BRAND CONFIGURATION
- * Edit these values to update styling project-wide
+ * Uses CSS variables with hex fallbacks to ensure compatibility
+ * with the upcoming global stylesheet.
  */
 const THEME = {
   colors: {
-    bg: 'bg-[#000000]',
-    textPrimary: 'text-[#FFFFFF]',
-    accent: 'text-[#F2d558]',
-    accentBg: 'bg-[#F2d558]',
-    hover: 'hover:text-[#fdf7e4]',
+    bg: 'bg-[var(--colour-background-primary,#000000)]',
+    textPrimary: 'text-[var(--colour-background-white,#FFFFFF)]',
+    accent: 'text-[var(--colour-background-secondary,#F2d558)]',
+    accentBg: 'bg-[var(--colour-background-secondary,#F2d558)]',
+    hover: 'hover:text-[var(--colour-text-light,#fdf7e4)]',
   },
   fonts: {
-    main: 'font-opensans',
+    main: 'font-[var(--font-sans,opensans)]',
   },
   spacing: {
     padding: 'pt-10 pb-18 px-6 sm:px-10',
@@ -43,7 +44,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
           aria-hidden="true"
         />
 
-        {/* Grid Layout */}
+        {/* Grid Layout: 3 columns on desktop for perfect centering */}
         <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-8">
           {/* 1. Left Column: CTA */}
           <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-2 md:gap-4 text-center md:text-left">
@@ -63,7 +64,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
             </button>
           </div>
 
-          {/* 2. Middle Column: Copyright */}
+          {/* 2. Middle Column: Copyright - Reordered to bottom on mobile */}
           <div className="text-center order-last md:order-none">
             <p
               className={`${THEME.colors.accent} text-sm md:text-base font-normal whitespace-nowrap`}
@@ -78,6 +79,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
               href="https://www.facebook.com/aklmedrevue/"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Facebook"
               className={`${THEME.colors.accent} transition-all hover:scale-110 ${THEME.colors.hover}`}
             >
               <FaFacebookF size={THEME.icons.fb} />
@@ -86,6 +88,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
               href="https://www.instagram.com/aucklandmedrevue"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Instagram"
               className={`${THEME.colors.accent} transition-all hover:scale-110 ${THEME.colors.hover}`}
             >
               <FaInstagram size={THEME.icons.ig} />
@@ -94,6 +97,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
               href="https://www.tiktok.com/@auckland.med.revue"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="TikTok"
               className={`${THEME.colors.accent} transition-all hover:scale-110 ${THEME.colors.hover}`}
             >
               <FaTiktok size={THEME.icons.tt} />
