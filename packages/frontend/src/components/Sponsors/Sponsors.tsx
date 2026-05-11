@@ -209,10 +209,10 @@ export const PreviousSponsors: React.FC = () => {
         w-full
         px-4 sm:px-8 lg:px-16
         py-10
-        grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
+        grid
+        grid-cols-[repeat(auto-fit,_minmax(220px,_1fr))]
         gap-y-10
         gap-x-6 sm:gap-x-12 lg:gap-x-24
-        justify-items-center
       "
     >
       <a
