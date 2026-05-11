@@ -15,10 +15,10 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
 }) => {
   return (
     /*container for entire card*/
-    <div className="card absolute flex items-center bg-[#000000] rounded-[42px] w-[800px] h-[353.69px] text-[#F2D558]">
+    <div className="card absolute flex items-center bg-[var(--colour-background-primary)] rounded-[42px] w-[800px] h-[353.69px] text-[var(--colour-background-secondary)]">
       {/*container for LHS year*/}
-      <div className="flex flex-col justify-start items-center w-[100px] h-[353.69px] text-[#262626] bg-[#FFFFFF] rounded-l-[42px]">
-        <span className="transform -rotate-90 text-[#262626] text-[42px] font-bold whitespace-nowrap mt-12">
+      <div className="flex flex-col justify-start items-center w-[100px] h-[353.69px] text-[var(--colour-background-primary)] bg-[var(--colour-background-white)] rounded-l-[42px]">
+        <span className="transform -rotate-90 text-[var(--colour-background-primary)] text-[42px] font-bold whitespace-nowrap mt-12">
           {year}
         </span>
       </div>
@@ -28,7 +28,7 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
         {/*poster and title*/}
         <div className="flex items-start space-x-8 mt-[35px]">
           {/*poster*/}
-          <div className="w-[264px] h-[284px] rounded-[32px] bg-[#D9D9D9] ml-[35px] overflow-hidden shrink-0">
+          <div className="w-[264px] h-[284px] rounded-[32px] bg-[var(--colour-background-white)] ml-[35px] overflow-hidden shrink-0">
             <img
               src={posterUrl}
               alt={title}
@@ -37,7 +37,9 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
           </div>
 
           {/*title*/}
-          <h3 className="text-[#F2D558] text-[48px] font-bold">{title}</h3>
+          <h3 className="text-[var(--colour-background-secondary)] text-[48px] font-bold">
+            {title}
+          </h3>
         </div>
 
         {/*gallery images*/}
@@ -45,7 +47,7 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
           {galleryUrls.map((url) => (
             <div
               key={url}
-              className="w-[100px] h-[100px] bg-[#D9D9D9] rounded-[4px] overflow-hidden"
+              className="w-[100px] h-[100px] bg-[var(--colour-background-white)] rounded-[4px] overflow-hidden"
             >
               <img
                 src={url}
