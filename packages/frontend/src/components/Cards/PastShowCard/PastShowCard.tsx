@@ -15,7 +15,7 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
 }) => {
   return (
     /*container for entire card*/
-    <div className="flex items-center bg-[#000000] rounded-[42px] text-[#F2D558]">
+    <div className="card absolute flex items-center bg-[#000000] rounded-[42px] text-[#F2D558]">
       {/*container for LHS year*/}
       <div className="flex flex-col justify-start items-center w-[118px] h-[353.69px] text-[#262626] bg-[#FFFFFF] rounded-l-[42px]">
         <span className="transform -rotate-90 origin-left text-[#262626] text-[42px] mt-12 pt-22 font-bold">
@@ -59,3 +59,5 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
     </div>
   );
 };
+
+export default PastShowCard;

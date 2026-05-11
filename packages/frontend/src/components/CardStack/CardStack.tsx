@@ -1,32 +1,18 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useEffect, useRef } from 'react'; // Ensure it only runs after the DOM is created
-import {
-  PastShowCard,
-  type PastShowCardProps,
-} from '../PastShowCard/PastShowCard';
-import './CardStack.css';
+import PastShowCard, { type PastShowCardProps } from '../Cards/PastShowCard';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function CardStack() {
+const CardStack = () => {
   const cards: PastShowCardProps[] = [
+    { year: '2024', title: 'Grease', posterUrl: 'hi', galleryUrls: [] },
+    { year: '2023', title: 'Wicked', posterUrl: 'bye', galleryUrls: [] },
     {
-      title: 'Hi',
-      year: '2024',
-      posterUrl: 'https://via.placeholder.com/300x450', // Example placeholder
-      galleryUrls: [], // Adding the required empty array to satisfy TypeScript
-    },
-    {
-      title: 'Bye',
-      year: '2023',
-      posterUrl: 'https://picsum.photos/300/450', // Another common placeholder
-      galleryUrls: [],
-    },
-    {
-      title: 'Goodnight',
       year: '2022',
-      posterUrl: 'https://via.placeholder.com/300x450',
+      title: 'Hamilton',
+      posterUrl: 'goodnight',
       galleryUrls: [],
     },
   ];
@@ -53,7 +39,7 @@ export default function CardStack() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',
-          end: `+=${(cards.length - 1) * window.innerHeight} top`,
+          end: `+=${cards.length * window.innerHeight} top`,
           scrub: 1,
           pin: true,
         },
@@ -64,7 +50,7 @@ export default function CardStack() {
         tl.to(card, {
           y: -window.innerHeight,
           opacity: 0,
-          ease: 'power2.in',
+          ease: 'power.in',
         });
       });
     }, containerRef);
@@ -74,10 +60,15 @@ export default function CardStack() {
   }, []);
 
   return (
-    <div className="card-stack" ref={containerRef}>
+    <div
+      className="w-full h-screen flex items-center justify-center"
+      ref={containerRef}
+    >
       {cards.map((card) => (
-        <PastShowCard key={card.title} {...card} />
+        <PastShowCard key={card.year} {...card} />
       ))}
     </div>
   );
-}
+};
+
+export default CardStack;
