@@ -7,6 +7,7 @@ import { PreviousSponsors } from '../components/Sponsors/Sponsors.tsx';
 
 export const SponsorPage: React.FC = () => {
   return (
+    // TODO: Move CSS variables to a global stylesheet and remove the inline style tag
     <>
       <style>{`
         :root {
@@ -77,7 +78,7 @@ export const SponsorPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-[var(--colour-background-white)] rounded-[32px] p-6 md:p-10">
+          <div className="shadow-[0_4px_8px_rgba(0,0,0,0.25)] bg-[var(--colour-background-white)] rounded-[32px] p-6 md:p-10">
             <h2 className="flex items-center gap-3 text-[40px] leading-none font-semibold font-(family-name:--font-sans) text-black mb-4">
               <img
                 src={exposureIcon}
@@ -92,7 +93,7 @@ export const SponsorPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-[var(--colour-background-white)] rounded-[32px] p-6 md:p-10">
+          <div className="shadow-[0_4px_8px_rgba(0,0,0,0.25)] bg-[var(--colour-background-white)] rounded-[32px] p-6 md:p-10">
             <h2 className="flex items-center gap-3 text-[40px] leading-none font-semibold font-(family-name:--font-sans) text-black mb-4">
               <img src={peopleIcon} alt="People" className="w-13.5 h-13.5" />
               Audience Reach
@@ -103,7 +104,7 @@ export const SponsorPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-[var(--colour-background-white)] rounded-[32px] p-6 md:p-10">
+          <div className="shadow-[0_4px_8px_rgba(0,0,0,0.25)] bg-[var(--colour-background-white)] rounded-[32px] p-6 md:p-10">
             <h2 className="flex items-center gap-3 text-[40px] leading-none font-semibold font-(family-name:--font-sans) text-black mb-4">
               <img src={charityIcon} alt="Charity" className="w-13.5 h-13.5" />
               Charity Impact
