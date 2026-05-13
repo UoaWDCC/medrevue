@@ -21,6 +21,8 @@ export const SponsorPage: React.FC = () => {
           --colour-background-secondary: #f2d558;
           --colour-secondary-darker: #d8ba35;
           --colour-text-brown: #ab751c;
+          --colour-text-grey: #313131;
+          --colour-text-light-grey: #828282;
         }
       `}</style>
       <div className="min-h-screen">
@@ -111,6 +113,50 @@ export const SponsorPage: React.FC = () => {
             </h2>
             <p className="block text-[24px] leading-[124%] font-(family-name:--font-sans) text-black">
               Support meaningful fundraising and awareness for the charities.
+            </p>
+          </div>
+        </section>
+
+        <section className="bg-[var(--colour-background-white)] px-11 mt-10 text-center">
+          <h2 className="block text-[40px] leading-none font-semibold font-(family-name:--font-sans) text-black mb-4">
+            Our Impact
+          </h2>
+        </section>
+        <section className="bg-[var(--colour-background-white)] px-11 mt-10 mb-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+          <div className="px-4 md:px-8 border-l-4 border-[var(--colour-text-brown)]">
+            <p className="block text-[60px] font-bold leading-[124%] font-(family-name:--font-sans) text-[var(--colour-text-grey)] mb-3">
+              148
+            </p>
+            <p className="block text-[20px] font-semibold leading-[124%] font-(family-name:--font-sans) text-[var(--colour-text-light-grey)]">
+              Total Cast Members
+              <br />
+              (Across 2 Years)
+            </p>
+          </div>
+          <div className="px-4 md:px-8 border-l-4 border-[var(--colour-text-brown)]">
+            <p className="block text-[60px] font-bold leading-[124%] font-(family-name:--font-sans) text-[var(--colour-text-grey)] mb-3">
+              3
+            </p>
+            <p className="block text-[20px] font-semibold leading-[124%] font-(family-name:--font-sans) text-[var(--colour-text-light-grey)]">
+              Unforgettable
+              <br />
+              Show Nights
+            </p>
+          </div>
+          <div className="px-4 md:px-8 border-l-4 border-[var(--colour-text-brown)]">
+            <p className="block text-[60px] font-bold leading-[124%] font-(family-name:--font-sans) text-[var(--colour-text-grey)] mb-3">
+              1864
+            </p>
+            <p className="block text-[20px] font-semibold leading-[124%] font-(family-name:--font-sans) text-[var(--colour-text-light-grey)]">
+              Tickets Sold
+            </p>
+          </div>
+          <div className="px-4 md:px-8 border-l-4 border-[var(--colour-text-brown)]">
+            <p className="block text-[60px] font-bold leading-[124%] font-(family-name:--font-sans) text-[var(--colour-text-grey)] mb-3">
+              $10.5k
+            </p>
+            <p className="block text-[20px] font-semibold leading-[124%] font-(family-name:--font-sans) text-[var(--colour-text-light-grey)]">
+              Raised for Charity
             </p>
           </div>
         </section>
