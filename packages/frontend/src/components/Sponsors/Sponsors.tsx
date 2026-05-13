@@ -209,13 +209,13 @@ export const PreviousSponsors: React.FC = () => {
         w-full
         px-4 sm:px-8 lg:px-16
         py-10
-        grid
-        grid-cols-[repeat(auto-fit,_minmax(220px,_1fr))]
-        gap-y-10
+        flex flex-wrap justify-center
         gap-x-6 sm:gap-x-12 lg:gap-x-24
+        gap-y-10
       "
     >
       <a
+        className="w-[220px]"
         href="https://waitemataendoscopy.co.nz"
         target="_blank"
         rel="noopener noreferrer"
@@ -223,9 +223,17 @@ export const PreviousSponsors: React.FC = () => {
         <Logo src={weLogo} alt="We Getting to the Guts of it" />
       </a>
 
-      <Logo src={respmedLogo} alt="RESPMED" />
+      <a
+        className="w-[220px]"
+        href="https://www.resmed.com/en-us/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Logo src={respmedLogo} alt="RESPMED" />
+      </a>
 
       <a
+        className="w-[220px]"
         href="https://www.tamakihealth.co.nz"
         target="_blank"
         rel="noopener noreferrer"
@@ -234,6 +242,7 @@ export const PreviousSponsors: React.FC = () => {
       </a>
 
       <a
+        className="w-[220px]"
         href="https://pizzaclub.co.nz"
         target="_blank"
         rel="noopener noreferrer"
@@ -242,6 +251,7 @@ export const PreviousSponsors: React.FC = () => {
       </a>
 
       <a
+        className="w-[220px]"
         href="https://www.medicalprotection.org"
         target="_blank"
         rel="noopener noreferrer"
@@ -250,6 +260,7 @@ export const PreviousSponsors: React.FC = () => {
       </a>
 
       <a
+        className="w-[220px]"
         href="https://www.onehealth.co.nz"
         target="_blank"
         rel="noopener noreferrer"
@@ -258,6 +269,7 @@ export const PreviousSponsors: React.FC = () => {
       </a>
 
       <a
+        className="w-[220px]"
         href="https://www.anzca.edu.au"
         target="_blank"
         rel="noopener noreferrer"
@@ -266,6 +278,7 @@ export const PreviousSponsors: React.FC = () => {
       </a>
 
       <a
+        className="w-[220px]"
         href="https://www.after.net.nz"
         target="_blank"
         rel="noopener noreferrer"
@@ -274,6 +287,7 @@ export const PreviousSponsors: React.FC = () => {
       </a>
 
       <a
+        className="w-[220px]"
         href="https://blstringer.co.nz/"
         target="_blank"
         rel="noopener noreferrer"
@@ -282,6 +296,7 @@ export const PreviousSponsors: React.FC = () => {
       </a>
 
       <a
+        className="w-[220px]"
         href="https://www.thecoffeeclub.co.nz/"
         target="_blank"
         rel="noopener noreferrer"
