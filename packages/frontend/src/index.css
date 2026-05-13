@@ -11,4 +11,6 @@
   --color-background-secondary: #f2d558; /* Secondary theme colour*/
   --color-secondary-darker: #d8ba35; /*Darker version of secondary for rectangle borders*/
   --color-text-brown: #ab751c; /*Brown colour */
+  --color-text-grey: #313131; /*Grey colour */
+  --color-text-light-grey: #828282; /*Light grey colour */
 }
