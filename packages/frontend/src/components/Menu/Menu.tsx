@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router';
+import medrevueLogo from '../../assets/medrevuelogo.png';
+
+const navLinkClass =
+  'font-inter font-semibold text-base text-[var(--colour-background-secondary)] no-underline transition-colors duration-200 hover:text-[var(--colour-secondary-darker)]';
 
 export const Menu: React.FC = () => {
   const location = useLocation();
@@ -13,22 +17,26 @@ export const Menu: React.FC = () => {
 
   return (
     <header
-      className={`flex justify-between items-center h-20 w-full px-10 z-50 ${
-        isHomePage
-          ? 'absolute top-0 left-0 bg-transparent'
-          : 'relative bg-[#0f0f0f]'
+      className={`flex items-center h-20 w-full px-10 z-50 bg-[var(--colour-background-primary)] ${
+        isHomePage ? 'absolute top-0 left-0' : 'relative'
       } ${open ? 'lg:static fixed top-0 left-0' : ''}`}
     >
+      {/* Logo + wordmark */}
       <Link
         to="/"
-        className="font-poppins font-bold text-2xl leading-[42px] text-[#e5ce63] no-underline z-60"
+        className="flex items-center gap-3 no-underline flex-shrink-0"
       >
-        MedRevue
+        <img src={medrevueLogo} alt="MedRevue logo" className="h-10 w-auto" />
+        <span className="font-inter font-bold text-2xl text-[var(--colour-background-secondary)]">
+          MedRevue
+        </span>
       </Link>
+
+      {/* Mobile hamburger */}
       <button
         type="button"
-        className={`lg:hidden text-[#e5ce63] z-60 ${
-          open ? 'absolute top-42px right-10' : 'relative'
+        className={`lg:hidden ml-auto text-[var(--colour-background-secondary)] z-60 ${
+          open ? 'absolute top-6 right-10' : 'relative'
         }`}
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? 'Close Menu' : 'Open Menu'}
@@ -69,50 +77,48 @@ export const Menu: React.FC = () => {
           </svg>
         )}
       </button>
+
+      {/* Nav links + action buttons */}
       <nav
         className={`${
           open ? 'flex' : 'hidden'
-        } fixed top-0 left-0 h-screen w-screen bg-[rgba(0,0,0,0.95)] flex-col items-center justify-center gap-8 z-50 lg:static lg:h-auto lg:w-auto lg:bg-transparent lg:flex lg:flex-row lg:gap-20 lg:justify-start lg:items-center`}
+        } fixed top-0 left-0 h-screen w-screen bg-[rgba(0,0,0,0.95)] flex-col items-center justify-center gap-8 z-50
+          lg:static lg:flex lg:flex-row lg:h-auto lg:w-auto lg:bg-transparent
+          lg:ml-auto lg:items-center lg:gap-8`}
       >
-        <Link
-          to="/"
-          className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
-        >
+        <Link to="/" className={navLinkClass}>
           Home
         </Link>
-        <Link
-          to="/show"
-          className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
-        >
+        <Link to="/show" className={navLinkClass}>
           2025 Show
         </Link>
-        <Link
-          to="/sponsors"
-          className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
-        >
+        <Link to="/sponsors" className={navLinkClass}>
           Sponsors
         </Link>
         <a
           href="https://fundraise.msf.org.au/fundraisers/aucklandmedicalrevue/auckland-medical-revue?utm_source=qr&utm_medium=print"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
+          className={navLinkClass}
         >
           Donate
         </a>
 
+        {/* Sponsor Us — filled pill */}
+        <Link
+          to="/sponsors"
+          className="font-inter font-bold text-base text-[var(--colour-background-primary)] bg-[var(--colour-background-secondary)] rounded-full px-5 py-2 no-underline transition-colors duration-200 hover:bg-[var(--colour-secondary-darker)]"
+        >
+          Sponsor Us
+        </Link>
+
+        {/* Order Tickets — outlined pill */}
         {location.pathname !== '/buy' && (
           <Link
             to="#"
-            className="
-              order-first       
-              lg:order-none      
-              bg-[#e5ce63] rounded-lg w-fit px-2
-              font-inter text-xl font-bold leading-[36px] text-[#1a1a1a]
-              no-underline transition-colors duration-300 hover:bg-[#fff0a2]    
-            "
+            className="font-inter font-bold text-base text-[var(--colour-background-secondary)] border-2 border-[var(--colour-background-secondary)] rounded-full px-5 py-2 no-underline transition-colors duration-200 hover:bg-[var(--colour-background-secondary)] hover:text-[var(--colour-background-primary)]"
           >
-            Buy Tickets
+            Order Tickets
           </Link>
         )}
       </nav>
