@@ -1,22 +1,22 @@
-import type { SeatType } from "@medrevue/types";
-import axios from "axios";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import type { SeatType } from '@medrevue/types';
+import axios from 'axios';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   initializeSeatData,
   setSeatUnavailable,
   toggleSeatSelection,
-} from "../../redux/slices/seatSelectionSlice";
-import type { AppDispatch, RootState } from "../../redux/store";
-import SeatRow from "./SeatRow";
+} from '../../redux/slices/seatSelectionSlice';
+import type { AppDispatch, RootState } from '../../redux/store';
+import SeatRow from './SeatRow';
 import {
   type RowArrangement,
   SEATING_ARRANGEMENT,
   type SeatData,
-} from "./SeatingArrangement";
+} from './SeatingArrangement';
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3000";
+  import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000';
 
 // Variables to adjust x offset of rows relative to center wing
 const SQUISH_MAGNITUDE = 7;
@@ -42,7 +42,7 @@ export const SeatPlanning: React.FC<{
     const startSeat = row.startSeat;
     const endSeat = row.endSeat;
     let totalSeats = endSeat - startSeat + 1;
-    if (row.label === "U" || row.label === "T") {
+    if (row.label === 'U' || row.label === 'T') {
       totalSeats += 4;
     }
 
@@ -55,7 +55,7 @@ export const SeatPlanning: React.FC<{
   // Call centerOnLoad on mount if provided. Guard to avoid calling when the
   // prop is omitted (some pages render SeatPlanning without passing it).
   useEffect(() => {
-    if (typeof centerOnLoad === "function") {
+    if (typeof centerOnLoad === 'function') {
       centerOnLoad(0, 0);
     }
   }, [centerOnLoad]);
@@ -72,7 +72,7 @@ export const SeatPlanning: React.FC<{
         );
         dispatch(initializeSeatData(response.data));
       } catch (error) {
-        console.error("Failed to fetch seat data:", error);
+        console.error('Failed to fetch seat data:', error);
       }
     };
 
@@ -110,7 +110,7 @@ export const SeatPlanning: React.FC<{
             }),
           );
         }
-        console.error("Failed to reserve seat:", error);
+        console.error('Failed to reserve seat:', error);
       }
     } else {
       try {
@@ -124,7 +124,7 @@ export const SeatPlanning: React.FC<{
         );
         dispatch(toggleSeatSelection(seat));
       } catch (error) {
-        console.error("Failed to release seat:", error);
+        console.error('Failed to release seat:', error);
       }
     }
   };
@@ -132,10 +132,10 @@ export const SeatPlanning: React.FC<{
   // Render each wing of seats separately
   const renderWing = (
     wing: RowArrangement[],
-    align: "start" | "center" | "end",
+    align: 'start' | 'center' | 'end',
   ) => (
     <div
-      className={`flex flex-col ${align === "start" ? "items-start" : align === "end" ? "items-end" : "items-center"}`}
+      className={`flex flex-col ${align === 'start' ? 'items-start' : align === 'end' ? 'items-end' : 'items-center'}`}
     >
       {wing.map(
         (row, _) =>
@@ -166,9 +166,9 @@ export const SeatPlanning: React.FC<{
       </div>
       {/* Seating wing container */}
       <div className="flex flex-row justify-between w-full h-full select-none mt-8">
-        {renderWing(SEATING_ARRANGEMENT.leftWing, "end")}
-        {renderWing(SEATING_ARRANGEMENT.middle, "center")}
-        {renderWing(SEATING_ARRANGEMENT.rightWing, "start")}
+        {renderWing(SEATING_ARRANGEMENT.leftWing, 'end')}
+        {renderWing(SEATING_ARRANGEMENT.middle, 'center')}
+        {renderWing(SEATING_ARRANGEMENT.rightWing, 'start')}
       </div>
     </div>
   );
