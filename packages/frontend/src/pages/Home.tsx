@@ -23,7 +23,6 @@ const HomePage: React.FC = () => {
   const textRef = useRef<HTMLHeadingElement>(null);
 
   // Effect for background image zoom on opening
-
   useEffect(() => {
     if (bgRef.current) {
       gsap.to(bgRef.current, {
@@ -38,7 +37,6 @@ const HomePage: React.FC = () => {
   }, []);
 
   // Effect for 'Back To The Suture' word by word slide in
-
   useEffect(() => {
     const el = textRef.current;
     if (!el) return;
@@ -103,7 +101,6 @@ const HomePage: React.FC = () => {
   }, []);
 
   // Effect for bottom page text and secondary header - slide and fade in from the right
-
   useEffect(() => {
     // Div animation
     gsap.fromTo(
@@ -141,7 +138,6 @@ const HomePage: React.FC = () => {
   }, []);
 
   // Zoom in and rotate poster image on scroll
-
   useEffect(() => {
     if (!posterRef.current) return;
 
@@ -165,7 +161,6 @@ const HomePage: React.FC = () => {
   }, []);
 
   // Effect for text info zoom on hover
-
   useEffect(() => {
     if (!TextZoomRef.current) return;
 
@@ -194,29 +189,26 @@ const HomePage: React.FC = () => {
   }, []);
 
   // Page Content
-
   return (
-    <div className="overflow-y-auto bg-[#070507] overflow-x-hidden">
+    <div className="overflow-y-auto bg-white overflow-x-hidden">
+      {/* Hero Section */}
       <section
         ref={bgRef}
-        className="relative w-full h-[115vh] bg-[#070507] flex items-center px-8 md:px-32 ml-0 md:ml-12 overflow-hidden"
+        className="relative w-full min-h-[90vh] lg:h-[115vh] bg-[#070507] flex items-center px-8 md:px-32 py-16 overflow-hidden"
       >
         {/* Background Decorations */}
         <div
           aria-hidden="true"
           className="absolute top-[150px] right-[180px] w-[240px] h-[240px] bg-[#d36ae0] rounded-full opacity-75"
         />
-
         <div
           aria-hidden="true"
           className="absolute bottom-[150px] right-[400px] w-[300px] h-[300px] bg-[#bdaa52] rounded-full opacity-75"
         />
-
         <div
           aria-hidden="true"
           className="absolute right-[580px] top-1/2 w-[140px] h-[140px] bg-[#3d9c2d] rounded-full opacity-80"
         />
-
         <div
           aria-hidden="true"
           className="absolute right-[180px] top-[400px] w-[50px] h-[50px] bg-[#bdaa52] rounded-full opacity-90"
@@ -226,7 +218,7 @@ const HomePage: React.FC = () => {
         <div className="relative z-10 flex-1 flex flex-col gap-6">
           <h1
             ref={headerSlideRef}
-            className="text-left text-[#E5CE63] font-bold font-poppins text-[clamp(3.5rem,8vw,6rem)] leading-[0.9]"
+            className="text-left text-[#E5CE63] font-bold font-poppins text-[clamp(3.5rem,8vw,6rem)] leading-[1.1] md:leading-[0.9]"
           >
             Auckland
             <br />
@@ -236,17 +228,15 @@ const HomePage: React.FC = () => {
             <span className="text-[#df19c1]">26</span>
           </h1>
 
-          <div className="text-[#FFFBE8] font-inter font-semibold text-[clamp(0.9rem,1.5vw,1.1rem)]">
-            <h1>A University of Auckland non-profit production.</h1>
-            <h2>13 Aug - 15 Aug 2026</h2>
-            <h2>SkyCity Theatre</h2>
-            <h2>Auckland</h2>
+          <div className="text-[#FFFBE8] font-inter font-semibold text-[clamp(0.9rem,1.5vw,1.1rem)] space-y-1">
+            <p>A University of Auckland non-profit production.</p>
+            <p>13 Aug - 15 Aug 2026</p>
+            <p>SkyCity Theatre</p>
+            <p>Auckland</p>
           </div>
 
-          {/* Buttons: Tickets and Sponsors */}
           {/* Buttons */}
           <div className="flex flex-row gap-3 items-center mt-2">
-            {/* Order Tickets */}
             <Button
               onClick={() => navigate('/buy')}
               className="p-0 bg-transparent hover:bg-transparent w-[130px] h-[42px]"
@@ -266,9 +256,7 @@ const HomePage: React.FC = () => {
                   stroke="#E5CE63"
                   strokeWidth="2"
                 />
-
                 <title>Order Tickets</title>
-
                 <text
                   x="80"
                   y="30"
@@ -283,7 +271,6 @@ const HomePage: React.FC = () => {
               </svg>
             </Button>
 
-            {/* Sponsor Us */}
             <Button
               onClick={() => navigate('/sponsors')}
               className="p-0 bg-transparent hover:bg-transparent w-[130px] h-[42px]"
@@ -303,9 +290,7 @@ const HomePage: React.FC = () => {
                   stroke="#E5CE63"
                   strokeWidth="2"
                 />
-
                 <title>Sponsor Us</title>
-
                 <text
                   x="80"
                   y="30"
@@ -323,94 +308,155 @@ const HomePage: React.FC = () => {
         </div>
 
         {/* Right: Image */}
-        <div className="relative z-10 flex-1 flex justify-center">
+        <div className="relative z-10 flex-1 hidden md:flex justify-center">
           <img
             ref={posterRef}
             src={medrevuePoster}
             alt="Med Revue"
-            className="w-96 h-auto rounded-lg border-4 border-[#E5CE63]"
+            className="w-96 h-auto rounded-lg border-4 border-[#E5CE63] shadow-lg"
           />
         </div>
       </section>
 
-      {/* Second Section */}
+      <div className="w-full h-4 bg-[#E5CE63]" />
+
+      {/* Middle Section: About & Charity 2x2 Grid */}
       <section
         ref={secondSectionRef}
-        className="relative w-full md:h-screen flex overflow-x-hidden"
+        className="w-full grid grid-cols-1 md:grid-cols-2 bg-white"
       >
-        {/* Left Side */}
-        <div className="w-1/2 h-[85vh] bg-[#E5CE63] flex items-center px-8 md:px-32">
-          <div className="grid grid-cols-2 gap-4 w-full max-w-md">
-            <img
-              src="https://via.placeholder.com/300x300/FFD700/000000?text=Photo+1"
-              alt="Phot 1"
-              className="w-full h-32 object-cover rounded-lg"
-            />
-            <img
-              src="https://via.placeholder.com/300x300/FFD700/000000?text=Photo+2"
-              alt="Phot 2"
-              className="w-full h-32 object-cover rounded-lg"
-            />
-            <img
-              src="https://via.placeholder.com/300x300/FFD700/000000?text=Photo+3"
-              alt="Phot 3"
-              className="w-full h-32 object-cover rounded-lg"
-            />
-            <img
-              src="https://via.placeholder.com/300x300/FFD700/000000?text=Photo+4"
-              alt="Phot 4"
-              className="w-full h-32 object-cover rounded-lg"
-            />
-          </div>
-        </div>
-
-        {/* Right Side */}
-        <div className="w-1/2 h-[85vh] bg-white border-l-40 border-[#b89b10] flex flex-col items-center px-8 md:px-16 pt-10 gap-10">
-          {/* Right content here */}
-          <h1
+        {/* Top Left: About Med Revue Text */}
+        <div className="flex flex-col justify-center items-center px-10 py-16 lg:px-20 text-center order-1">
+          <h2
             ref={textRef}
-            className="text-center text-[#070507] font-bold font-poppins text-[clamp(1rem,5vw,2rem)] leading-[0.9]"
+            className="text-[#4D4D4D] font-bold font-poppins text-3xl md:text-4xl mb-6"
           >
             About Med Revue
-          </h1>
+          </h2>
           <div
             ref={divFadeInRef}
-            className="w-full text-center text-[#252325] font-inter text-[clamp(1.5rem,2.4vw,4rem)] leading-[1.7]"
+            className="text-gray-500 font-inter text-base md:text-lg leading-relaxed space-y-4"
           >
             <p>
               Auckland Medical Revue is a student-led theatrical production
-              created by medical students at the University of Auckland.
+              created by medical students at the University of Auckland. Each
+              year, we bring together performance and purpose to raise funds and
+              awareness for charity. The proceeds from this year's show will go
+              to The Mental Health Foundation of New Zealand.
             </p>
+          </div>
+        </div>
+
+        {/* Top Right: Pink Cast Image Placeholder */}
+        <div className="h-64 md:h-[450px] w-full order-2">
+          <img
+            src="https://via.placeholder.com/800x600/FFB6C1/000000?text=Cast+Performance+(Pink)"
+            alt="Med Revue Cast Performance Pink"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Bottom Left: Blue Cast Image Placeholder */}
+        <div className="h-64 md:h-[450px] w-full order-4 md:order-3">
+          <img
+            src="https://via.placeholder.com/800x600/87CEFA/000000?text=Cast+Performance+(Blue)"
+            alt="Med Revue Cast Performance Blue"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Bottom Right: Our Charity Text */}
+        <div className="flex flex-col justify-center items-center px-10 py-16 lg:px-20 text-center order-3 md:order-4">
+          <h2
+            ref={h2FadeInRef}
+            className="text-[#4D4D4D] font-bold font-poppins text-3xl md:text-4xl mb-6"
+          >
+            Our Charity
+          </h2>
+          <div className="text-gray-500 font-inter text-base md:text-lg leading-relaxed space-y-4">
             <p>
-              Each year, we bring together performance and purpose to raise
-              funds and awareness for charities across Aotearoa.
+              The Mental Health Foundation of New Zealand works towards creating
+              a society free from discrimination, where all people enjoy
+              positive mental health and well-being. Focusing on suicide
+              prevention, building individual, community well-being, and
+              influencing policy to ensure everyone has the tools for good
+              mental health.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Third Section */}
-      <section className="relative w-full h-[45vh] flex overflow-x-hidden">
-        <div className="w-full h-full bg-[#ffffff] flex flex-col items-center px-8 md:px-32 pt-10">
-          <h1 className="text-center text-[#070507] font-bold font-poppins text-[clamp(1rem,5vw,2rem)] leading-[0.9]">
-            Sponsors
-          </h1>
-          <div className="flex gap-4 mt-8">
-            <img
-              src="https://via.placeholder.com/300x300/FFD700/000000?text=Photo+5"
-              alt="Phot 5"
-              className="w-32 h-32 object-cover rounded-lg"
-            />
-            <img
-              src="https://via.placeholder.com/300x300/FFD700/000000?text=Photo+6"
-              alt="Phot 6"
-              className="w-32 h-32 object-cover rounded-lg"
-            />
-            <img
-              src="https://via.placeholder.com/300x300/FFD700/000000?text=Photo+7"
-              alt="Phot 7"
-              className="w-32 h-32 object-cover rounded-lg"
-            />
+      {/* Yellow Divider */}
+      <div className="w-full h-4 bg-[#E5CE63]" />
+
+      {/* Sponsors Section */}
+      <section className="w-full bg-[#FCFCFC] flex flex-col items-center py-16 px-4 md:px-8">
+        <h2 className="text-center text-[#333333] font-bold font-poppins text-3xl md:text-4xl mb-12">
+          Our sponsors for 2026
+        </h2>
+
+        {/* Platinum Sponsor */}
+        <div className="w-full max-w-4xl bg-[#E2C753] rounded-2xl shadow-md p-6 mb-12">
+          <h3 className="text-white text-center font-bold text-2xl font-poppins mb-4">
+            Platinum
+          </h3>
+          <div className="bg-white rounded-xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-8">
+            <div className="w-48 md:w-64 flex-shrink-0 flex justify-center p-4 border border-gray-100 rounded-xl shadow-sm">
+              {/* Waitemata Endoscopy Logo Placeholder */}
+              <img
+                src="https://via.placeholder.com/300x150/FFFFFF/45B8AC?text=Waitemata+Endoscopy"
+                alt="Waitemata Endoscopy Logo"
+                className="w-full h-auto object-contain"
+              />
+            </div>
+            <div className="text-center md:text-left">
+              <h4 className="text-black font-bold text-xl mb-3">
+                Presenting this years show
+              </h4>
+              <p className="text-black text-sm md:text-base leading-relaxed">
+                Auckland's Waitemata Endoscopy offers specialized endoscopy
+                services like gastroscopy, colonoscopy, and endoscopic
+                ultrasound.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Gold Sponsors */}
+        <div className="w-full max-w-4xl flex flex-col items-center mb-10">
+          <h3 className="text-black font-bold text-2xl font-poppins mb-6">
+            Gold
+          </h3>
+          <div className="flex flex-wrap justify-center gap-6 w-full">
+            <div className="w-40 md:w-56 h-20 md:h-24 bg-[#D9D9D9] rounded-sm" />
+            <div className="w-40 md:w-56 h-20 md:h-24 bg-[#D9D9D9] rounded-sm" />
+          </div>
+        </div>
+
+        {/* Silver Sponsors */}
+        <div className="w-full max-w-4xl flex flex-col items-center mb-10">
+          <h3 className="text-black font-bold text-2xl font-poppins mb-6">
+            Silver
+          </h3>
+          <div className="flex flex-wrap justify-center gap-6 w-full">
+            <div className="w-40 md:w-56 h-20 md:h-24 bg-[#D9D9D9] rounded-sm" />
+            <div className="w-40 md:w-56 h-20 md:h-24 bg-[#D9D9D9] rounded-sm" />
+          </div>
+        </div>
+
+        {/* Bronze Sponsors */}
+        <div className="w-full max-w-4xl flex flex-col items-center mb-16">
+          <h3 className="text-black font-bold text-2xl font-poppins mb-6">
+            Bronze
+          </h3>
+          <div className="flex flex-wrap justify-center gap-6 w-full mb-6">
+            <div className="w-32 md:w-48 h-16 md:h-20 bg-[#D9D9D9] rounded-sm" />
+            <div className="w-32 md:w-48 h-16 md:h-20 bg-[#D9D9D9] rounded-sm" />
+            <div className="w-32 md:w-48 h-16 md:h-20 bg-[#D9D9D9] rounded-sm" />
+          </div>
+          <div className="flex flex-wrap justify-center gap-6 w-full">
+            <div className="w-32 md:w-48 h-16 md:h-20 bg-[#D9D9D9] rounded-sm" />
+            <div className="w-32 md:w-48 h-16 md:h-20 bg-[#D9D9D9] rounded-sm" />
           </div>
         </div>
       </section>
