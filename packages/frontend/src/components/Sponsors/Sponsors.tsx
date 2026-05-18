@@ -192,6 +192,65 @@ export const Sponsors: React.FC = () => {
   );
 };
 
+type Sponsor = {
+  name: string;
+  logo: string;
+  href: string;
+};
+
+const sponsors: Sponsor[] = [
+  {
+    name: 'We Getting to the Guts of it',
+    logo: weLogo,
+    href: 'https://waitemataendoscopy.co.nz',
+  },
+  {
+    name: 'RESPMED',
+    logo: respmedLogo,
+    href: 'https://www.resmed.com/en-us/',
+  },
+  {
+    name: 'Tamaki Health',
+    logo: tamakihealthLogo,
+    href: 'https://www.tamakihealth.co.nz',
+  },
+  {
+    name: 'Pizza Club',
+    logo: pizzaclubLogo,
+    href: 'https://pizzaclub.co.nz',
+  },
+  {
+    name: 'MPS',
+    logo: mpsLogo,
+    href: 'https://www.medicalprotection.org',
+  },
+  {
+    name: 'One Health',
+    logo: oneHealthLogo,
+    href: 'https://www.onehealth.co.nz',
+  },
+  {
+    name: 'ANZCA',
+    logo: anzcaLogo,
+    href: 'https://www.anzca.edu.au',
+  },
+  {
+    name: 'After',
+    logo: afterLogo,
+    href: 'https://www.after.net.nz',
+  },
+  {
+    name: 'BL Stringer',
+    logo: BLStringerLogo,
+    href: 'https://blstringer.co.nz/',
+  },
+  {
+    name: 'The Coffee Club',
+    logo: coffeeClubLogo,
+    href: 'https://www.thecoffeeclub.co.nz/',
+  },
+];
+
 export const PreviousSponsors: React.FC = () => {
   const Logo = ({ src, alt }: { src: string; alt: string }) => (
     <div className="h-[240px] w-full flex items-center justify-center">
@@ -214,95 +273,17 @@ export const PreviousSponsors: React.FC = () => {
         gap-y-10
       "
     >
-      <a
-        className="w-[220px]"
-        href="https://waitemataendoscopy.co.nz"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Logo src={weLogo} alt="We Getting to the Guts of it" />
-      </a>
-
-      <a
-        className="w-[220px]"
-        href="https://www.resmed.com/en-us/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Logo src={respmedLogo} alt="RESPMED" />
-      </a>
-
-      <a
-        className="w-[220px]"
-        href="https://www.tamakihealth.co.nz"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Logo src={tamakihealthLogo} alt="Tamaki Health" />
-      </a>
-
-      <a
-        className="w-[220px]"
-        href="https://pizzaclub.co.nz"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Logo src={pizzaclubLogo} alt="Pizza Club" />
-      </a>
-
-      <a
-        className="w-[220px]"
-        href="https://www.medicalprotection.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Logo src={mpsLogo} alt="MPS" />
-      </a>
-
-      <a
-        className="w-[220px]"
-        href="https://www.onehealth.co.nz"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Logo src={oneHealthLogo} alt="One Health" />
-      </a>
-
-      <a
-        className="w-[220px]"
-        href="https://www.anzca.edu.au"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Logo src={anzcaLogo} alt="ANZCA" />
-      </a>
-
-      <a
-        className="w-[220px]"
-        href="https://www.after.net.nz"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Logo src={afterLogo} alt="After" />
-      </a>
-
-      <a
-        className="w-[220px]"
-        href="https://blstringer.co.nz/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Logo src={BLStringerLogo} alt="BL Stringer" />
-      </a>
-
-      <a
-        className="w-[220px]"
-        href="https://www.thecoffeeclub.co.nz/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Logo src={coffeeClubLogo} alt="The Coffee Club" />
-      </a>
+      {sponsors.map((sponsor) => (
+        <a
+          key={sponsor.name}
+          className="w-[220px]"
+          href={sponsor.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Logo src={sponsor.logo} alt={sponsor.name} />
+        </a>
+      ))}
     </section>
   );
 };
