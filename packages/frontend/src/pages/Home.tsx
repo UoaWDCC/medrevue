@@ -3,9 +3,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type React from 'react';
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import after from '../assets/after.png';
-import anzca from '../assets/anzca.png';
-import medrevuePoster from '../assets/medrevue-poster.jpg';
+import blueCast from '../assets/medrevue-home-castBlue.png';
+import pinkCast from '../assets/medrevue-home-castPink.png';
+import medrevuePoster from '../assets/medrevue_poster.png';
+import we from '../assets/we.png';
 import { Button } from '../components/Button';
 gsap.registerPlugin(ScrollTrigger);
 
@@ -190,146 +191,150 @@ const HomePage: React.FC = () => {
 
   // Page Content
   return (
-    <div className="overflow-y-auto bg-white overflow-x-hidden">
-      {/* Hero Section */}
-      <section
-        ref={bgRef}
-        className="relative w-full min-h-[90vh] lg:h-[115vh] bg-[#070507] flex items-center px-8 md:px-32 py-16 overflow-hidden"
-      >
-        {/* Background Decorations */}
-        <div
-          aria-hidden="true"
-          className="absolute top-[150px] right-[180px] w-[240px] h-[240px] bg-[#d36ae0] rounded-full opacity-75"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute bottom-[150px] right-[400px] w-[300px] h-[300px] bg-[#bdaa52] rounded-full opacity-75"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute right-[580px] top-1/2 w-[140px] h-[140px] bg-[#3d9c2d] rounded-full opacity-80"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute right-[180px] top-[400px] w-[50px] h-[50px] bg-[#bdaa52] rounded-full opacity-90"
-        />
-
-        {/* Left: Text content */}
-        <div className="relative z-10 flex-1 flex flex-col gap-6">
-          <h1
-            ref={headerSlideRef}
-            className="text-left text-[#E5CE63] font-bold font-poppins text-[clamp(3.5rem,8vw,6rem)] leading-[1.1] md:leading-[0.9]"
-          >
-            Auckland
-            <br />
-            MedRevue
-            <br />
-            <span className="text-[#32cf12]">20</span>
-            <span className="text-[#df19c1]">26</span>
-          </h1>
-
-          <div className="text-[#FFFBE8] font-inter font-semibold text-[clamp(0.9rem,1.5vw,1.1rem)] space-y-1">
-            <p>A University of Auckland non-profit production.</p>
-            <p>13 Aug - 15 Aug 2026</p>
-            <p>SkyCity Theatre</p>
-            <p>Auckland</p>
-          </div>
-
-          {/* Buttons */}
-          <div className="flex flex-row gap-3 items-center mt-2">
-            <Button
-              onClick={() => navigate('/buy')}
-              className="p-0 bg-transparent hover:bg-transparent w-[130px] h-[42px]"
-            >
-              <svg
-                viewBox="0 0 160 50"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-full h-full"
-              >
-                <rect
-                  x="1.5"
-                  y="1.5"
-                  width="157"
-                  height="47"
-                  rx="24"
-                  fill="#E5CE63"
-                  stroke="#E5CE63"
-                  strokeWidth="2"
-                />
-                <title>Order Tickets</title>
-                <text
-                  x="80"
-                  y="30"
-                  textAnchor="middle"
-                  fill="#070507"
-                  fontSize="14"
-                  fontWeight="700"
-                  fontFamily="Poppins"
-                >
-                  Order Tickets
-                </text>
-              </svg>
-            </Button>
-
-            <Button
-              onClick={() => navigate('/sponsors')}
-              className="p-0 bg-transparent hover:bg-transparent w-[130px] h-[42px]"
-            >
-              <svg
-                viewBox="0 0 160 50"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-full h-full"
-              >
-                <rect
-                  x="1.5"
-                  y="1.5"
-                  width="157"
-                  height="47"
-                  rx="24"
-                  fill="transparent"
-                  stroke="#E5CE63"
-                  strokeWidth="2"
-                />
-                <title>Sponsor Us</title>
-                <text
-                  x="80"
-                  y="30"
-                  textAnchor="middle"
-                  fill="#E5CE63"
-                  fontSize="14"
-                  fontWeight="700"
-                  fontFamily="Poppins"
-                >
-                  Sponsor Us
-                </text>
-              </svg>
-            </Button>
-          </div>
-        </div>
-
-        {/* Right: Image */}
-        <div className="relative z-10 flex-1 hidden md:flex justify-center">
-          <img
-            ref={posterRef}
-            src={medrevuePoster}
-            alt="Med Revue"
-            className="w-96 h-auto rounded-lg border-4 border-[#E5CE63] shadow-lg"
+    <div className="overflow-y-auto bg-background-white overflow-x-hidden">
+      {/* Hero Section Wrapper - This acts as the clipping frame! */}
+      <div className="relative w-full overflow-hidden">
+        {/* Hero Section */}
+        <section
+          ref={bgRef}
+          className="relative w-full min-h-[90vh] lg:h-[115vh] bg-background-primary flex items-center px-8 md:px-32 py-16"
+        >
+          {/* Background Decorations */}
+          <div
+            aria-hidden="true"
+            className="absolute top-[150px] right-[180px] w-[240px] h-[240px] bg-theme-pink rounded-full opacity-75"
           />
-        </div>
-      </section>
+          <div
+            aria-hidden="true"
+            className="absolute bottom-[150px] right-[400px] w-[300px] h-[300px] bg-background-secondary rounded-full opacity-75"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute right-[580px] top-1/2 w-[140px] h-[140px] bg-theme-green rounded-full opacity-80"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute right-[180px] top-[400px] w-[50px] h-[50px] bg-background-secondary rounded-full opacity-90"
+          />
 
-      <div className="w-full h-4 bg-[#E5CE63]" />
+          {/* Left: Text content */}
+          <div className="relative z-10 flex-1 flex flex-col gap-6">
+            <h1
+              ref={headerSlideRef}
+              className="text-left text-background-secondary font-bold font-poppins text-[clamp(3.5rem,8vw,6rem)] leading-[1.1] md:leading-[0.9]"
+            >
+              Auckland
+              <br />
+              MedRevue
+              <br />
+              <span className="text-theme-green">20</span>
+              <span className="text-theme-pink">26</span>
+            </h1>
+
+            <div className="text-text-light font-inter font-semibold text-[clamp(0.9rem,1.5vw,1.1rem)] space-y-1">
+              <p>A University of Auckland non-profit production.</p>
+              <p>13 Aug - 15 Aug 2026</p>
+              <p>SkyCity Theatre</p>
+              <p>Auckland</p>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex flex-row gap-3 items-center mt-2">
+              <Button
+                onClick={() => navigate('/buy')}
+                className="p-0 bg-transparent hover:bg-transparent w-[130px] h-[42px]"
+              >
+                <svg
+                  viewBox="0 0 160 50"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-full h-full"
+                >
+                  <rect
+                    x="1.5"
+                    y="1.5"
+                    width="157"
+                    height="47"
+                    rx="24"
+                    fill="var(--color-background-secondary)"
+                    stroke="var(--color-background-secondary)"
+                    strokeWidth="2"
+                  />
+                  <title>Order Tickets</title>
+                  <text
+                    x="80"
+                    y="30"
+                    textAnchor="middle"
+                    fill="var(--color-background-primary)"
+                    fontSize="14"
+                    fontWeight="700"
+                    fontFamily="Poppins"
+                  >
+                    Order Tickets
+                  </text>
+                </svg>
+              </Button>
+
+              <Button
+                onClick={() => navigate('/sponsors')}
+                className="p-0 bg-transparent hover:bg-transparent w-[130px] h-[42px]"
+              >
+                <svg
+                  viewBox="0 0 160 50"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-full h-full"
+                >
+                  <rect
+                    x="1.5"
+                    y="1.5"
+                    width="157"
+                    height="47"
+                    rx="24"
+                    fill="transparent"
+                    stroke="var(--color-background-secondary)"
+                    strokeWidth="2"
+                  />
+                  <title>Sponsor Us</title>
+                  <text
+                    x="80"
+                    y="30"
+                    textAnchor="middle"
+                    fill="var(--color-background-secondary)"
+                    fontSize="14"
+                    fontWeight="700"
+                    fontFamily="Poppins"
+                  >
+                    Sponsor Us
+                  </text>
+                </svg>
+              </Button>
+            </div>
+          </div>
+
+          {/* Right: Image */}
+          <div className="relative z-10 flex-1 hidden md:flex justify-center">
+            <img
+              ref={posterRef}
+              src={medrevuePoster}
+              alt="Med Revue"
+              className="w-96 h-auto rounded-lg border-4 border-background-secondary shadow-lg"
+            />
+          </div>
+        </section>
+      </div>
+
+      {/* Yellow Divider */}
+      <div className="w-full h-4 bg-background-secondary" />
 
       {/* Middle Section: About & Charity 2x2 Grid */}
       <section
         ref={secondSectionRef}
-        className="w-full grid grid-cols-1 md:grid-cols-2 bg-white"
+        className="w-full grid grid-cols-1 md:grid-cols-2 bg-background-white"
       >
         {/* Top Left: About Med Revue Text */}
         <div className="flex flex-col justify-center items-center px-10 py-16 lg:px-20 text-center order-1">
           <h2
             ref={textRef}
-            className="text-[#4D4D4D] font-bold font-poppins text-3xl md:text-4xl mb-6"
+            className="text-background-primary font-bold font-poppins text-3xl md:text-4xl mb-6"
           >
             About Med Revue
           </h2>
@@ -348,18 +353,18 @@ const HomePage: React.FC = () => {
         </div>
 
         {/* Top Right: Pink Cast Image Placeholder */}
-        <div className="h-64 md:h-[450px] w-full order-2">
+        <div className="h-64 md:h-[450px] w-full order-2 overflow-hidden">
           <img
-            src="https://via.placeholder.com/800x600/FFB6C1/000000?text=Cast+Performance+(Pink)"
+            src={pinkCast}
             alt="Med Revue Cast Performance Pink"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover scale-[1.3] object-center"
           />
         </div>
 
         {/* Bottom Left: Blue Cast Image Placeholder */}
         <div className="h-64 md:h-[450px] w-full order-4 md:order-3">
           <img
-            src="https://via.placeholder.com/800x600/87CEFA/000000?text=Cast+Performance+(Blue)"
+            src={blueCast}
             alt="Med Revue Cast Performance Blue"
             className="w-full h-full object-cover"
           />
@@ -369,7 +374,7 @@ const HomePage: React.FC = () => {
         <div className="flex flex-col justify-center items-center px-10 py-16 lg:px-20 text-center order-3 md:order-4">
           <h2
             ref={h2FadeInRef}
-            className="text-[#4D4D4D] font-bold font-poppins text-3xl md:text-4xl mb-6"
+            className="text-background-primary font-bold font-poppins text-3xl md:text-4xl mb-6"
           >
             Our Charity
           </h2>
@@ -387,33 +392,37 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Yellow Divider */}
-      <div className="w-full h-4 bg-[#E5CE63]" />
+      <div className="w-full h-4 bg-background-secondary" />
 
       {/* Sponsors Section */}
-      <section className="w-full bg-[#FCFCFC] flex flex-col items-center py-16 px-4 md:px-8">
-        <h2 className="text-center text-[#333333] font-bold font-poppins text-3xl md:text-4xl mb-12">
+      <section className="w-full bg-background-white flex flex-col items-center py-16 px-4 md:px-8">
+        <h2 className="text-center text-background-primary font-bold font-poppins text-3xl md:text-4xl mb-12">
           Our sponsors for 2026
         </h2>
 
-        {/* Platinum Sponsor */}
-        <div className="w-full max-w-4xl bg-[#E2C753] rounded-2xl shadow-md p-6 mb-12">
-          <h3 className="text-white text-center font-bold text-2xl font-poppins mb-4">
-            Platinum
-          </h3>
-          <div className="bg-white rounded-xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-8">
-            <div className="w-48 md:w-64 flex-shrink-0 flex justify-center p-4 border border-gray-100 rounded-xl shadow-sm">
-              {/* Waitemata Endoscopy Logo Placeholder */}
+        {/* Platinum Sponsor Container */}
+        <div className="w-full max-w-4xl flex flex-col rounded-2xl shadow-md overflow-hidden mb-12">
+          {/* Top Header Bar */}
+          <div className="bg-secondary-darker py-3 px-6 w-full">
+            <h3 className="text-background-white text-center font-bold text-2xl font-poppins">
+              Platinum
+            </h3>
+          </div>
+
+          {/* Main Content Area */}
+          <div className="bg-background-secondary p-6 md:p-8 flex flex-col md:flex-row items-center gap-8">
+            <div className="w-48 md:w-64 h-24 md:h-32 flex-shrink-0 flex justify-center items-center p-4 bg-background-white rounded-xl shadow-sm">
               <img
-                src="https://via.placeholder.com/300x150/FFFFFF/45B8AC?text=Waitemata+Endoscopy"
+                src={we}
                 alt="Waitemata Endoscopy Logo"
-                className="w-full h-auto object-contain"
+                className="w-full h-full object-contain"
               />
             </div>
-            <div className="text-center md:text-left">
-              <h4 className="text-black font-bold text-xl mb-3">
+            <div className="text-center md:text-left flex-1">
+              <h4 className="text-background-primary font-bold text-xl mb-2">
                 Presenting this years show
               </h4>
-              <p className="text-black text-sm md:text-base leading-relaxed">
+              <p className="text-background-primary text-sm md:text-base leading-relaxed">
                 Auckland's Waitemata Endoscopy offers specialized endoscopy
                 services like gastroscopy, colonoscopy, and endoscopic
                 ultrasound.
@@ -424,39 +433,39 @@ const HomePage: React.FC = () => {
 
         {/* Gold Sponsors */}
         <div className="w-full max-w-4xl flex flex-col items-center mb-10">
-          <h3 className="text-black font-bold text-2xl font-poppins mb-6">
+          <h3 className="text-background-primary font-bold text-2xl font-poppins mb-6">
             Gold
           </h3>
           <div className="flex flex-wrap justify-center gap-6 w-full">
-            <div className="w-40 md:w-56 h-20 md:h-24 bg-[#D9D9D9] rounded-sm" />
-            <div className="w-40 md:w-56 h-20 md:h-24 bg-[#D9D9D9] rounded-sm" />
+            <div className="w-40 md:w-56 h-20 md:h-24 bg-gray-300 rounded-sm" />
+            <div className="w-40 md:w-56 h-20 md:h-24 bg-gray-300 rounded-sm" />
           </div>
         </div>
 
         {/* Silver Sponsors */}
         <div className="w-full max-w-4xl flex flex-col items-center mb-10">
-          <h3 className="text-black font-bold text-2xl font-poppins mb-6">
+          <h3 className="text-background-primary font-bold text-2xl font-poppins mb-6">
             Silver
           </h3>
           <div className="flex flex-wrap justify-center gap-6 w-full">
-            <div className="w-40 md:w-56 h-20 md:h-24 bg-[#D9D9D9] rounded-sm" />
-            <div className="w-40 md:w-56 h-20 md:h-24 bg-[#D9D9D9] rounded-sm" />
+            <div className="w-40 md:w-56 h-20 md:h-24 bg-gray-300 rounded-sm" />
+            <div className="w-40 md:w-56 h-20 md:h-24 bg-gray-300 rounded-sm" />
           </div>
         </div>
 
         {/* Bronze Sponsors */}
         <div className="w-full max-w-4xl flex flex-col items-center mb-16">
-          <h3 className="text-black font-bold text-2xl font-poppins mb-6">
+          <h3 className="text-background-primary font-bold text-2xl font-poppins mb-6">
             Bronze
           </h3>
           <div className="flex flex-wrap justify-center gap-6 w-full mb-6">
-            <div className="w-32 md:w-48 h-16 md:h-20 bg-[#D9D9D9] rounded-sm" />
-            <div className="w-32 md:w-48 h-16 md:h-20 bg-[#D9D9D9] rounded-sm" />
-            <div className="w-32 md:w-48 h-16 md:h-20 bg-[#D9D9D9] rounded-sm" />
+            <div className="w-32 md:w-48 h-16 md:h-20 bg-gray-300 rounded-sm" />
+            <div className="w-32 md:w-48 h-16 md:h-20 bg-gray-300 rounded-sm" />
+            <div className="w-32 md:w-48 h-16 md:h-20 bg-gray-300 rounded-sm" />
           </div>
           <div className="flex flex-wrap justify-center gap-6 w-full">
-            <div className="w-32 md:w-48 h-16 md:h-20 bg-[#D9D9D9] rounded-sm" />
-            <div className="w-32 md:w-48 h-16 md:h-20 bg-[#D9D9D9] rounded-sm" />
+            <div className="w-32 md:w-48 h-16 md:h-20 bg-gray-300 rounded-sm" />
+            <div className="w-32 md:w-48 h-16 md:h-20 bg-gray-300 rounded-sm" />
           </div>
         </div>
       </section>
