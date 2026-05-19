@@ -172,4 +172,4 @@ dist
 *.ntvs* # Node.js Tools for Visual Studio
 *.njsproj              # Node.js project file
 *.sln                  # Visual Studio Solution files
-.ipynb_checkpoints/    # Jupyter Notebook autosaves 
+**/.ipynb_checkpoints/ # Jupyter Notebook autosaves 
