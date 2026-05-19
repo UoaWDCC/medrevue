@@ -40,8 +40,31 @@ const CardStack = () => {
 
       // Set initial position
       gsap.set(cardsArray, {
+        position: 'absolute',
         zIndex: (i: number) => cardsArray.length - i,
         y: (i: number) => 12 * i,
+        top: '50%',
+        left: '50%',
+        xPercent: -50,
+        yPercent: -50,
+      });
+
+      // automatic drop down animation
+      gsap.from(cardsArray, {
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top top',
+          end: `+=${cards.length * window.innerHeight} top`,
+          toggleActions: 'restart none none none',
+        },
+        y: -window.innerHeight,
+        opacity: 0,
+        duration: 1,
+        ease: 'power2.out',
+        stagger: {
+          each: 0.15,
+          from: 'end',
+        },
       });
 
       // Set scroll animation
@@ -54,6 +77,8 @@ const CardStack = () => {
           pin: true,
         },
       });
+
+      tl.to({}, { duration: 0.5 });
 
       // Set animation for each card
       cardsArray.map((card) => {
@@ -75,7 +100,9 @@ const CardStack = () => {
       ref={containerRef}
     >
       {cards.map((card) => (
-        <PastShowCard key={card.year} {...card} />
+        <div key={card.year} className="card">
+          <PastShowCard key={card.year} {...card} />
+        </div>
       ))}
     </div>
   );

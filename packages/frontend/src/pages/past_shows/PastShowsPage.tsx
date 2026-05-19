@@ -18,7 +18,7 @@ export default function PastShowsPage() {
   };
 
   return (
-    <div className="overflow-x-hidden">
+    <div>
       <section className="bg-[var(--colour-background-primary)] w-screen h-[100vh] flex flex-col justify-center items-center">
         <h1 className="font-bold text-[56px] pb-5 text-[var(--colour-background-secondary)]">
           Our 2026 Show
