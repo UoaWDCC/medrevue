@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import medrevueLogo from '../../assets/medrevuelogo.png';
-
-const navLinkClass =
-  'font-inter font-semibold text-base text-[var(--colour-background-secondary)] no-underline transition-colors duration-200 hover:text-[var(--colour-secondary-darker)]';
+import './styles.css';
 
 export const Menu: React.FC = () => {
   const location = useLocation();
@@ -17,25 +15,18 @@ export const Menu: React.FC = () => {
 
   return (
     <header
-      className={`flex items-center h-20 w-full px-10 z-50 bg-[var(--colour-background-primary)] ${
+      className={`menu-header ${
         isHomePage ? 'absolute top-0 left-0' : 'relative'
       } ${open ? 'lg:static fixed top-0 left-0' : ''}`}
     >
-      {/* Logo + wordmark */}
-      <Link
-        to="/"
-        className="flex items-center gap-3 no-underline flex-shrink-0"
-      >
+      <Link to="/" className="menu-logo-link">
         <img src={medrevueLogo} alt="MedRevue logo" className="h-10 w-auto" />
-        <span className="font-inter font-bold text-2xl text-[var(--colour-background-secondary)]">
-          MedRevue
-        </span>
+        <span className="menu-logo-text">MedRevue</span>
       </Link>
 
-      {/* Mobile hamburger */}
       <button
         type="button"
-        className={`lg:hidden ml-auto text-[var(--colour-background-secondary)] z-60 ${
+        className={`menu-hamburger ${
           open ? 'absolute top-6 right-10' : 'relative'
         }`}
         onClick={() => setOpen((o) => !o)}
@@ -78,46 +69,29 @@ export const Menu: React.FC = () => {
         )}
       </button>
 
-      {/* Nav links + action buttons */}
-      <nav
-        className={`${
-          open ? 'flex' : 'hidden'
-        } fixed top-0 left-0 h-screen w-screen bg-[rgba(0,0,0,0.95)] flex-col items-center justify-center gap-8 z-50
-          lg:static lg:flex lg:flex-row lg:h-auto lg:w-auto lg:bg-transparent
-          lg:ml-auto lg:items-center lg:gap-8`}
-      >
-        <Link to="/" className={navLinkClass}>
+      <nav className={`${open ? 'flex' : 'hidden'} menu-nav`}>
+        <Link to="/" className="menu-nav-link">
           Home
         </Link>
-        <Link to="/show" className={navLinkClass}>
+        <Link to="/show" className="menu-nav-link">
           2025 Show
         </Link>
-        <Link to="/sponsors" className={navLinkClass}>
+        <Link to="/sponsors" className="menu-nav-link">
           Sponsors
         </Link>
         <a
           href="https://fundraise.msf.org.au/fundraisers/aucklandmedicalrevue/auckland-medical-revue?utm_source=qr&utm_medium=print"
           target="_blank"
           rel="noopener noreferrer"
-          className={navLinkClass}
+          className="menu-nav-link"
         >
           Donate
         </a>
-
-        {/* Sponsor Us — filled pill */}
-        <Link
-          to="/sponsors"
-          className="font-inter font-bold text-base text-[var(--colour-background-primary)] bg-[var(--colour-background-secondary)] rounded-full px-5 py-2 no-underline transition-colors duration-200 hover:bg-[var(--colour-secondary-darker)]"
-        >
+        <Link to="/sponsors" className="menu-btn-filled">
           Sponsor Us
         </Link>
-
-        {/* Order Tickets — outlined pill */}
         {location.pathname !== '/buy' && (
-          <Link
-            to="#"
-            className="font-inter font-bold text-base text-[var(--colour-background-secondary)] border-2 border-[var(--colour-background-secondary)] rounded-full px-5 py-2 no-underline transition-colors duration-200 hover:bg-[var(--colour-background-secondary)] hover:text-[var(--colour-background-primary)]"
-          >
+          <Link to="#" className="menu-btn-outlined">
             Order Tickets
           </Link>
         )}
