@@ -218,7 +218,7 @@ const HomePage: React.FC = () => {
           />
 
           {/* Left: Text content */}
-          <div className="flex flex-col items-center text-center md:items-start md:text-left">
+          <div className="relative z-10 flex-1 flex flex-col gap-6 items-center justify-center text-center md:items-start md:justify-start md:text-left">
             <h1
               ref={headerSlideRef}
               className="text-left text-background-secondary font-bold font-poppins text-[clamp(3.5rem,8vw,6rem)] leading-[1.1] md:leading-[0.9]"
