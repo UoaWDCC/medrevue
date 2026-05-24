@@ -206,7 +206,7 @@ const HomePage: React.FC = () => {
           />
           <div
             aria-hidden="true"
-            className="absolute bottom-[150px] right-[400px] w-[300px] h-[300px] bg-background-secondary rounded-full opacity-75"
+            className="hidden lg:block absolute bottom-[150px] right-[400px] w-[300px] h-[300px] bg-background-secondary rounded-full opacity-75"
           />
           <div
             aria-hidden="true"
@@ -214,11 +214,11 @@ const HomePage: React.FC = () => {
           />
           <div
             aria-hidden="true"
-            className="absolute right-[180px] top-[400px] w-[50px] h-[50px] bg-background-secondary rounded-full opacity-90"
+            className=" hidden lg:block absolute right-[180px] top-[400px] w-[50px] h-[50px] bg-background-secondary rounded-full opacity-90"
           />
 
           {/* Left: Text content */}
-          <div className="relative z-10 flex-1 flex flex-col gap-6">
+          <div className="flex flex-col items-center text-center md:items-start md:text-left">
             <h1
               ref={headerSlideRef}
               className="text-left text-background-secondary font-bold font-poppins text-[clamp(3.5rem,8vw,6rem)] leading-[1.1] md:leading-[0.9]"
@@ -231,7 +231,7 @@ const HomePage: React.FC = () => {
               <span className="text-theme-pink">26</span>
             </h1>
 
-            <div className="text-text-light font-inter font-semibold text-[clamp(0.9rem,1.5vw,1.1rem)] space-y-1">
+            <div className="text-text-light font-inter font-semibold text-[clamp(0.9rem,1.5vw,1.1rem)] space-y-1 text-center md:text-left">
               <p>A University of Auckland non-profit production.</p>
               <p>13 Aug - 15 Aug 2026</p>
               <p>SkyCity Theatre</p>
