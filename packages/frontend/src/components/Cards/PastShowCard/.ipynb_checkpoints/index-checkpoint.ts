@@ -1,2 +1,2 @@
-export { default } from "./PastShowCard";
-export type { PastShowCardProps } from "./PastShowCard";
+export { default } from '../PastShowCard';
+export type { PastShowCardProps } from '../PastShowCard';

@@ -154,6 +154,17 @@ export const Sponsors: React.FC = () => {
         </p>
         <div className="flex flex-col items-center gap-7 md:mb-15 mb-10">
           <a
+            href="https://institute.medworld.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src={medworldLogo}
+              alt="MedWorld Institute"
+              className="md:h-20 h-10 object-contain bg-white"
+            />
+          </a>
+          <a
             href="https://blstringer.co.nz/"
             target="_blank"
             rel="noopener noreferrer"
@@ -178,5 +189,101 @@ export const Sponsors: React.FC = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+type Sponsor = {
+  name: string;
+  logo: string;
+  href: string;
+};
+
+const sponsors: Sponsor[] = [
+  {
+    name: 'We Getting to the Guts of it',
+    logo: weLogo,
+    href: 'https://waitemataendoscopy.co.nz',
+  },
+  {
+    name: 'RESPMED',
+    logo: respmedLogo,
+    href: 'https://www.resmed.com/en-us/',
+  },
+  {
+    name: 'Tamaki Health',
+    logo: tamakihealthLogo,
+    href: 'https://www.tamakihealth.co.nz',
+  },
+  {
+    name: 'Pizza Club',
+    logo: pizzaclubLogo,
+    href: 'https://pizzaclub.co.nz',
+  },
+  {
+    name: 'MPS',
+    logo: mpsLogo,
+    href: 'https://www.medicalprotection.org',
+  },
+  {
+    name: 'One Health',
+    logo: oneHealthLogo,
+    href: 'https://www.onehealth.co.nz',
+  },
+  {
+    name: 'ANZCA',
+    logo: anzcaLogo,
+    href: 'https://www.anzca.edu.au',
+  },
+  {
+    name: 'After',
+    logo: afterLogo,
+    href: 'https://www.after.net.nz',
+  },
+  {
+    name: 'BL Stringer',
+    logo: BLStringerLogo,
+    href: 'https://blstringer.co.nz/',
+  },
+  {
+    name: 'The Coffee Club',
+    logo: coffeeClubLogo,
+    href: 'https://www.thecoffeeclub.co.nz/',
+  },
+];
+
+export const PreviousSponsors: React.FC = () => {
+  const Logo = ({ src, alt }: { src: string; alt: string }) => (
+    <div className="h-[240px] w-full flex items-center justify-center">
+      <img
+        src={src}
+        alt={alt}
+        className="h-full w-auto max-w-[220px] object-contain"
+      />
+    </div>
+  );
+
+  return (
+    <section
+      className="
+        w-full
+        px-4 sm:px-8 lg:px-16
+        py-10
+        flex flex-wrap justify-center
+        gap-x-6 sm:gap-x-12 lg:gap-x-24
+        gap-y-10
+      "
+    >
+      {sponsors.map((sponsor) => (
+        <a
+          key={sponsor.name}
+          className="w-[220px]"
+          href={sponsor.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Logo src={sponsor.logo} alt={sponsor.name} />
+        </a>
+      ))}
+    </section>
   );
 };

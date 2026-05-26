@@ -42,9 +42,7 @@ const CurrentShowCard = ({
       {/* RHS content */}
       <div className="flex items-center gap-10 w-full py-12 px-12">
         {/* Poster */}
-        <div
-          className="w-[400px] h-[560px] rounded-[20px] bg-[var(--colour-background-white)] overflow-hidden flex-shrink-0 border-8 border-[var(--colour-text-brown)]"
-        >
+        <div className="w-[400px] h-[560px] rounded-[20px] bg-[var(--colour-background-white)] overflow-hidden flex-shrink-0 border-8 border-[var(--colour-text-brown)]">
           <img
             src={posterUrl}
             alt={title}

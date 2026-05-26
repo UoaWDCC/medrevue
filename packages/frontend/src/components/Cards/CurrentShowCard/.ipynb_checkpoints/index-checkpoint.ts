@@ -1,2 +1,2 @@
-export {default} from './CurrentShowCard'
-export type { CurrentShowCardProps } from "./CurrentShowCard";
+export { default } from '../CurrentShowCard';
+export type { CurrentShowCardProps } from '../CurrentShowCard';

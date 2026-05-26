@@ -15,7 +15,8 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
 }) => {
   return (
     /*container for entire card*/
-    <div className="card absolute flex items-center rounded-[42px] w-[800px] h-[353.69px]
+    <div
+      className="card absolute flex items-center rounded-[42px] w-[800px] h-[353.69px]
          text-[var(--colour-background-secondary)]
          shadow-[0_4px_20px_rgba(0,0,0,0.15)]
          hover:shadow-[0_8px_40px_rgba(0,0,0,0.35)]
