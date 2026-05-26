@@ -11,19 +11,19 @@ const CardStack = () => {
       year: '2024',
       title: 'Grease',
       posterUrl: 'hi',
-      galleryUrls: ['placeholder.png', 'placeholder.png', 'placeholder.png'],
+      galleryUrls: ['placeholder1.png', 'placeholder2.png', 'placeholder3.png'],
     },
     {
       year: '2023',
       title: 'Wicked',
       posterUrl: 'bye',
-      galleryUrls: ['placeholder.png', 'placeholder.png', 'placeholder.png'],
+      galleryUrls: ['placeholder1.png', 'placeholder2.png', 'placeholder3.png'],
     },
     {
       year: '2022',
       title: 'Hamilton',
       posterUrl: 'goodnight',
-      galleryUrls: ['placeholder.png', 'placeholder.png', 'placeholder.png'],
+      galleryUrls: ['placeholder1.png', 'placeholder2.png', 'placeholder3.png'],
     },
   ];
 
@@ -49,45 +49,45 @@ const CardStack = () => {
         yPercent: -50,
       });
 
-      // automatic drop down animation
-      gsap.from(cardsArray, {
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: `+=${cards.length * window.innerHeight} top`,
-          toggleActions: 'restart none none none',
-        },
-        y: -window.innerHeight,
-        opacity: 0,
-        duration: 1,
-        ease: 'power2.out',
-        stagger: {
-          each: 0.15,
-          from: 'end',
-        },
-      });
+      // // automatic drop down animation
+      // gsap.from(cardsArray, {
+      //   scrollTrigger: {
+      //     trigger: containerRef.current,
+      //     start: "top top",
+      //     end: `+=${cards.length * window.innerHeight} top`,
+      //     toggleActions: "restart none none none",
+      //   },
+      //   y: -window.innerHeight,
+      //   opacity: 0,
+      //   duration: 1,
+      //   ease: "power2.out",
+      //   stagger: {
+      //     each: 0.15,
+      //     from: "end",
+      //   },
+      //   onComplete: setupScrollAnimation,
+      // });
 
-      // Set scroll animation
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',
-          end: `+=${cards.length * window.innerHeight} top`,
+          end: `+=${(cards.length - 1) * window.innerHeight} top`,
           scrub: 1,
           pin: true,
+          markers: true,
         },
       });
 
-      tl.to({}, { duration: 0.5 });
-
       // Set animation for each card
-      cardsArray.map((card) => {
+      const animatedCards = cardsArray.slice(0, -1);
+      for (const card of animatedCards) {
         tl.to(card, {
           y: -window.innerHeight,
           opacity: 0,
-          ease: 'power.in',
+          ease: 'none',
         });
-      });
+      }
     }, containerRef);
 
     // Clean up on unmount (returns a function reference insteads of running it)
@@ -96,11 +96,11 @@ const CardStack = () => {
 
   return (
     <div
-      className="w-full h-screen flex items-center justify-center"
+      className="w-screen h-screen flex items-center justify-center"
       ref={containerRef}
     >
       {cards.map((card) => (
-        <div key={card.year} className="card">
+        <div key={card.year}>
           <PastShowCard key={card.year} {...card} />
         </div>
       ))}

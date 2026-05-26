@@ -198,10 +198,10 @@
     "@biomejs/cli-win32-arm64" "1.9.4"
     "@biomejs/cli-win32-x64" "1.9.4"
 
-"@biomejs/cli-darwin-arm64@1.9.4":
+"@biomejs/cli-win32-arm64@1.9.4":
   version "1.9.4"
-  resolved "https://registry.npmjs.org/@biomejs/cli-darwin-arm64/-/cli-darwin-arm64-1.9.4.tgz"
-  integrity sha512-bFBsPWrNvkdKrNCYeAp+xo2HecOGPAy9WyNyB/jKnnedgzl4W4Hb9ZMzYNbf8dMCGmUdSavlYHiR01QaYR58cw==
+  resolved "https://registry.npmjs.org/@biomejs/cli-win32-arm64/-/cli-win32-arm64-1.9.4.tgz"
+  integrity sha512-tlbhLk+WXZmgwoIKwHIHEBZUwxml7bRJgk0X2sPyNR3S93cdRq6XulAZRQJ17FYGGzWne0fgrXBKpl7l4M87Hg==
 
 "@commitlint/cli@^19.8.0":
   version "19.8.1"
@@ -393,10 +393,10 @@
   resolved "https://registry.npmjs.org/@csstools/css-tokenizer/-/css-tokenizer-3.0.4.tgz"
   integrity sha512-Vd/9EVDiu6PPJt9yAh6roZP6El1xHrdvIVGjyBsHR0RYwNHgL7FJPyIIW4fANJNG6FtyZfvlRPpFI4ZM/lubvw==
 
-"@esbuild/darwin-arm64@0.25.5":
+"@esbuild/win32-arm64@0.25.5":
   version "0.25.5"
-  resolved "https://registry.npmjs.org/@esbuild/darwin-arm64/-/darwin-arm64-0.25.5.tgz"
-  integrity sha512-GtaBgammVvdF7aPIgH2jxMDdivezgFu6iKpmT+48+F8Hhg5J/sfnDieg0aeG/jfSvkYQU2/pceFPDKlqZzwnfQ==
+  resolved "https://registry.npmjs.org/@esbuild/win32-arm64/-/win32-arm64-0.25.5.tgz"
+  integrity sha512-O2S7SNZzdcFG7eFKgvwUEZ2VG9D/sn/eIiz8XRZ1Q/DO5a3s76Xv0mdBzVM5j5R639lXQmPmSo0iRpHqUUrsxw==
 
 "@eslint-community/eslint-utils@^4.2.0", "@eslint-community/eslint-utils@^4.7.0":
   version "4.7.0"
@@ -574,7 +574,7 @@
   dependencies:
     "@types/mdx" "^2.0.0"
 
-"@medrevue/backend@file:/Users/dillonmok/Sites/medrevue/packages/backend":
+"@medrevue/backend@file:C:\\Users\\rayi2\\medrevue\\packages\\backend":
   version "0.0.1"
   resolved "file:packages/backend"
   dependencies:
@@ -592,7 +592,7 @@
     socket.io "^4.8.1"
     stripe "^18.4.0"
 
-"@medrevue/frontend@file:/Users/dillonmok/Sites/medrevue/packages/frontend":
+"@medrevue/frontend@file:C:\\Users\\rayi2\\medrevue\\packages\\frontend":
   version "0.0.1"
   resolved "file:packages/frontend"
   dependencies:
@@ -603,7 +603,7 @@
     "@tailwindcss/vite" "^4.0.17"
     axios "^1.9.0"
     clsx "^2.1.1"
-    gsap "^3.13.0"
+    gsap "^3.15.0"
     qr-scanner "^1.4.2"
     react "^19.0.0"
     react-dom "^19.0.0"
@@ -614,7 +614,7 @@
     tailwind-merge "^3.2.0"
     tailwindcss "^4.0.17"
 
-"@medrevue/types@1.0.0", "@medrevue/types@file:/Users/dillonmok/Sites/medrevue/packages/types":
+"@medrevue/types@1.0.0", "@medrevue/types@file:C:\\Users\\rayi2\\medrevue\\packages\\types":
   version "1.0.0"
   resolved "file:packages/types"
 
@@ -721,10 +721,10 @@
     estree-walker "^2.0.2"
     picomatch "^4.0.2"
 
-"@rollup/rollup-darwin-arm64@4.41.1":
+"@rollup/rollup-win32-arm64-msvc@4.41.1":
   version "4.41.1"
-  resolved "https://registry.npmjs.org/@rollup/rollup-darwin-arm64/-/rollup-darwin-arm64-4.41.1.tgz"
-  integrity sha512-5afxvwszzdulsU2w8JKWwY8/sJOLPzf0e1bFuvcW5h9zsEg+RQAojdW0ux2zyYAz7R8HvvzKCjLNJhVq965U7w==
+  resolved "https://registry.npmjs.org/@rollup/rollup-win32-arm64-msvc/-/rollup-win32-arm64-msvc-4.41.1.tgz"
+  integrity sha512-lZkCxIrjlJlMt1dLO/FbpZbzt6J/A8p4DnqzSa4PWqPEUUUnzXLeki/iyPLfV0BmHItlYgHUqJe+3KiyydmiNQ==
 
 "@socket.io/component-emitter@~3.1.0":
   version "3.1.2"
@@ -1006,10 +1006,10 @@
     source-map-js "^1.2.1"
     tailwindcss "4.1.8"
 
-"@tailwindcss/oxide-darwin-arm64@4.1.8":
+"@tailwindcss/oxide-win32-arm64-msvc@4.1.8":
   version "4.1.8"
-  resolved "https://registry.npmjs.org/@tailwindcss/oxide-darwin-arm64/-/oxide-darwin-arm64-4.1.8.tgz"
-  integrity sha512-RdRvedGsT0vwVVDztvyXhKpsU2ark/BjgG0huo4+2BluxdXo8NDgzl77qh0T1nUxmM11eXwR8jA39ibvSTbi7A==
+  resolved "https://registry.npmjs.org/@tailwindcss/oxide-win32-arm64-msvc/-/oxide-win32-arm64-msvc-4.1.8.tgz"
+  integrity sha512-7GmYk1n28teDHUjPlIx4Z6Z4hHEgvP5ZW2QS9ygnDAdI/myh3HTHjDqtSqgu1BpRoI4OiLx+fThAyA1JePoENA==
 
 "@tailwindcss/oxide@4.1.8":
   version "4.1.8"
@@ -3096,10 +3096,10 @@ graphemer@^1.4.0:
   resolved "https://registry.npmjs.org/graphemer/-/graphemer-1.4.0.tgz"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
 
-gsap@^3.13.0:
-  version "3.13.0"
-  resolved "https://registry.npmjs.org/gsap/-/gsap-3.13.0.tgz"
-  integrity sha512-QL7MJ2WMjm1PHWsoFrAQH/J8wUeqZvMtHO58qdekHpCfhvhSL4gSiz6vJf5EeMP0LOn3ZCprL2ki/gjED8ghVw==
+gsap@^3.15.0:
+  version "3.15.0"
+  resolved "https://registry.npmjs.org/gsap/-/gsap-3.15.0.tgz"
+  integrity sha512-dMW4CWBTUK1AEEDeZc1g4xpPGIrSf9fJF960qbTZmN/QwZIWY5wgliS6JWl9/25fpTGJrMRtSjGtOmPnfjZB+A==
 
 has-flag@^3.0.0:
   version "3.0.0"
@@ -3520,10 +3520,10 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-lightningcss-darwin-arm64@1.30.1:
+lightningcss-win32-arm64-msvc@1.30.1:
   version "1.30.1"
-  resolved "https://registry.npmjs.org/lightningcss-darwin-arm64/-/lightningcss-darwin-arm64-1.30.1.tgz"
-  integrity sha512-c8JK7hyE65X1MHMN+Viq9n11RRC7hgin3HhYKhrMyaXflk5GVplZ60IxyoVtzILeKr+xAJwg6zK6sjTBJ0FKYQ==
+  resolved "https://registry.npmjs.org/lightningcss-win32-arm64-msvc/-/lightningcss-win32-arm64-msvc-1.30.1.tgz"
+  integrity sha512-mSL4rqPi4iXq5YVqzSsJgMVFENoa4nGTT/GjO2c0Yl9OuQfPsIfncvLrEW6RbbB24WtZ3xP/2CCmI3tNkNV4oA==
 
 lightningcss@^1.21.0, lightningcss@1.30.1:
   version "1.30.1"
