@@ -2,32 +2,6 @@ import type React from 'react';
 import { FaFacebookF, FaInstagram } from 'react-icons/fa';
 import { FaTiktok } from 'react-icons/fa6';
 
-/** * BRAND CONFIGURATION
- * Maps directly to the Tailwind v4 keys defined in your index.css theme.
- * Tailwind automatically handles the variable mapping behind the scenes.
- */
-const THEME = {
-  colors: {
-    bg: 'bg-background-primary',
-    textPrimary: 'text-background-white',
-    accent: 'text-background-secondary',
-    accentBg: 'bg-background-secondary',
-    hover: 'hover:text-text-light',
-  },
-  fonts: {
-    main: 'font-sans', // Automatically uses your custom Poppins definition
-  },
-  spacing: {
-    padding: 'pt-10 pb-18 px-6 sm:px-10',
-    lineMargin: 'mb-18',
-  },
-  icons: {
-    fb: 24,
-    ig: 28,
-    tt: 24,
-  },
-};
-
 interface FooterProps {
   className?: string;
 }
@@ -35,12 +9,12 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ className }) => {
   return (
     <footer
-      className={`w-full ${THEME.spacing.padding} ${THEME.colors.bg} ${THEME.colors.textPrimary} ${THEME.fonts.main} ${className}`}
+      className={`w-full pt-10 pb-18 px-6 sm:px-10 bg-background-primary text-background-white font-sans ${className}`}
     >
       <div className="mx-auto max-w-7xl">
         {/* Decorative Top Line */}
         <div
-          className={`h-[1px] w-full ${THEME.colors.accentBg} ${THEME.spacing.lineMargin}`}
+          className="h-[1px] w-full bg-background-secondary mb-18"
           aria-hidden="true"
         />
 
@@ -56,9 +30,9 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
               onClick={() =>
                 window.open('mailto:aucklandmedicalrevue@gmail.com')
               }
-              className={`${THEME.colors.accent} text-sm md:text-base font-normal
+              className="text-background-secondary text-sm md:text-base font-normal
                 bg-transparent p-0 border-none cursor-pointer
-                transition-colors duration-300 ${THEME.colors.hover}`}
+                transition-colors duration-300 hover:text-text-light"
             >
               Contact Us
             </button>
@@ -66,9 +40,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
 
           {/* 2. Middle Column: Copyright */}
           <div className="text-center order-last md:order-none">
-            <p
-              className={`${THEME.colors.accent} text-sm md:text-base font-normal whitespace-nowrap`}
-            >
+            <p className="text-background-secondary text-sm md:text-base font-normal whitespace-nowrap">
               Copyright © 2026 University of Auckland MedRevue
             </p>
           </div>
@@ -80,27 +52,27 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
-              className={`${THEME.colors.accent} transition-all hover:scale-110 ${THEME.colors.hover}`}
+              className="text-background-secondary transition-all hover:scale-110 hover:text-text-light"
             >
-              <FaFacebookF size={THEME.icons.fb} />
+              <FaFacebookF size={24} />
             </a>
             <a
               href="https://www.instagram.com/aucklandmedrevue"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className={`${THEME.colors.accent} transition-all hover:scale-110 ${THEME.colors.hover}`}
+              className="text-background-secondary transition-all hover:scale-110 hover:text-text-light"
             >
-              <FaInstagram size={THEME.icons.ig} />
+              <FaInstagram size={28} />
             </a>
             <a
               href="https://www.tiktok.com/@auckland.med.revue"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="TikTok"
-              className={`${THEME.colors.accent} transition-all hover:scale-110 ${THEME.colors.hover}`}
+              className="text-background-secondary transition-all hover:scale-110 hover:text-text-light"
             >
-              <FaTiktok size={THEME.icons.tt} />
+              <FaTiktok size={24} />
             </a>
           </div>
         </div>
