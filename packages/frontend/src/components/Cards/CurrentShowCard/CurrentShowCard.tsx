@@ -1,3 +1,6 @@
+import gsap from 'gsap';
+import { useEffect, useRef } from 'react';
+
 export interface CurrentShowCardProps {
   year: string;
   title: string;
@@ -18,9 +21,24 @@ export default function CurrentShowCard({
   doors,
   location,
 }: CurrentShowCardProps) {
+  const cardRef = useRef<HTMLImageElement | HTMLDivElement | null>(null);
   const detailLines = [dates, time, doors, location];
+  // Effect for background image zoom on opening
+  useEffect(() => {
+    if (cardRef.current) {
+      gsap.to(cardRef.current, {
+        scale: 1.05,
+        duration: 1,
+        ease: 'power1.out',
+      });
+    }
+  }, []);
+
   return (
-    <div className="w-full md:max-w-[720px] lg:max-w-[1000px] xl:max-w-[1200px] mx-auto">
+    <div
+      ref={cardRef as React.RefObject<HTMLImageElement>}
+      className="w-full md:max-w-[720px] lg:max-w-[1000px] xl:max-w-[1200px] mx-auto"
+    >
       {/*
         Outer card:
         - Mobile: stacked column, free height
@@ -68,18 +86,19 @@ export default function CurrentShowCard({
               flex-shrink-0 rounded-2xl overflow-hidden
               shadow-[4px_6px_20px_rgba(0,0,0,0.22)]
               border-[5px] lg:border-[6px] border-[var(--color-text-brown)]
-              w-[140px] [aspect-ratio:7/10]
-              md:w-auto md:h-full
+              w-[140px] md:w-auto
+              [aspect-ratio:7/10]
+              md:h-full
             "
           >
             {posterUrl ? (
               <img
                 src={posterUrl}
                 alt={`${title} poster`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-fill"
               />
             ) : (
-              <div className="w-full h-full bg-[black]" aria-hidden="true" />
+              <div className="w-full h-full bg-[black]" />
             )}
           </div>
           {/* ── Right content ── */}
