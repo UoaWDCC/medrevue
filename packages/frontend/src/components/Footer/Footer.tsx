@@ -3,19 +3,19 @@ import { FaFacebookF, FaInstagram } from 'react-icons/fa';
 import { FaTiktok } from 'react-icons/fa6';
 
 /** * BRAND CONFIGURATION
- * Uses CSS variables with hex fallbacks to ensure compatibility
- * with the upcoming global stylesheet.
+ * Maps directly to the Tailwind v4 keys defined in your index.css theme.
+ * Tailwind automatically handles the variable mapping behind the scenes.
  */
 const THEME = {
   colors: {
-    bg: 'bg-[var(--colour-background-primary,#000000)]',
-    textPrimary: 'text-[var(--colour-background-white,#FFFFFF)]',
-    accent: 'text-[var(--colour-background-secondary,#F2d558)]',
-    accentBg: 'bg-[var(--colour-background-secondary,#F2d558)]',
-    hover: 'hover:text-[var(--colour-text-light,#fdf7e4)]',
+    bg: 'bg-background-primary',
+    textPrimary: 'text-background-white',
+    accent: 'text-background-secondary',
+    accentBg: 'bg-background-secondary',
+    hover: 'hover:text-text-light',
   },
   fonts: {
-    main: 'font-[var(--font-sans,opensans)]',
+    main: 'font-sans', // Automatically uses your custom Poppins definition
   },
   spacing: {
     padding: 'pt-10 pb-18 px-6 sm:px-10',
@@ -64,7 +64,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
             </button>
           </div>
 
-          {/* 2. Middle Column: Copyright - Reordered to bottom on mobile */}
+          {/* 2. Middle Column: Copyright */}
           <div className="text-center order-last md:order-none">
             <p
               className={`${THEME.colors.accent} text-sm md:text-base font-normal whitespace-nowrap`}
