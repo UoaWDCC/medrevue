@@ -257,7 +257,7 @@ export const PreviousSponsors: React.FC = () => {
       <img
         src={src}
         alt={alt}
-        className="h-full w-auto max-w-[220px] object-contain"
+        className="h-full w-auto mb:max-w-[220px] object-contain"
       />
     </div>
   );
@@ -270,7 +270,7 @@ export const PreviousSponsors: React.FC = () => {
         py-10
         flex flex-wrap justify-center
         gap-x-6 sm:gap-x-12 lg:gap-x-24
-        gap-y-10
+        gap-y-4 sm:gap-y-6 lg:gap-y-10
       "
     >
       {sponsors.map((sponsor) => (

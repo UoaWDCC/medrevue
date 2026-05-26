@@ -51,13 +51,13 @@ const ImpactCard: React.FC<ImpactCardProps> = ({
   iconAlt,
 }) => {
   return (
-    <div className="shadow-[0_4px_8px_rgba(0,0,0,0.25)] bg-background-white rounded-[32px] p-6 md:p-10">
-      <h2 className="flex items-center gap-3 text-[40px] leading-none font-semibold font-sans text-black mb-4">
-        <img src={icon} alt={iconAlt} className="w-13.5 h-13.5" />
+    <div className="shadow-[0_4px_8px_rgba(0,0,0,0.25)] bg-background-white rounded-[32px] p-4 md:p-10">
+      <h2 className="flex items-center gap-3 text-[clamp(1.25rem,3vw,2.5rem)] leading-none font-semibold font-sans text-black mb-4">
+        <img src={icon} alt={iconAlt} className="w-8 h-8 md:w-13 md:h-13" />
         {title}
       </h2>
 
-      <p className="block text-[24px] leading-[124%] font-sans text-black">
+      <p className="text-[clamp(1rem,2vw,1.5rem)] leading-[1.4] font-sans text-black">
         {description}
       </p>
     </div>
@@ -109,11 +109,11 @@ type StatCardProps = {
 const StatCard: React.FC<StatCardProps> = ({ value, label }) => {
   return (
     <div className="px-4 md:px-8 border-l-4 border-text-brown">
-      <p className="block text-[60px] font-bold leading-[124%] font-sans text-text-grey mb-3">
+      <p className="text-[clamp(2rem,6vw,3.75rem)] font-bold leading-[1.1] font-sans text-text-grey mb-3">
         {value}
       </p>
 
-      <p className="block text-[20px] font-semibold leading-[124%] font-sans text-text-light-grey">
+      <p className="text-[clamp(0.875rem,2vw,1.25rem)] font-semibold leading-[1.3] font-sans text-text-light-grey">
         {label}
       </p>
     </div>
