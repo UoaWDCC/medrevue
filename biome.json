@@ -8,7 +8,13 @@
       "**/coverage/**",
       "**/dist/**",
       "legacy/**",
-      "packages/backend/public/frontend/**"
+      "packages/backend/public/frontend/**",
+      "dist",
+      "**/.next",
+      "**/node_modules",
+      "**/next-env.d.ts",
+      "packages/cms/src/payload-types.ts",
+      "packages/cms/src/app/(payload)/**"
     ]
   },
   "formatter": {
