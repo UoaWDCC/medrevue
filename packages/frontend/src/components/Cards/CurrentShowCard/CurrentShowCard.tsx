@@ -95,7 +95,7 @@ export default function CurrentShowCard({
               <img
                 src={posterUrl}
                 alt={`${title} poster`}
-                className="w-full h-full object-fill"
+                className="w-full h-full object-fill scale-105"
               />
             ) : (
               <div className="w-full h-full bg-[black]" />
