@@ -103,7 +103,7 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
                     <img
                       src={url}
                       alt={`${title} gallery ${i + 1}`}
-                      className="w-full h-full block object-cover object-center"
+                      className="min-w-full min-h-full w-full h-full block object-cover object-center flex-shrink-0 scale-230"
                     />
                   </div>
                 ))}

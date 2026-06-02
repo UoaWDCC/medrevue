@@ -79,7 +79,7 @@ const CardStack = () => {
           end: `+=${(cards.length - 1) * window.innerHeight} top`,
           scrub: 1,
           pin: true,
-          markers: true,
+          markers: false,
         },
       });
 
@@ -103,6 +103,9 @@ const CardStack = () => {
       className="w-screen h-screen flex items-center justify-center"
       ref={containerRef}
     >
+      <h1 className="font-bold text-[56px] text-[#000000] text-center absolute top-10 select-none">
+        Past Shows
+      </h1>
       {cards.map((card) => (
         <div key={card.year}>
           <PastShowCard key={card.year} {...card} />
