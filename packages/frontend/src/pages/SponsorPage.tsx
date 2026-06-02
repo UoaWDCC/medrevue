@@ -15,8 +15,8 @@ export const SponsorPage: React.FC = () => {
           <p className="text-[clamp(1.25rem,4vw,2.5rem)] italic font-[Open_Sans] text-text-light max-w-3xl">
             Partner with Auckland Medical Revue
           </p>
-          <div className="bg-background-white rounded-[46px] p-6 md:p-10 max-w-1xl my-10 mx-7">
-            <p className="text-[clamp(1rem,2vw,1.5rem)] text-black font-normal leading-[170%] font-sans mb-8">
+          <div className="bg-background-white rounded-[46px] p-4 sm:p-6 md:p-10 max-w-1xl my-6 sm:my-10 mx-2 sm:mx-7">
+            <p className="text-[clamp(0.875rem,2vw,1.5rem)] text-black font-normal leading-[170%] font-sans mb-8">
               Auckland Medical Revue is one of New Zealand’s largest student-led
               theatrical productions, created and performed by medical students
               from the University of Auckland. Each year, we bring together
@@ -24,7 +24,7 @@ export const SponsorPage: React.FC = () => {
               performance, creativity, and purpose.
             </p>
 
-            <p className="text-[clamp(1rem,2vw,1.5rem)] text-black font-normal leading-[170%] font-sans mb-8">
+            <p className="text-[clamp(0.875rem,2vw,1.5rem)] text-black font-normal leading-[170%] font-sans mb-8">
               To make this production possible, we rely on the support of
               sponsors. Your partnership directly enables us to cover essential
               production costs, from venue and staging to costumes, lighting,
@@ -74,7 +74,7 @@ export const SponsorPage: React.FC = () => {
         </section>
 
         {/* Divider */}
-        <section className="bg-background-primary h-30" />
+        <section className="bg-background-primary h-15 sm:h-30" />
 
         {/* Sponsors Content */}
         <section className="bg-background-white px-4 py-3 flex flex-col items-center md:mb-20 mb-10 md:mt-15 mt-10">
@@ -86,7 +86,7 @@ export const SponsorPage: React.FC = () => {
         </section>
 
         {/* Bottom Divider */}
-        <section className="bg-background-primary h-30" />
+        <section className="bg-background-primary h-15 sm:h-30" />
       </div>
     </>
   );
