@@ -1,4 +1,5 @@
 import type React from 'react';
+import pinkCast from '../assets/medrevue-sponsorus-jazzHands.png';
 import { ImpactCards, StatCards } from '../components/SponsorUs/SponsorUs.tsx';
 // import { Link } from 'react-router';
 import { PreviousSponsors } from '../components/Sponsors/Sponsors.tsx';
@@ -8,6 +9,7 @@ export const SponsorPage: React.FC = () => {
     <>
       <div className="min-h-screen">
         {/* Hero Section */}
+
         <section className="bg-background-primary px-4 py-10 flex flex-col items-center text-center">
           <h1 className="text-[clamp(2.5rem,8vw,6rem)] leading-none font-semibold font-sans text-background-secondary mb-4 mt-8">
             Sponsor Us
@@ -15,40 +17,54 @@ export const SponsorPage: React.FC = () => {
           <p className="text-[clamp(1.25rem,4vw,2.5rem)] italic font-[Open_Sans] text-text-light max-w-3xl">
             Partner with Auckland Medical Revue
           </p>
-          <div className="bg-background-white rounded-[46px] p-4 sm:p-6 md:p-10 max-w-1xl my-6 sm:my-10 mx-2 sm:mx-7">
-            <p className="text-[clamp(0.875rem,2vw,1.5rem)] text-black font-normal leading-[170%] font-sans mb-8">
-              Auckland Medical Revue is one of New Zealand’s largest student-led
-              theatrical productions, created and performed by medical students
-              from the University of Auckland. Each year, we bring together
-              hundreds of students to deliver a high-energy show that combines
-              performance, creativity, and purpose.
-            </p>
+        </section>
 
-            <p className="text-[clamp(0.875rem,2vw,1.5rem)] text-black font-normal leading-[170%] font-sans mb-8">
-              To make this production possible, we rely on the support of
-              sponsors. Your partnership directly enables us to cover essential
-              production costs, from venue and staging to costumes, lighting,
-              and marketing.
-            </p>
+        <div className="w-full h-4 bg-background-secondary" />
 
-            <button
-              type="button"
-              onClick={() =>
-                window.open('mailto:aucklandmedicalrevue@gmail.com')
-              }
-              className="
-                order-first
-                lg:order-none
-                bg-background-secondary
-                rounded-full w-fit px-5 py-2.5
-                text-[18px] italic font-semibold font-[Inter] leading-[36px] text-black
-                no-underline transition-colors duration-300 hover:bg-secondary-darker
-              "
-            >
-              Contact Us
-            </button>
+        {/* Middle Section: About & Charity 2x2 Grid */}
+        <section className="w-full grid grid-cols-1 md:grid-cols-2 bg-background-white">
+          {/* Top Right: Pink Cast Image Placeholder */}
+          <div className="h-64 md:h-[450px] w-full order-1 overflow-hidden">
+            <img
+              src={pinkCast}
+              alt="Med Revue Cast Performance Pink"
+              className="w-full h-full object-cover scale-[1.3] object-center bg-background-primary"
+            />
+          </div>
+
+          {/* Top Left: About Med Revue Text */}
+          <div className="flex flex-col md:justify-center justify-start items-center px-4 py-8 lg:px-6 text-center order-1">
+            <div className="text-background-primary font-inter text-base md:text-lg leading-relaxed space-y-4">
+              <p>
+                Auckland Medical Revue is a student-led productions, bringing
+                together hundreds of medical students each year to create a
+                high-energy theatrical show. To make this production possible,
+                we rely on the support of sponsors. Your partnership directly
+                enables us to cover essential production costs, from venue and
+                staging to costumes, lighting, and marketing.
+              </p>
+
+              <button
+                type="button"
+                onClick={() =>
+                  window.open('mailto:aucklandmedicalrevue@gmail.com')
+                }
+                className="
+                  order-first
+                  lg:order-none
+                  bg-background-secondary
+                  rounded-full w-fit px-5 py-2.5
+                  text-[18px] italic font-semibold font-[Inter] leading-[36px] text-black
+                  no-underline transition-colors duration-300 hover:bg-secondary-darker
+                "
+              >
+                Contact Us
+              </button>
+            </div>
           </div>
         </section>
+
+        <div className="w-full h-8 sm:h-16 bg-background-primary" />
 
         <section className="bg-background-secondary px-11 py-10 grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
           <div className="bg-background-secondary p-4 md:p-8">
