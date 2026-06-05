@@ -167,9 +167,21 @@ dist
 .DS_Store
 
 # Added from past shows feature branch
-.idea                  # JetBrains (WebStorm/PyCharm) settings
-*.suo                  # Visual Studio (Old) settings
-*.ntvs* # Node.js Tools for Visual Studio
-*.njsproj              # Node.js project file
-*.sln                  # Visual Studio Solution files
-**/.ipynb_checkpoints/ # Jupyter Notebook autosaves 
+
+# JetBrains (WebStorm/PyCharm) settings
+.idea                  
+
+# Visual Studio (Old) settings
+*.suo                  
+
+# Node.js Tools for Visual Studio
+*.ntvs* 
+
+# Node.js project file
+*.njsproj              
+
+# Visual Studio Solution files
+*.sln                  
+
+# Jupyter Notebook autosaves
+**/.ipynb_checkpoints/
