@@ -53,25 +53,6 @@ const CardStack = () => {
         yPercent: -50,
       });
 
-      // // automatic drop down animation
-      // gsap.from(cardsArray, {
-      //   scrollTrigger: {
-      //     trigger: containerRef.current,
-      //     start: "top top",
-      //     end: `+=${cards.length * window.innerHeight} top`,
-      //     toggleActions: "restart none none none",
-      //   },
-      //   y: -window.innerHeight,
-      //   opacity: 0,
-      //   duration: 1,
-      //   ease: "power2.out",
-      //   stagger: {
-      //     each: 0.15,
-      //     from: "end",
-      //   },
-      //   onComplete: setupScrollAnimation,
-      // });
-
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
