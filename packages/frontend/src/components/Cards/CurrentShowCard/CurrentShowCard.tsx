@@ -75,7 +75,7 @@ export default function CurrentShowCard({
         {/* ── Yellow body ── */}
         <div
           className="
-            bg-color-background-secondary flex flex-col items-center gap-6 p-6
+            bg-background-secondary flex flex-col items-center gap-6 p-6
             md:flex-row md:items-stretch md:overflow-hidden
             lg:gap-8 lg:p-8 xl:py-12
           "
@@ -85,7 +85,7 @@ export default function CurrentShowCard({
             className="
               flex-shrink-0 rounded-2xl overflow-hidden
               shadow-[4px_6px_20px_rgba(0,0,0,0.22)]
-              border-[5px] lg:border-[6px] border-color-text-brown
+              border-[5px] lg:border-[6px] border-text-brown
               w-[140px] md:w-auto
               [aspect-ratio:7/10]
               md:h-full
@@ -126,7 +126,7 @@ export default function CurrentShowCard({
               </p>
             </div>
             {/* Details box */}
-            <div className="bg-color-background-white rounded-2xl border border-black/[0.07] p-4 lg:p-5 flex-shrink-0">
+            <div className="bg-background-white rounded-2xl border border-black/[0.07] p-4 lg:p-5 flex-shrink-0">
               <p className="font-bold text-[0.82rem] md:text-[0.9rem] lg:text-[1.15rem] text-black mb-2 lg:mb-3">
                 Date &amp; Location
               </p>

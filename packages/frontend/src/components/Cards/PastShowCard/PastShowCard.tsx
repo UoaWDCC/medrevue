@@ -20,7 +20,7 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
       <div
         className="
           flex flex-col rounded-[28px] lg:rounded-[38px] overflow-hidden
-          border border-color-text-grey/[0.08]
+          border border-text-grey/[0.08]
           md:grid md:grid-cols-[72px_1fr] md:[aspect-ratio:22/10]
           lg:grid-cols-[96px_1fr]
           shadow-[0_10px_25px_rgba(100,100,100,0.15)]
@@ -31,14 +31,14 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
         {/* ── Year column (white) ── */}
         <div
           className="
-            bg-color-background-white flex flex-col items-center justify-center md:justify-start
+            bg-background-white flex flex-col items-center justify-center md:justify-start
             py-4 md:py-10
-            border-b border-color-text-grey/[0.07] md:border-b-0
+            border-b border-text-grey/[0.07] md:border-b-0
           "
         >
           <span
             className="
-              font-black tracking-[0.1em] text-color-background-primary
+              font-black tracking-[0.1em] text-background-primary
               text-2xl
               md:[writing-mode:vertical-rl] md:[transform:rotate(180deg)] md:text-[2rem]
               lg:text-[2.7rem]
@@ -51,7 +51,7 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
         {/* ── Dark body ── */}
         <div
           className="
-            bg-color-background-primary flex flex-col items-center gap-6 p-6
+            bg-background-primary flex flex-col items-center gap-6 p-6
             md:flex-row md:items-stretch md:overflow-hidden
             lg:gap-8 lg:p-8 xl:py-12
           "
@@ -60,10 +60,10 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
           <div
             className="
               flex-shrink-0 rounded-2xl overflow-hidden
-              border-[5px] lg:border-[6px] border-color-text-grey
+              border-[5px] lg:border-[6px] border-text-grey
               w-[140px] [aspect-ratio:7/10]
               md:w-auto md:h-full
-              bg-color-text-light-grey
+              bg-text-light-grey
             "
           >
             {posterUrl && (
@@ -84,7 +84,7 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
                   leading-[1.15] m-0 font-bold
                   text-2xl md:text-[2rem] lg:text-[2.7rem] xl:text-[3.2rem]
                   text-center md:text-left
-                  text-color-background-secondary
+                  text-background-secondary
                 "
               >
                 {title}
@@ -93,11 +93,11 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
 
             {/* Thumbnail strip */}
             <div className="flex items-end justify-center md:justify-end mt-auto">
-              <div className="flex items-start gap-1.5 md:gap-2 p-1.5 md:p-3 rounded-xl bg-color-background-white">
+              <div className="flex items-start gap-1.5 md:gap-2 p-1.5 md:p-3 rounded-xl bg-background-white">
                 {visibleImages.map((url, i) => (
                   <div
                     key={url}
-                    className="rounded-lg overflow-hidden flex-shrink-0 bg-color-text-grey
+                    className="rounded-lg overflow-hidden flex-shrink-0 bg-text-grey
                        w-20 h-20 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44"
                   >
                     <img
@@ -111,11 +111,11 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
                 {/* View more tile */}
                 <div
                   className="rounded-lg flex-shrink-0 flex items-end justify-left cursor-pointer
-                     bg-color-text-grey border border-color-text-grey
-                     hover:bg-color-text-grey transition-colors duration-200
+                     bg-text-grey border border-text-grey
+                     hover:bg-text-grey transition-colors duration-200
                      w-20 h-20 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44"
                 >
-                  <span className="m-2 lg:m-5 leading-tight text-[0.6rem] md:text-[0.7rem] lg:text-[0.9rem] text-color-background-secondary">
+                  <span className="m-2 lg:m-5 leading-tight text-[0.6rem] md:text-[0.7rem] lg:text-[0.9rem] text-background-secondary">
                     <>
                       View
                       <br />
