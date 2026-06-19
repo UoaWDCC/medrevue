@@ -206,7 +206,7 @@ const HomePage: React.FC = () => {
           />
           <div
             aria-hidden="true"
-            className="hidden lg:block absolute bottom-[150px] right-[400px] w-[300px] h-[300px] bg-background-secondary rounded-full opacity-75"
+            className="hidden md:block absolute bottom-[150px] right-[400px] w-[300px] h-[300px] bg-background-secondary rounded-full opacity-75"
           />
           <div
             aria-hidden="true"
@@ -214,7 +214,7 @@ const HomePage: React.FC = () => {
           />
           <div
             aria-hidden="true"
-            className=" hidden lg:block absolute right-[180px] top-[400px] w-[50px] h-[50px] bg-background-secondary rounded-full opacity-90"
+            className=" hidden md:block absolute right-[180px] top-[400px] w-[50px] h-[50px] bg-background-secondary rounded-full opacity-90"
           />
 
           {/* Left: Text content */}
