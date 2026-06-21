@@ -1,7 +1,7 @@
 export const ContactPage: React.FC = () => {
   return (
     <div>
-      <h1>Contact Us</h1>
+      <h1>test</h1>
     </div>
   );
 };
