@@ -9,6 +9,12 @@ export const ContactPage: React.FC = () => {
     message: '',
   });
 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
   return (
     <div>
       <h1>test</h1>
