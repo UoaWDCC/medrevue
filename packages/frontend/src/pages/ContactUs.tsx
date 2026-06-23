@@ -98,14 +98,14 @@ export const ContactPage: React.FC = () => {
             value={form.firstName}
             onChange={handleChange}
             placeholder="Your first name"
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${errors.firstName ? 'border-red-500' : ''}`}
           />
           <input
             name="lastName"
             value={form.lastName}
             onChange={handleChange}
             placeholder="Your last name"
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${errors.lastName ? 'border-red-500' : ''}`}
           />
         </div>
 
@@ -115,7 +115,7 @@ export const ContactPage: React.FC = () => {
           value={form.email}
           onChange={handleChange}
           placeholder="Your email"
-          className="border p-2 rounded w-full"
+          className={`border p-2 rounded w-full ${errors.email ? 'border-red-500' : ''}`}
         />
 
         <input
@@ -124,7 +124,7 @@ export const ContactPage: React.FC = () => {
           value={form.phoneNumber}
           onChange={handleChange}
           placeholder="Your phone number"
-          className="border rounded w-full"
+          className="border p-2 rounded w-full"
         />
 
         {/* radio buttons for form. have these three for now, but can add more if needed! */}
@@ -149,7 +149,7 @@ export const ContactPage: React.FC = () => {
           onChange={handleChange}
           rows={5}
           placeholder="Type your message here"
-          className="border p-2 rounded w-full"
+          className={`border p-2 rounded w-full ${errors.message ? 'border-red-500' : ''}`}
         />
 
         {/* Form submit button */}
