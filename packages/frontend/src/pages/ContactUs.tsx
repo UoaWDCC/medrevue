@@ -89,8 +89,15 @@ export const ContactPage: React.FC = () => {
   return (
     <div className="max-w-2xl mx-auto p-4 py-12">
       {/* header for the page */}
-      <h1>Contact Us</h1>
+      <h1 className="text-4xl font-bold">Contact Us</h1>
       <br />
+      <p>
+        We would love to hear from you! Whether you have questions, feedback, or
+        want to get involved, please fill out the form below and we will get
+        back to you as soon as possible.
+      </p>
+      <br />
+
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* form fields for user input */}
         <p>Your Name</p>
