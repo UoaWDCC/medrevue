@@ -37,6 +37,40 @@ export const ContactPage: React.FC = () => {
     });
   };
 
+  //state for form validation errors
+  const [errors, setErrors] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    message: '',
+  });
+
+  const validateForm = () => {
+    const newErrors = { firstName: '', lastName: '', email: '', message: '' };
+
+    // if first name field is left empty, set error message
+    if (!form.firstName.trim()) {
+      newErrors.firstName = 'First name is required.';
+    }
+    // If the last name field is ledt empty.
+    if (!form.lastName.trim()) {
+      newErrors.lastName = 'Last name is required.';
+    }
+    // If the email field is left empty.
+    if (!form.email.trim()) {
+      newErrors.email = 'Email is required.';
+      // If the email is not in a valid format
+    } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+      newErrors.email = 'Email is invalid.';
+    }
+    // If the message field is left empty.
+    if (!form.message.trim()) {
+      newErrors.message = 'Message is required.';
+    }
+
+    return newErrors;
+  };
+
   // form itself
   const radioOptions = ['General Inquiry', 'Sponsorship', 'Other'];
 
