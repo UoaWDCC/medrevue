@@ -90,8 +90,10 @@ export const ContactPage: React.FC = () => {
     <div className="max-w-2xl mx-auto p-4 py-12">
       {/* header for the page */}
       <h1>Contact Us</h1>
+      <br />
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* form fields for user input */}
+        <p>Your Name</p>
         <div className="flex gap-4">
           <input
             name="firstName"
@@ -104,6 +106,7 @@ export const ContactPage: React.FC = () => {
           {errors.firstName && (
             <p className="text-red-500 text-sm">{errors.firstName}</p>
           )}
+
           <input
             name="lastName"
             value={form.lastName}
@@ -117,6 +120,7 @@ export const ContactPage: React.FC = () => {
           )}
         </div>
 
+        <p>Your Email</p>
         <input
           name="email"
           type="email"
@@ -128,6 +132,7 @@ export const ContactPage: React.FC = () => {
         {/* Display error message if email field is left empty or invalid */}
         {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
 
+        <p>Your Phone Number</p>
         <input
           name="phoneNumber"
           type="tel"
@@ -137,6 +142,7 @@ export const ContactPage: React.FC = () => {
           className="border p-2 rounded w-full"
         />
 
+        <p> The subject of your message</p>
         {/* Radio buttons for form. I have these three for now, but can add more if needed! */}
         <div className="flex gap-4 flex-wrap">
           {radioOptions.map((s) => (
@@ -153,6 +159,7 @@ export const ContactPage: React.FC = () => {
           ))}
         </div>
         {/* text area for message */}
+        <p>Your Message</p>
         <textarea
           name="message"
           value={form.message}
@@ -168,7 +175,17 @@ export const ContactPage: React.FC = () => {
         )}
 
         {/* Form submit button */}
-        <button type="submit">Send Message</button>
+        <button
+          type="submit"
+          style={{
+            border: '1px solid #ccc',
+            padding: '10px 20px',
+            borderRadius: '5px',
+            backgroundColor: '#f0f0f0',
+          }}
+        >
+          Send Message
+        </button>
       </form>
     </div>
   );
