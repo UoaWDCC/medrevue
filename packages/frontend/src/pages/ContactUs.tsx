@@ -149,7 +149,7 @@ export const ContactPage: React.FC = () => {
           className="border p-2 rounded w-full"
         />
 
-        <p> The subject of your message</p>
+        <p> The Subject of Your Message</p>
         {/* Radio buttons for form. I have these three for now, but can add more if needed! */}
         <div className="flex gap-4 flex-wrap">
           {radioOptions.map((s) => (
