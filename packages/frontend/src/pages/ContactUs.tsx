@@ -177,12 +177,7 @@ export const ContactPage: React.FC = () => {
         {/* Form submit button */}
         <button
           type="submit"
-          style={{
-            border: '1px solid #ccc',
-            padding: '10px 20px',
-            borderRadius: '5px',
-            backgroundColor: '#f0f0f0',
-          }}
+          className="border border-x-background-primary px-5 py-2.5 rounded bg-pink-400 hover:bg-green-400"
         >
           Send Message
         </button>
