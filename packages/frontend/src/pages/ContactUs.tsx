@@ -100,6 +100,10 @@ export const ContactPage: React.FC = () => {
             placeholder="Your first name"
             className={`border p-2 rounded w-full ${errors.firstName ? 'border-red-500' : ''}`}
           />
+          {/* Display error message if first name field is left empty */}
+          {errors.firstName && (
+            <p className="text-red-500 text-sm">{errors.firstName}</p>
+          )}
           <input
             name="lastName"
             value={form.lastName}
@@ -107,6 +111,10 @@ export const ContactPage: React.FC = () => {
             placeholder="Your last name"
             className={`border p-2 rounded w-full ${errors.lastName ? 'border-red-500' : ''}`}
           />
+          {/* Display error message if last name field is left empty */}
+          {errors.lastName && (
+            <p className="text-red-500 text-sm">{errors.lastName}</p>
+          )}
         </div>
 
         <input
@@ -117,6 +125,8 @@ export const ContactPage: React.FC = () => {
           placeholder="Your email"
           className={`border p-2 rounded w-full ${errors.email ? 'border-red-500' : ''}`}
         />
+        {/* Display error message if email field is left empty or invalid */}
+        {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
 
         <input
           name="phoneNumber"
@@ -127,7 +137,7 @@ export const ContactPage: React.FC = () => {
           className="border p-2 rounded w-full"
         />
 
-        {/* radio buttons for form. have these three for now, but can add more if needed! */}
+        {/* Radio buttons for form. I have these three for now, but can add more if needed! */}
         <div className="flex gap-4 flex-wrap">
           {radioOptions.map((s) => (
             <label key={s} className="flex items-center gap-2 cursor-pointer">
@@ -151,6 +161,11 @@ export const ContactPage: React.FC = () => {
           placeholder="Type your message here"
           className={`border p-2 rounded w-full ${errors.message ? 'border-red-500' : ''}`}
         />
+
+        {/* Display error message if messaage field is left empty. */}
+        {errors.message && (
+          <p className="text-red-500 text-sm">{errors.message}</p>
+        )}
 
         {/* Form submit button */}
         <button type="submit">Send Message</button>
