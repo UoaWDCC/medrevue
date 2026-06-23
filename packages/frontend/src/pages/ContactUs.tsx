@@ -1,4 +1,4 @@
-import { type FC, useState } from 'react';
+import { useState } from 'react';
 
 export const ContactPage: React.FC = () => {
   const [form, setForm] = useState({
@@ -21,6 +21,18 @@ export const ContactPage: React.FC = () => {
   // handles form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+
+    // If there are validation errors, do not proceed with submission
+    const hasErrors = Object.values(validationErrors).some(
+      (error) => error !== '',
+    );
+    if (hasErrors) {
+      return;
+    }
+
     // Logging data as front-end only code
     console.log('Form submitted:', form);
     // Email sending logic would go here, e.g., using an API endpoint or third-party service
