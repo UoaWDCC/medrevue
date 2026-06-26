@@ -62,22 +62,23 @@ export const ContactPage: React.FC = () => {
 
     // if first name field is left empty, set error message
     if (!form.firstName.trim()) {
-      newErrors.firstName = 'First name is required.';
+      newErrors.firstName = 'Please enter your first name.';
     }
     // If the last name field is ledt empty.
     if (!form.lastName.trim()) {
-      newErrors.lastName = 'Last name is required.';
+      newErrors.lastName = 'Please enter your last name.';
     }
     // If the email field is left empty.
     if (!form.email.trim()) {
-      newErrors.email = 'Email is required.';
+      newErrors.email = 'Please enter your email.';
       // If the email is not in a valid format
     } else if (!/\S+@\S+\.\S+/.test(form.email)) {
-      newErrors.email = 'Email is invalid.';
+      newErrors.email =
+        'Please enter a valid email address, e.g hello@gmail.com';
     }
     // If the message field is left empty.
     if (!form.message.trim()) {
-      newErrors.message = 'Message is required.';
+      newErrors.message = 'Please enter your message.';
     }
 
     return newErrors;
