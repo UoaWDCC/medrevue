@@ -101,7 +101,7 @@ export const ContactPage: React.FC = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* form fields for user input */}
         <p>Your Name</p>
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-4">
           <input
             name="firstName"
             value={form.firstName}
