@@ -8,6 +8,7 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ className }) => {
+  // Navigation hook for routing to contact page when Contact Us button is clicked
   const navigate = useNavigate();
 
   return (
