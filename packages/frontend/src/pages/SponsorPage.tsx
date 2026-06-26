@@ -1,10 +1,14 @@
 import type React from 'react';
+import { useNavigate } from 'react-router';
 import pinkCast from '../assets/medrevue-sponsorus-jazzHands.png';
 import { ImpactCards, StatCards } from '../components/SponsorUs/SponsorUs.tsx';
 // import { Link } from 'react-router';
 import { PreviousSponsors } from '../components/Sponsors/Sponsors.tsx';
 
 export const SponsorPage: React.FC = () => {
+  // Navigation hook for routing to contact page when Contact Us button is clicked
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="min-h-screen">
@@ -46,9 +50,7 @@ export const SponsorPage: React.FC = () => {
 
               <button
                 type="button"
-                onClick={() =>
-                  window.open('mailto:aucklandmedicalrevue@gmail.com')
-                }
+                onClick={() => navigate('/contact')}
                 className="
                   order-first
                   lg:order-none
