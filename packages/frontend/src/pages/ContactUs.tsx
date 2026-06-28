@@ -165,7 +165,7 @@ export const ContactPage: React.FC = () => {
         {teamMembers.map((section) => (
           <div key={section.title}>
             <h2 className="font-bold mb-4">{section.title}</h2>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
               {section.members.map((member) => (
                 <div
                   key={member.name}
