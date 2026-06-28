@@ -93,48 +93,54 @@ export const ContactPage: React.FC = () => {
       // Actors
       title: 'Actors',
       members: [
-        { name: 'Grace Baek' },
-        { name: 'Jess Brewerton' },
-        { name: 'Jimmy Austin' },
-        { name: 'Ashvin Peiris' },
-        { name: 'Sasan Danawala' },
+        { name: 'Grace Baek', role: 'Actors' },
+        { name: 'Jess Brewerton', role: 'Actors' },
+        { name: 'Jimmy Austin', role: 'Actors' },
+        { name: 'Ashvin Peiris', role: 'Actors' },
+        { name: 'Sasan Danawala', role: 'Actors' },
       ],
     },
     // Dancers
     {
       title: 'Dancers',
       members: [
-        { name: 'Sophie Johnston' },
-        { name: 'Sabrina Joe' },
-        { name: 'Jules Torres' },
+        { name: 'Sophie Johnston', role: 'Dancers' },
+        { name: 'Sabrina Joe', role: 'Dancers' },
+        { name: 'Jules Torres', role: 'Dancers' },
       ],
     },
     // Barbershop
     {
       title: 'Barbershop',
       members: [
-        { name: 'Dalon Shih' },
-        { name: 'Ethan Moy' },
-        { name: 'Michelle Chan' },
+        { name: 'Dalon Shih', role: 'Barbershop' },
+        { name: 'Ethan Moy', role: 'Barbershop' },
+        { name: 'Michelle Chan', role: 'Barbershop' },
       ],
     },
     // Band
     {
       title: 'Band',
-      members: [{ name: 'Cindy Kim' }, { name: 'Gloria Lee' }],
+      members: [
+        { name: 'Cindy Kim', role: 'Band' },
+        { name: 'Gloria Lee', role: 'Band' },
+      ],
     },
     // Backstage
     {
       title: 'Backstage',
-      members: [{ name: 'Carter Wu' }, { name: 'Jade Edwards-Bell' }],
+      members: [
+        { name: 'Carter Wu', role: 'Backstage' },
+        { name: 'Jade Edwards-Bell', role: 'Backstage' },
+      ],
     },
     // Production
     {
       title: 'Production',
       members: [
-        { name: 'Amanda Li' },
-        { name: 'Eve Lekach' },
-        { name: 'Kasper Lenoir' },
+        { name: 'Amanda Li', role: 'Production' },
+        { name: 'Eve Lekach', role: 'Production' },
+        { name: 'Kasper Lenoir', role: 'Production' },
       ],
     },
   ];
@@ -150,6 +156,27 @@ export const ContactPage: React.FC = () => {
         back to you as soon as possible.
       </p>
       <br />
+
+      {/* People to contact */}
+      <div className="space-y-12">
+        {teamMembers.map((section) => (
+          <div key={section.title}>
+            <h2 className="font-bold mb-4">{section.title}</h2>
+            <div className="grid grid-cols-2 gap-4">
+              {section.members.map((member) => (
+                <div
+                  key={member.name}
+                  className="flex flex-col items-center text-center p-4 border rounded"
+                >
+                  <div className="w-24 h-24 bg-gray-200 mb-3" />
+                  <p className="font-bold">{member.name}</p>
+                  <p className="text-gray-600">{member.role}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* form fields for user input */}
