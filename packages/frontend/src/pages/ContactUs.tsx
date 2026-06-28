@@ -158,6 +158,9 @@ export const ContactPage: React.FC = () => {
       <br />
 
       {/* People to contact */}
+      <p className="text-2-xl font-bold text-center">
+        Cast and Crew of this year's revue
+      </p>
       <div className="space-y-12">
         {teamMembers.map((section) => (
           <div key={section.title}>
@@ -177,10 +180,17 @@ export const ContactPage: React.FC = () => {
           </div>
         ))}
       </div>
+      <br />
+      <h2 className="text-2xl font-bold text-center">Our Form</h2>
+      <p>
+        Fill out our form here, and we will get back to you as soon as possible!
+        Note that fields with an asterix (*) are mandatory.
+      </p>
+      <br />
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* form fields for user input */}
-        <p>Your Name</p>
+        <p>Your Name *</p>
         <div className="flex flex-col sm:flex-row gap-4">
           <input
             name="firstName"
@@ -207,7 +217,7 @@ export const ContactPage: React.FC = () => {
           )}
         </div>
 
-        <p>Your Email</p>
+        <p>Your Email *</p>
         <input
           name="email"
           type="email"
@@ -246,7 +256,7 @@ export const ContactPage: React.FC = () => {
           ))}
         </div>
         {/* text area for message */}
-        <p>Your Message</p>
+        <p>Your Message *</p>
         <textarea
           name="message"
           value={form.message}
