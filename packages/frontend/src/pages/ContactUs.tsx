@@ -87,6 +87,58 @@ export const ContactPage: React.FC = () => {
   // form itself
   const radioOptions = ['General Inquiry', 'Sponsorship', 'Other'];
 
+  // cast and crew
+  const teamMembers = [
+    {
+      // Actors
+      title: 'Actors',
+      members: [
+        { name: 'Grace Baek' },
+        { name: 'Jess Brewerton' },
+        { name: 'Jimmy Austin' },
+        { name: 'Ashvin Peiris' },
+        { name: 'Sasan Danawala' },
+      ],
+    },
+    // Dancers
+    {
+      title: 'Dancers',
+      members: [
+        { name: 'Sophie Johnston' },
+        { name: 'Sabrina Joe' },
+        { name: 'Jules Torres' },
+      ],
+    },
+    // Barbershop
+    {
+      title: 'Barbershop',
+      members: [
+        { name: 'Dalon Shih' },
+        { name: 'Ethan Moy' },
+        { name: 'Michelle Chan' },
+      ],
+    },
+    // Band
+    {
+      title: 'Band',
+      members: [{ name: 'Cindy Kim' }, { name: 'Gloria Lee' }],
+    },
+    // Backstage
+    {
+      title: 'Backstage',
+      members: [{ name: 'Carter Wu' }, { name: 'Jade Edwards-Bell' }],
+    },
+    // Production
+    {
+      title: 'Production',
+      members: [
+        { name: 'Amanda Li' },
+        { name: 'Eve Lekach' },
+        { name: 'Kasper Lenoir' },
+      ],
+    },
+  ];
+
   return (
     <div className="max-w-2xl mx-auto p-4 py-12">
       {/* header for the page */}
