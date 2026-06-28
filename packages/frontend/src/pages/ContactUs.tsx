@@ -184,7 +184,7 @@ export const ContactPage: React.FC = () => {
       <h2 className="text-2xl font-bold text-center">Our Form</h2>
       <p>
         Fill out our form here, and we will get back to you as soon as possible!
-        Note that fields with an asterix (*) are mandatory.
+        Note that fields with an asterisk (*) are mandatory.
       </p>
       <br />
 
