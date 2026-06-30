@@ -197,7 +197,7 @@ const HomePage: React.FC = () => {
         {/* Hero Section */}
         <section
           ref={bgRef}
-          className="relative w-full min-h-[90vh] lg:h-[115vh] bg-background-primary flex items-center px-8 md:px-32 py-16"
+          className="relative w-full min-h-[90vh] lg:h-[115vh] bg-background-primary flex flex-col md:flex-row items-center justify-center gap-10 px-8 md:px-32 pt-32 pb-16 md:py-16"
         >
           {/* Background Decorations */}
           <div
@@ -206,7 +206,7 @@ const HomePage: React.FC = () => {
           />
           <div
             aria-hidden="true"
-            className="absolute bottom-[150px] right-[400px] w-[300px] h-[300px] bg-background-secondary rounded-full opacity-75"
+            className="hidden md:block absolute bottom-[150px] right-[400px] w-[300px] h-[300px] bg-background-secondary rounded-full opacity-75"
           />
           <div
             aria-hidden="true"
@@ -214,14 +214,14 @@ const HomePage: React.FC = () => {
           />
           <div
             aria-hidden="true"
-            className="absolute right-[180px] top-[400px] w-[50px] h-[50px] bg-background-secondary rounded-full opacity-90"
+            className=" hidden md:block absolute right-[180px] top-[400px] w-[50px] h-[50px] bg-background-secondary rounded-full opacity-90"
           />
 
           {/* Left: Text content */}
-          <div className="relative z-10 flex-1 flex flex-col gap-6">
+          <div className="relative z-10 order-2 md:order-1 flex-1 flex flex-col gap-6 items-center justify-center text-center md:items-start md:justify-start md:text-left mb-6 md:mb-0">
             <h1
               ref={headerSlideRef}
-              className="text-left text-background-secondary font-bold font-poppins text-[clamp(3.5rem,8vw,6rem)] leading-[1.1] md:leading-[0.9]"
+              className="text-background-secondary font-bold font-poppins text-[clamp(3.5rem,8vw,6rem)] leading-[1.1] md:leading-[0.9] text-center md:text-left"
             >
               Auckland
               <br />
@@ -231,7 +231,7 @@ const HomePage: React.FC = () => {
               <span className="text-theme-pink">26</span>
             </h1>
 
-            <div className="text-text-light font-inter font-semibold text-[clamp(0.9rem,1.5vw,1.1rem)] space-y-1">
+            <div className="text-text-light font-inter font-semibold text-[clamp(0.9rem,1.5vw,1.1rem)] space-y-1 text-center md:text-left">
               <p>A University of Auckland non-profit production.</p>
               <p>13 Aug - 15 Aug 2026</p>
               <p>SkyCity Theatre</p>
@@ -311,12 +311,12 @@ const HomePage: React.FC = () => {
           </div>
 
           {/* Right: Image */}
-          <div className="relative z-10 flex-1 hidden md:flex justify-center">
+          <div className="relative z-10 order-1 md:order-2 flex-1 flex justify-center">
             <img
               ref={posterRef}
               src={medrevuePoster}
               alt="Med Revue"
-              className="w-96 h-auto rounded-lg border-4 border-background-secondary shadow-lg"
+              className="w-64 sm:w-80 md:w-96 h-auto rounded-lg border-4 border-background-secondary shadow-lg"
             />
           </div>
         </section>
