@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import EmailIcon from '../assets/emailIcon.svg';
 import FaceBookIcon from '../assets/facebook.svg';
 import InstagramIcon from '../assets/instagram.svg';
+import LocationIcon from '../assets/locationIcon.svg';
 
 export const ContactPage: React.FC = () => {
   const [form, setForm] = useState({
@@ -188,8 +190,14 @@ export const ContactPage: React.FC = () => {
           {/* Left panel - contact info */}
           <div className="bg-background-secondary p-8 md:w-1/2 relative">
             <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
-            <p className="mb-4">📧 aucklandmedicalrevue@gmail.com</p>
-            <p>📍 85 Park Road Grafton Auckland 1023</p>
+            <p className="flex items-center gap-2 mb-4">
+              <img src={EmailIcon} alt="" className="w-5 h-5" />
+              aucklandmedicalrevue@gmail.com
+            </p>
+            <p className="flex items-center gap-2 mb-4">
+              <img src={LocationIcon} alt="" className="w-5 h-5" />
+              85 Park Road Grafton Auckland 1023
+            </p>
 
             <div className="absolute bottom-6 right-6 flex gap-3">
               {socialLinks.map((social) => (
