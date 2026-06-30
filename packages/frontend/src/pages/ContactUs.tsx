@@ -163,7 +163,7 @@ export const ContactPage: React.FC = () => {
       <br />
       <div className="text-center">
         <p>
-          Auckland Medical Revue is omne of New Zealand's largest student-led
+          Auckland Medical Revue is one of New Zealand's largest student-led
           productions, entirely written, directed, and performed by University
           of Auckland medical students. Featuring comedy, music, dance, and
           creative parodies of popular culture, the show provides an opportunity
