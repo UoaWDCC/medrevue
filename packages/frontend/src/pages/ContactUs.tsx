@@ -160,13 +160,18 @@ export const ContactPage: React.FC = () => {
         <h1 className="text-5xl font-bold text-yellow-300">Contact Us</h1>
         <p className="text-xl italic text-white mt-2">Want to get in touch?</p>
       </div>
-      <p>The words</p>
       <br />
-
-      {/* People to contact */}
-      <p className="text-2xl font-bold text-center">
-        Cast and Crew of this year's revue
-      </p>
+      <div className="text-center">
+        <p>
+          Auckland Medical Revue is omne of New Zealand's largest student-led
+          productions, entirely written, directed, and performed by University
+          of Auckland medical students. Featuring comedy, music, dance, and
+          creative parodies of popular culture, the show provides an opportunity
+          for students to showcase their talents while raising funds and
+          awareness for local charities across Aotearoa.
+        </p>
+      </div>
+      <br />
 
       {/* /////////////////////////// NEW STUFF  */}
       <div className="bg-black py-12 px-4 w-screen relative left-1/2 right-1/2 -mx-[50vw]">
