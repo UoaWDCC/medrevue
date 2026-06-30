@@ -167,6 +167,7 @@ export const ContactPage: React.FC = () => {
         <h1 className="text-5xl font-bold text-yellow-300">Contact Us</h1>
         <p className="text-xl italic text-white mt-2">Want to get in touch?</p>
       </div>
+      <div className="bg-background-secondary h-4 w-screen relative left-1/2 right-1/2 -mx-[50vw]" />
       <br />
       <div className="text-center">
         <p>
