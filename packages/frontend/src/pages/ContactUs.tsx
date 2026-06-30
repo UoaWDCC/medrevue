@@ -167,26 +167,6 @@ export const ContactPage: React.FC = () => {
       <p className="text-2xl font-bold text-center">
         Cast and Crew of this year's revue
       </p>
-      <div className="space-y-12">
-        {teamMembers.map((section) => (
-          <div key={section.title}>
-            <h2 className="font-bold mb-4">{section.title}</h2>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-              {section.members.map((member) => (
-                <div
-                  key={member.name}
-                  className="bg-yellow-200 rounded-lg shadow-md p-4 flex flex-col items-center text-center"
-                >
-                  <div className="w-24 h-24 bg-gray-100 mb-3" />
-                  <p className="font-bold">{member.name}</p>
-                  <p className="text-gray-600">{member.role}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-      <br />
 
       {/* /////////////////////////// NEW STUFF  */}
       <div className="bg-black py-12 px-4 w-screen relative left-1/2 right-1/2 -mx-[50vw]">
@@ -300,6 +280,26 @@ export const ContactPage: React.FC = () => {
           </div>
         </div>
       </div>
+      <div className="space-y-12">
+        {teamMembers.map((section) => (
+          <div key={section.title}>
+            <h2 className="font-bold mb-4">{section.title}</h2>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+              {section.members.map((member) => (
+                <div
+                  key={member.name}
+                  className="bg-yellow-200 rounded-lg shadow-md p-4 flex flex-col items-center text-center"
+                >
+                  <div className="w-24 h-24 bg-gray-100 mb-3" />
+                  <p className="font-bold">{member.name}</p>
+                  <p className="text-gray-600">{member.role}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <br />
 
       {/* /////////////////////////// comment  */}
       <br />
