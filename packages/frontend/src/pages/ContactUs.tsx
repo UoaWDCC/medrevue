@@ -108,20 +108,20 @@ export const ContactPage: React.FC = () => {
       // Actors
       title: 'Actors',
       members: [
-        { name: 'Grace Baek', role: 'Actors' },
-        { name: 'Jess Brewerton', role: 'Actors' },
-        { name: 'Jimmy Austin', role: 'Actors' },
-        { name: 'Ashvin Peiris', role: 'Actors' },
-        { name: 'Sasan Danawala', role: 'Actors' },
+        { name: 'Grace Baek', role: 'Actor' },
+        { name: 'Jess Brewerton', role: 'Actor' },
+        { name: 'Jimmy Austin', role: 'Actor' },
+        { name: 'Ashvin Peiris', role: 'Actor' },
+        { name: 'Sasan Danawala', role: 'Actor' },
       ],
     },
     // Dancers
     {
       title: 'Dancers',
       members: [
-        { name: 'Sophie Johnston', role: 'Dancers' },
-        { name: 'Sabrina Joe', role: 'Dancers' },
-        { name: 'Jules Torres', role: 'Dancers' },
+        { name: 'Sophie Johnston', role: 'Dancer' },
+        { name: 'Sabrina Joe', role: 'Dancer' },
+        { name: 'Jules Torres', role: 'Dancer' },
       ],
     },
     // Barbershop
@@ -159,6 +159,7 @@ export const ContactPage: React.FC = () => {
       ],
     },
   ];
+  const allMembers = teamMembers.flatMap((section) => section.members);
 
   return (
     <div className="max-w-6xl mx-auto px-4 pb-12">
@@ -311,22 +312,18 @@ export const ContactPage: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="space-y-12">
-        {teamMembers.map((section) => (
-          <div key={section.title}>
-            <h2 className="font-bold mb-4">{section.title}</h2>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-              {section.members.map((member) => (
-                <div
-                  key={member.name}
-                  className="bg-yellow-200 rounded-lg shadow-md p-4 flex flex-col items-center text-center"
-                >
-                  <div className="w-24 h-24 bg-gray-100 mb-3" />
-                  <p className="font-bold">{member.name}</p>
-                  <p className="text-gray-600">{member.role}</p>
-                </div>
-              ))}
-            </div>
+      <br />
+      <p className="text-center text-2xl font-bold">Our Team</p>
+      <br />
+      <div className="flex flex-wrap justify-center gap-4">
+        {allMembers.map((member) => (
+          <div
+            key={member.name}
+            className="bg-yellow-200 rounded-lg shadow-md p-4 flex flex-col items-center text-center w-48"
+          >
+            <div className="w-24 h-24 bg-gray-100 mb-3" />
+            <p>{member.name}</p>
+            <p>{member.role}</p>
           </div>
         ))}
       </div>
