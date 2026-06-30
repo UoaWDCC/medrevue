@@ -167,7 +167,9 @@ export const ContactPage: React.FC = () => {
     <div className="max-w-6xl mx-auto px-4 pb-12">
       {/* header for the page */}
       <div className="bg-black text-center py-12 w-screen relative left-1/2 right-1/2 -mx-[50vw]">
-        <h1 className="text-5xl font-bold text-yellow-300">Contact Us</h1>
+        <h1 className="text-5xl font-bold text-background-secondary">
+          Contact Us
+        </h1>
         <p className="text-xl italic text-white mt-2">Want to get in touch?</p>
       </div>
       <div className="bg-background-secondary h-4 w-screen relative left-1/2 right-1/2 -mx-[50vw]" />
@@ -345,7 +347,7 @@ export const ContactPage: React.FC = () => {
               {/* Form submit button */}
               <button
                 type="submit"
-                className="bg-yellow-300 hover:bg-yellow-400 px-6 py-2 rounded-full font-semibold"
+                className="bg-background-secondary hover:bg-secondary-darker px-6 py-2 rounded-full font-semibold"
               >
                 Send Message
               </button>
@@ -360,7 +362,7 @@ export const ContactPage: React.FC = () => {
         {allMembers.map((member) => (
           <div
             key={member.name}
-            className="bg-yellow-200 rounded-lg shadow-md p-4 flex flex-col items-center text-center w-50"
+            className="bg-background-secondary rounded-lg shadow-md p-4 flex flex-col items-center text-center w-50"
           >
             <div className="w-40 h-32 bg-gray-100 mb-3 rounded-lg" />
             <p>
