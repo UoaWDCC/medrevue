@@ -267,7 +267,6 @@ export const ContactPage: React.FC = () => {
               />
 
               <p>Select Subject?</p>
-              {/* Radio buttons for form. I have these three for now, but can add more if needed! */}
               <div className="flex gap-4 flex-wrap">
                 {radioOptions.map((s) => (
                   <label
@@ -319,9 +318,9 @@ export const ContactPage: React.FC = () => {
         {allMembers.map((member) => (
           <div
             key={member.name}
-            className="bg-yellow-200 rounded-lg shadow-md p-4 flex flex-col items-center text-center w-48"
+            className="bg-yellow-200 rounded-lg shadow-md p-4 flex flex-col items-center text-center w-50"
           >
-            <div className="w-24 h-24 bg-gray-100 mb-3" />
+            <div className="w-40 h-32 bg-gray-100 mb-3 rounded-lg" />
             <p>{member.name}</p>
             <p>
               <i>{member.role}</i>
