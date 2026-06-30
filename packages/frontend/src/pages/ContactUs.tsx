@@ -189,10 +189,10 @@ export const ContactPage: React.FC = () => {
       <br />
 
       {/* /////////////////////////// NEW STUFF  */}
-      <div className="bg-black py-12 px-4">
+      <div className="bg-black py-12 px-4 w-screen relative left-1/2 right-1/2 -mx-[50vw]">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row rounded-xl overflow-hidden shadow-lg">
           {/* Left panel - contact info */}
-          <div className="bg-yellow-300 p-8 md:w-1/3">
+          <div className="bg-yellow-300 p-8 md:w-1/2">
             <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
             <p className="mb-4">aucklandmedicalrevue@gmail.com</p>
             <p>85 Park Road, Grafton, Auckland, 1023</p>
