@@ -318,6 +318,7 @@ export const ContactPage: React.FC = () => {
                       value={s}
                       checked={form.subject === s}
                       onChange={handleChange}
+                      className="accent-black"
                     />
                     {s}
                   </label>
