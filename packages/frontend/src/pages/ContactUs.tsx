@@ -112,7 +112,7 @@ export const ContactPage: React.FC = () => {
         { name: 'Jess Brewerton', role: 'Actor' },
         { name: 'Jimmy Austin', role: 'Actor' },
         { name: 'Ashvin Peiris', role: 'Actor' },
-        { name: 'Sasan Danawala', role: 'Actor' },
+        { name: 'Sasan Danawala Gamage', role: 'Actor' },
       ],
     },
     // Dancers
@@ -323,7 +323,9 @@ export const ContactPage: React.FC = () => {
           >
             <div className="w-24 h-24 bg-gray-100 mb-3" />
             <p>{member.name}</p>
-            <p>{member.role}</p>
+            <p>
+              <i>{member.role}</i>
+            </p>
           </div>
         ))}
       </div>
