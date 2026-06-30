@@ -169,9 +169,9 @@ export const ContactPage: React.FC = () => {
               {section.members.map((member) => (
                 <div
                   key={member.name}
-                  className="flex flex-col items-center text-center p-4 border rounded"
+                  className="bg-yellow-200 rounded-lg shadow-md p-4 flex flex-col items-center text-center"
                 >
-                  <div className="w-24 h-24 bg-gray-200 mb-3" />
+                  <div className="w-24 h-24 bg-gray-100 mb-3" />
                   <p className="font-bold">{member.name}</p>
                   <p className="text-gray-600">{member.role}</p>
                 </div>
@@ -184,7 +184,7 @@ export const ContactPage: React.FC = () => {
       <h2 className="text-2xl font-bold text-center">Our Form</h2>
       <p>
         Fill out our form here, and we will get back to you as soon as possible!
-        Note that fields with an asterisk (*) are mandatory.
+        Note that fields with an asterisk(*) are mandatory.
       </p>
       <br />
 
