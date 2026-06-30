@@ -269,7 +269,7 @@ export const ContactPage: React.FC = () => {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm text-gray-500 mb-1"
+                    className="block text-sm text-black mb-1"
                   >
                     Email
                   </label>
@@ -288,7 +288,7 @@ export const ContactPage: React.FC = () => {
                 <div>
                   <label
                     htmlFor="phoneNumber"
-                    className="block text-sm text-gray-500 mb-1"
+                    className="block text-sm text-black mb-1"
                   >
                     Phone Number
                   </label>
@@ -301,16 +301,7 @@ export const ContactPage: React.FC = () => {
                   />
                 </div>
               </div>
-
-              <p>Your Phone Number</p>
-              <input
-                name="phoneNumber"
-                type="tel"
-                value={form.phoneNumber}
-                onChange={handleChange}
-                placeholder="Your phone number"
-                className="border p-2 rounded w-full"
-              />
+              <br />
 
               <p>Select Subject?</p>
               <div className="flex gap-4 flex-wrap">
@@ -330,21 +321,26 @@ export const ContactPage: React.FC = () => {
                   </label>
                 ))}
               </div>
-              {/* text area for message */}
-              <p>Your Message</p>
-              <textarea
-                name="message"
-                value={form.message}
-                onChange={handleChange}
-                rows={5}
-                placeholder="Type your message here"
-                className={`border p-2 rounded w-full ${errors.message ? 'border-red-500' : ''}`}
-              />
+              <br />
 
-              {/* Display error message if messaage field is left empty. */}
-              {errors.message && (
-                <p className="text-red-500 text-sm">{errors.message}</p>
-              )}
+              <div>
+                <label
+                  htmlFor="message"
+                  className="block text-sm text-black mb-1"
+                >
+                  Message
+                </label>
+                <textarea
+                  name="message"
+                  value={form.message}
+                  onChange={handleChange}
+                  placeholder="Write your message..."
+                  className={`w-full border-0 border-b pb-2 focus:outline-none focus:border-black ${errors.message ? 'border-red-500' : 'border-gray-300'}`}
+                />
+                {errors.message && (
+                  <p className="text-red-500 text-sm mt-1">{errors.message}</p>
+                )}
+              </div>
 
               {/* Form submit button */}
               <button
