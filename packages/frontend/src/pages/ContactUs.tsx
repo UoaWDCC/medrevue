@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import FaceBookIcon from '../assets/facebook.svg';
+import InstagramIcon from '../assets/instagram.svg';
 
 export const ContactPage: React.FC = () => {
   const [form, setForm] = useState({
@@ -34,10 +36,15 @@ export const ContactPage: React.FC = () => {
     }
 
     const socialLinks = [
-      { name: 'Facebook', url: 'https://www.facebook.com/aklmedrevue/' },
+      {
+        name: 'Facebook',
+        url: 'https://www.facebook.com/aklmedrevue/',
+        icon: FaceBookIcon,
+      },
       {
         name: 'Instagram',
         url: 'https://www.instagram.com/aucklandmedrevue/?hl=en',
+        icon: InstagramIcon,
       },
     ];
 
@@ -188,7 +195,7 @@ export const ContactPage: React.FC = () => {
             {/* your <form> goes here */}
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* form fields for user input */}
-              <p>Your Name *</p>
+              <p>Your Name</p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <input
                   name="firstName"
@@ -215,7 +222,7 @@ export const ContactPage: React.FC = () => {
                 )}
               </div>
 
-              <p>Your Email *</p>
+              <p>Your Email</p>
               <input
                 name="email"
                 type="email"
@@ -259,7 +266,7 @@ export const ContactPage: React.FC = () => {
                 ))}
               </div>
               {/* text area for message */}
-              <p>Your Message *</p>
+              <p>Your Message</p>
               <textarea
                 name="message"
                 value={form.message}
