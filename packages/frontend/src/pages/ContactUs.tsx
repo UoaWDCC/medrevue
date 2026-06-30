@@ -93,7 +93,7 @@ export const ContactPage: React.FC = () => {
   };
 
   // form itself
-  const radioOptions = ['General Inquiry', 'Sponsorship', 'Other'];
+  const radioOptions = ['General Inquiry', 'Sponsorship'];
 
   // cast and crew
   const teamMembers = [
