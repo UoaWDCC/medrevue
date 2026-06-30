@@ -274,7 +274,7 @@ export const ContactPage: React.FC = () => {
         {/* Form submit button */}
         <button
           type="submit"
-          className="border border-x-background-primary px-5 py-2.5 rounded bg-pink-400 hover:bg-green-400"
+          className="bg-yellow-300 hover:bg-yellow-400 px-6 py-2 rounded-full font-semibold"
         >
           Send Message
         </button>
