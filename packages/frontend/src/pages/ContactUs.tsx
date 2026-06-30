@@ -33,6 +33,14 @@ export const ContactPage: React.FC = () => {
       return;
     }
 
+    const socialLinks = [
+      { name: 'Facebook', url: 'https://www.facebook.com/aklmedrevue/' },
+      {
+        name: 'Instagram',
+        url: 'https://www.instagram.com/aucklandmedrevue/?hl=en',
+      },
+    ];
+
     // Logging data as front-end only code
     console.log('Form submitted:', form);
     // Email sending logic would go here, e.g., using an API endpoint or third-party service
@@ -152,6 +160,7 @@ export const ContactPage: React.FC = () => {
         <h1 className="text-5xl font-bold text-yellow-300">Contact Us</h1>
         <p className="text-xl italic text-white mt-2">Want to get in touch?</p>
       </div>
+      <p>The words</p>
       <br />
 
       {/* People to contact */}
@@ -178,104 +187,122 @@ export const ContactPage: React.FC = () => {
         ))}
       </div>
       <br />
-      <h2 className="text-2xl font-bold text-center">Our Form</h2>
-      <p>
-        Fill out our form here, and we will get back to you as soon as possible!
-        Note that fields with an asterisk(*) are mandatory.
-      </p>
-      <br />
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* form fields for user input */}
-        <p>Your Name *</p>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <input
-            name="firstName"
-            value={form.firstName}
-            onChange={handleChange}
-            placeholder="Your first name"
-            className={`border p-2 rounded w-full ${errors.firstName ? 'border-red-500' : ''}`}
-          />
-          {/* Display error message if first name field is left empty */}
-          {errors.firstName && (
-            <p className="text-red-500 text-sm">{errors.firstName}</p>
-          )}
+      {/* /////////////////////////// NEW STUFF  */}
+      <div className="bg-black py-12 px-4">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row rounded-xl overflow-hidden shadow-lg">
+          {/* Left panel - contact info */}
+          <div className="bg-yellow-300 p-8 md:w-1/3">
+            <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
+            <p className="mb-4">aucklandmedicalrevue@gmail.com</p>
+            <p>85 Park Road, Grafton, Auckland, 1023</p>
+          </div>
 
-          <input
-            name="lastName"
-            value={form.lastName}
-            onChange={handleChange}
-            placeholder="Your last name"
-            className={`border p-2 rounded w-full ${errors.lastName ? 'border-red-500' : ''}`}
-          />
-          {/* Display error message if last name field is left empty */}
-          {errors.lastName && (
-            <p className="text-red-500 text-sm">{errors.lastName}</p>
-          )}
-        </div>
+          {/* Right panel - your existing form */}
+          <div className="bg-white p-8 md:w-2/3">
+            {/* your <form> goes here */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* form fields for user input */}
+              <p>Your Name *</p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <input
+                  name="firstName"
+                  value={form.firstName}
+                  onChange={handleChange}
+                  placeholder="Your first name"
+                  className={`border p-2 rounded w-full ${errors.firstName ? 'border-red-500' : ''}`}
+                />
+                {/* Display error message if first name field is left empty */}
+                {errors.firstName && (
+                  <p className="text-red-500 text-sm">{errors.firstName}</p>
+                )}
 
-        <p>Your Email *</p>
-        <input
-          name="email"
-          type="email"
-          value={form.email}
-          onChange={handleChange}
-          placeholder="Your email"
-          className={`border p-2 rounded w-full ${errors.email ? 'border-red-500' : ''}`}
-        />
-        {/* Display error message if email field is left empty or invalid */}
-        {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+                <input
+                  name="lastName"
+                  value={form.lastName}
+                  onChange={handleChange}
+                  placeholder="Your last name"
+                  className={`border p-2 rounded w-full ${errors.lastName ? 'border-red-500' : ''}`}
+                />
+                {/* Display error message if last name field is left empty */}
+                {errors.lastName && (
+                  <p className="text-red-500 text-sm">{errors.lastName}</p>
+                )}
+              </div>
 
-        <p>Your Phone Number</p>
-        <input
-          name="phoneNumber"
-          type="tel"
-          value={form.phoneNumber}
-          onChange={handleChange}
-          placeholder="Your phone number"
-          className="border p-2 rounded w-full"
-        />
-
-        <p> The Subject of Your Message</p>
-        {/* Radio buttons for form. I have these three for now, but can add more if needed! */}
-        <div className="flex gap-4 flex-wrap">
-          {radioOptions.map((s) => (
-            <label key={s} className="flex items-center gap-2 cursor-pointer">
+              <p>Your Email *</p>
               <input
-                type="radio"
-                name="subject"
-                value={s}
-                checked={form.subject === s}
+                name="email"
+                type="email"
+                value={form.email}
                 onChange={handleChange}
+                placeholder="Your email"
+                className={`border p-2 rounded w-full ${errors.email ? 'border-red-500' : ''}`}
               />
-              {s}
-            </label>
-          ))}
+              {/* Display error message if email field is left empty or invalid */}
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email}</p>
+              )}
+
+              <p>Your Phone Number</p>
+              <input
+                name="phoneNumber"
+                type="tel"
+                value={form.phoneNumber}
+                onChange={handleChange}
+                placeholder="Your phone number"
+                className="border p-2 rounded w-full"
+              />
+
+              <p>Select Subject?</p>
+              {/* Radio buttons for form. I have these three for now, but can add more if needed! */}
+              <div className="flex gap-4 flex-wrap">
+                {radioOptions.map((s) => (
+                  <label
+                    key={s}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <input
+                      type="radio"
+                      name="subject"
+                      value={s}
+                      checked={form.subject === s}
+                      onChange={handleChange}
+                    />
+                    {s}
+                  </label>
+                ))}
+              </div>
+              {/* text area for message */}
+              <p>Your Message *</p>
+              <textarea
+                name="message"
+                value={form.message}
+                onChange={handleChange}
+                rows={5}
+                placeholder="Type your message here"
+                className={`border p-2 rounded w-full ${errors.message ? 'border-red-500' : ''}`}
+              />
+
+              {/* Display error message if messaage field is left empty. */}
+              {errors.message && (
+                <p className="text-red-500 text-sm">{errors.message}</p>
+              )}
+
+              {/* Form submit button */}
+              <button
+                type="submit"
+                className="bg-yellow-300 hover:bg-yellow-400 px-6 py-2 rounded-full font-semibold"
+              >
+                Send Message
+              </button>
+            </form>
+          </div>
         </div>
-        {/* text area for message */}
-        <p>Your Message *</p>
-        <textarea
-          name="message"
-          value={form.message}
-          onChange={handleChange}
-          rows={5}
-          placeholder="Type your message here"
-          className={`border p-2 rounded w-full ${errors.message ? 'border-red-500' : ''}`}
-        />
+      </div>
 
-        {/* Display error message if messaage field is left empty. */}
-        {errors.message && (
-          <p className="text-red-500 text-sm">{errors.message}</p>
-        )}
-
-        {/* Form submit button */}
-        <button
-          type="submit"
-          className="bg-yellow-300 hover:bg-yellow-400 px-6 py-2 rounded-full font-semibold"
-        >
-          Send Message
-        </button>
-      </form>
+      {/* /////////////////////////// comment  */}
+      <br />
     </div>
   );
 };
