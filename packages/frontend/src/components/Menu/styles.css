@@ -5,7 +5,7 @@
   width: 100%;
   padding-inline: 2.5rem;
   z-index: 50;
-  background-color: var(--colour-background-primary);
+  background-color: var(--color-background-primary);
 }
 
 .menu-logo-link {
@@ -20,12 +20,12 @@
   font-family: Inter, sans-serif;
   font-weight: 700;
   font-size: 1.5rem;
-  color: var(--colour-background-secondary);
+  color: var(--color-background-secondary);
 }
 
 .menu-hamburger {
   margin-left: auto;
-  color: var(--colour-background-secondary);
+  color: var(--color-background-secondary);
   z-index: 60;
 }
 
@@ -66,21 +66,21 @@
 .menu-nav-link {
   font-family: Inter, sans-serif;
   font-size: 1rem;
-  color: var(--colour-background-secondary);
+  color: var(--color-background-secondary);
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .menu-nav-link:hover {
-  color: var(--colour-secondary-darker);
+  color: var(--color-secondary-darker);
 }
 
 .menu-btn-filled {
   font-family: Inter, sans-serif;
   font-weight: 700;
   font-size: 1rem;
-  color: var(--colour-background-primary);
-  background-color: var(--colour-background-secondary);
+  color: var(--color-background-primary);
+  background-color: var(--color-background-secondary);
   border-radius: 9999px;
   padding: 0.5rem 1.25rem;
   text-decoration: none;
@@ -88,15 +88,15 @@
 }
 
 .menu-btn-filled:hover {
-  background-color: var(--colour-secondary-darker);
+  background-color: var(--color-secondary-darker);
 }
 
 .menu-btn-outlined {
   font-family: Inter, sans-serif;
   font-weight: 700;
   font-size: 1rem;
-  color: var(--colour-background-secondary);
-  border: 2px solid var(--colour-background-secondary);
+  color: var(--color-background-secondary);
+  border: 2px solid var(--color-background-secondary);
   border-radius: 9999px;
   padding: 0.5rem 1.25rem;
   text-decoration: none;
@@ -104,6 +104,6 @@
 }
 
 .menu-btn-outlined:hover {
-  background-color: var(--colour-background-secondary);
-  color: var(--colour-background-primary);
+  background-color: var(--color-background-secondary);
+  color: var(--color-background-primary);
 }
