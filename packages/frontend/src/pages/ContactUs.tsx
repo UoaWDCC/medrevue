@@ -20,6 +20,19 @@ export const ContactPage: React.FC = () => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const socialLinks = [
+    {
+      name: 'Facebook',
+      url: 'https://www.facebook.com/aklmedrevue/',
+      icon: FaceBookIcon,
+    },
+    {
+      name: 'Instagram',
+      url: 'https://www.instagram.com/aucklandmedrevue/?hl=en',
+      icon: InstagramIcon,
+    },
+  ];
+
   // handles form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,19 +47,6 @@ export const ContactPage: React.FC = () => {
     if (hasErrors) {
       return;
     }
-
-    const socialLinks = [
-      {
-        name: 'Facebook',
-        url: 'https://www.facebook.com/aklmedrevue/',
-        icon: FaceBookIcon,
-      },
-      {
-        name: 'Instagram',
-        url: 'https://www.instagram.com/aucklandmedrevue/?hl=en',
-        icon: InstagramIcon,
-      },
-    ];
 
     // Logging data as front-end only code
     console.log('Form submitted:', form);
@@ -184,10 +184,28 @@ export const ContactPage: React.FC = () => {
       <div className="bg-black py-12 px-4 w-screen relative left-1/2 right-1/2 -mx-[50vw]">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row rounded-xl overflow-hidden shadow-lg">
           {/* Left panel - contact info */}
-          <div className="bg-yellow-300 p-8 md:w-1/2">
+          <div className="bg-background-secondary p-8 md:w-1/2 relative">
             <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
-            <p className="mb-4">aucklandmedicalrevue@gmail.com</p>
-            <p>85 Park Road, Grafton, Auckland, 1023</p>
+            <p className="mb-4">📧 aucklandmedicalrevue@gmail.com</p>
+            <p>📍 85 Park Road Grafton Auckland 1023</p>
+
+            <div className="absolute bottom-6 right-6 flex gap-3">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.name}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-background-white rounded-full p-2 flex items-center justify-center w-10 h-10 hover:opacity-80"
+                >
+                  <img
+                    src={social.icon}
+                    alt={social.name}
+                    className="w-5 h-5"
+                  />
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* Right panel - your existing form */}
