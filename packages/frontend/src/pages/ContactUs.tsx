@@ -223,31 +223,46 @@ export const ContactPage: React.FC = () => {
             {/* your <form> goes here */}
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* form fields for user input */}
-              <p>Your Name</p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <input
-                  name="firstName"
-                  value={form.firstName}
-                  onChange={handleChange}
-                  placeholder="Your first name"
-                  className={`border p-2 rounded w-full ${errors.firstName ? 'border-red-500' : ''}`}
-                />
-                {/* Display error message if first name field is left empty */}
-                {errors.firstName && (
-                  <p className="text-red-500 text-sm">{errors.firstName}</p>
-                )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6">
+                <div>
+                  <label
+                    htmlFor="firstName"
+                    className="block text-sm text-gray-500 mb-1"
+                  >
+                    First Name
+                  </label>
+                  <input
+                    name="firstName"
+                    value={form.firstName}
+                    onChange={handleChange}
+                    className={`w-full border-0 border-b pb-2 focus:outline-none focus:border-black ${errors.firstName ? 'border-red-500' : 'border-gray-300'}`}
+                  />
+                  {errors.firstName && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.firstName}
+                    </p>
+                  )}
+                </div>
 
-                <input
-                  name="lastName"
-                  value={form.lastName}
-                  onChange={handleChange}
-                  placeholder="Your last name"
-                  className={`border p-2 rounded w-full ${errors.lastName ? 'border-red-500' : ''}`}
-                />
-                {/* Display error message if last name field is left empty */}
-                {errors.lastName && (
-                  <p className="text-red-500 text-sm">{errors.lastName}</p>
-                )}
+                <div>
+                  <label
+                    className="block text-sm text-gray-500 mb-1"
+                    htmlFor="lastName"
+                  >
+                    Last Name
+                  </label>
+                  <input
+                    name="lastName"
+                    value={form.lastName}
+                    onChange={handleChange}
+                    className={`w-full border-0 border-b pb-2 focus:outline-none focus:border-black ${errors.lastName ? 'border-red-500' : 'border-gray-300'}`}
+                  />
+                  {errors.lastName && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.lastName}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <p>Your Email</p>
