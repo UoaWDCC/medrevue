@@ -146,19 +146,16 @@ export const ContactPage: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-2xl mx-auto p-4 py-12">
+    <div className="max-w-6xl mx-auto px-4 pb-12">
       {/* header for the page */}
-      <h1 className="text-4xl font-bold">Contact Us</h1>
-      <br />
-      <p>
-        We would love to hear from you! Whether you have questions, feedback, or
-        want to get involved, please fill out the form below and we will get
-        back to you as soon as possible.
-      </p>
+      <div className="bg-black text-center py-12 w-screen relative left-1/2 right-1/2 -mx-[50vw]">
+        <h1 className="text-5xl font-bold text-yellow-300">Contact Us</h1>
+        <p className="text-xl italic text-white mt-2">Want to get in touch?</p>
+      </div>
       <br />
 
       {/* People to contact */}
-      <p className="text-2-xl font-bold text-center">
+      <p className="text-2xl font-bold text-center">
         Cast and Crew of this year's revue
       </p>
       <div className="space-y-12">
