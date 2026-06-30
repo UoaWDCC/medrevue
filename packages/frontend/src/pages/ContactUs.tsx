@@ -227,7 +227,7 @@ export const ContactPage: React.FC = () => {
                 <div>
                   <label
                     htmlFor="firstName"
-                    className="block text-sm text-gray-500 mb-1"
+                    className="block text-sm text-black mb-1"
                   >
                     First Name
                   </label>
@@ -246,7 +246,7 @@ export const ContactPage: React.FC = () => {
 
                 <div>
                   <label
-                    className="block text-sm text-gray-500 mb-1"
+                    className="block text-sm text-black mb-1"
                     htmlFor="lastName"
                   >
                     Last Name
@@ -265,19 +265,42 @@ export const ContactPage: React.FC = () => {
                 </div>
               </div>
 
-              <p>Your Email</p>
-              <input
-                name="email"
-                type="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder="Your email"
-                className={`border p-2 rounded w-full ${errors.email ? 'border-red-500' : ''}`}
-              />
-              {/* Display error message if email field is left empty or invalid */}
-              {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email}</p>
-              )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6">
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm text-gray-500 mb-1"
+                  >
+                    Email
+                  </label>
+                  <input
+                    name="email"
+                    type="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    className={`w-full border-0 border-b pb-2 focus:outline-none focus:border-black ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="phoneNumber"
+                    className="block text-sm text-gray-500 mb-1"
+                  >
+                    Phone Number
+                  </label>
+                  <input
+                    name="phoneNumber"
+                    type="tel"
+                    value={form.phoneNumber}
+                    onChange={handleChange}
+                    className="w-full border-0 border-b pb-2 border-gray-300 focus:outline-none focus:border-black"
+                  />
+                </div>
+              </div>
 
               <p>Your Phone Number</p>
               <input
