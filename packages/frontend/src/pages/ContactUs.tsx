@@ -329,7 +329,9 @@ export const ContactPage: React.FC = () => {
             className="bg-yellow-200 rounded-lg shadow-md p-4 flex flex-col items-center text-center w-50"
           >
             <div className="w-40 h-32 bg-gray-100 mb-3 rounded-lg" />
-            <p>{member.name}</p>
+            <p>
+              <b>{member.name}</b>
+            </p>
             <p className="text-text-brown">
               <i>{member.role}</i>
             </p>
