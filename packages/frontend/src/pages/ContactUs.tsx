@@ -330,7 +330,7 @@ export const ContactPage: React.FC = () => {
           >
             <div className="w-40 h-32 bg-gray-100 mb-3 rounded-lg" />
             <p>{member.name}</p>
-            <p>
+            <p className="text-text-brown">
               <i>{member.role}</i>
             </p>
           </div>
