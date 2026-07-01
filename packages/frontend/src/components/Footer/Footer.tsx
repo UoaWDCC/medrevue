@@ -1,12 +1,16 @@
 import type React from 'react';
 import { FaFacebookF, FaInstagram } from 'react-icons/fa';
 import { FaTiktok } from 'react-icons/fa6';
+import { useNavigate } from 'react-router';
 
 interface FooterProps {
   className?: string;
 }
 
 export const Footer: React.FC<FooterProps> = ({ className }) => {
+  // Navigation hook for routing to contact page when Contact Us button is clicked
+  const navigate = useNavigate();
+
   return (
     <footer
       className={`w-full pt-10 pb-18 px-6 sm:px-10 bg-background-primary text-background-white font-sans ${className}`}
@@ -27,9 +31,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
             </p>
             <button
               type="button"
-              onClick={() =>
-                window.open('mailto:aucklandmedicalrevue@gmail.com')
-              }
+              onClick={() => navigate('/contact')}
               className="text-background-secondary text-sm md:text-base font-normal
                 bg-transparent p-0 border-none cursor-pointer
                 transition-colors duration-300 hover:text-text-light"

@@ -10,5 +10,6 @@
   },
   "[github-actions-workflow][markdown][xml][yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "liveServer.settings.port": 5501
 }
