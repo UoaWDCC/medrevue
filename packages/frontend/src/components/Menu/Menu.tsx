@@ -79,6 +79,13 @@ export const Menu: React.FC = () => {
         <Link to="/sponsors" className="menu-nav-link">
           Sponsors
         </Link>
+        {/*link past shows page - test*/}
+        <Link
+          to="/past_shows"
+          className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
+        >
+          Past Shows
+        </Link>
         <a
           href="https://fundraise.msf.org.au/fundraisers/aucklandmedicalrevue/auckland-medical-revue?utm_source=qr&utm_medium=print"
           target="_blank"
