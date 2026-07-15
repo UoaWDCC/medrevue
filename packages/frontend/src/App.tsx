@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router';
 import { Cookie } from './components/Cookie';
 import { Footer } from './components/Footer';
 import { Menu } from './components/Menu';
+import { ContactPage } from './pages/ContactUs';
 import HomePage from './pages/Home';
 import ReturnPolicyPage from './pages/ReturnPolicy';
 import { SponsorPage } from './pages/SponsorPage';
@@ -76,6 +77,16 @@ const App: React.FC = () => {
             <>
               <Menu />
               <PastShowsPage />
+            </>
+          }
+        />
+
+        <Route
+          path="/contact"
+          element={
+            <>
+              <Menu />
+              <ContactPage />
             </>
           }
         />

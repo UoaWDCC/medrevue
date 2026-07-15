@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router';
+import medrevueLogo from '../../assets/medrevuelogo.png';
+import './styles.css';
 
 export const Menu: React.FC = () => {
   const location = useLocation();
@@ -13,22 +15,19 @@ export const Menu: React.FC = () => {
 
   return (
     <header
-      className={`flex justify-between items-center h-20 w-full px-10 z-50 ${
-        isHomePage
-          ? 'absolute top-0 left-0 bg-transparent'
-          : 'relative bg-[#0f0f0f]'
+      className={`menu-header ${
+        isHomePage ? 'absolute top-0 left-0' : 'relative'
       } ${open ? 'lg:static fixed top-0 left-0' : ''}`}
     >
-      <Link
-        to="/"
-        className="font-poppins font-bold text-2xl leading-[42px] text-[#e5ce63] no-underline z-60"
-      >
-        MedRevue
+      <Link to="/" className="menu-logo-link">
+        <img src={medrevueLogo} alt="MedRevue logo" className="h-10 w-auto" />
+        <span className="menu-logo-text">MedRevue</span>
       </Link>
+
       <button
         type="button"
-        className={`lg:hidden text-[#e5ce63] z-60 ${
-          open ? 'absolute top-42px right-10' : 'relative'
+        className={`menu-hamburger ${
+          open ? 'absolute top-6 right-10' : 'relative'
         }`}
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? 'Close Menu' : 'Open Menu'}
@@ -69,27 +68,15 @@ export const Menu: React.FC = () => {
           </svg>
         )}
       </button>
-      <nav
-        className={`${
-          open ? 'flex' : 'hidden'
-        } fixed top-0 left-0 h-screen w-screen bg-[rgba(0,0,0,0.95)] flex-col items-center justify-center gap-8 z-50 lg:static lg:h-auto lg:w-auto lg:bg-transparent lg:flex lg:flex-row lg:gap-20 lg:justify-start lg:items-center`}
-      >
-        <Link
-          to="/"
-          className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
-        >
+
+      <nav className={`${open ? 'flex' : 'hidden'} menu-nav`}>
+        <Link to="/" className="menu-nav-link">
           Home
         </Link>
-        <Link
-          to="/show"
-          className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
-        >
+        <Link to="/show" className="menu-nav-link">
           2025 Show
         </Link>
-        <Link
-          to="/sponsors"
-          className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
-        >
+        <Link to="/sponsors" className="menu-nav-link">
           Sponsors
         </Link>
         {/*link past shows page - test*/}
@@ -103,23 +90,16 @@ export const Menu: React.FC = () => {
           href="https://fundraise.msf.org.au/fundraisers/aucklandmedicalrevue/auckland-medical-revue?utm_source=qr&utm_medium=print"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
+          className="menu-nav-link"
         >
           Donate
         </a>
-
+        <Link to="/sponsors" className="menu-btn-filled">
+          Sponsor Us
+        </Link>
         {location.pathname !== '/buy' && (
-          <Link
-            to="#"
-            className="
-              order-first       
-              lg:order-none      
-              bg-[#e5ce63] rounded-lg w-fit px-2
-              font-inter text-xl font-bold leading-[36px] text-[#1a1a1a]
-              no-underline transition-colors duration-300 hover:bg-[#fff0a2]    
-            "
-          >
-            Buy Tickets
+          <Link to="#" className="menu-btn-outlined">
+            Order Tickets
           </Link>
         )}
       </nav>

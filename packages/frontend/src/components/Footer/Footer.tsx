@@ -1,64 +1,82 @@
 import type React from 'react';
-
-import facebook from '../../assets/facebook.svg';
-import instagram from '../../assets/instagram.svg';
-import tiktok from '../../assets/tiktok.svg';
+import { FaFacebookF, FaInstagram } from 'react-icons/fa';
+import { FaTiktok } from 'react-icons/fa6';
+import { useNavigate } from 'react-router';
 
 interface FooterProps {
   className?: string;
 }
 
 export const Footer: React.FC<FooterProps> = ({ className }) => {
+  // Navigation hook for routing to contact page when Contact Us button is clicked
+  const navigate = useNavigate();
+
   return (
     <footer
-      className={`w-full p-8 px-6 sm:px-10 bg-[#070507] text-[#FFFBE8] font-opensans ${className}`}
+      className={`w-full pt-10 pb-18 px-6 sm:px-10 bg-background-primary text-background-white font-sans ${className}`}
     >
-      <div className="mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-        {/* Left Side */}
-        <div className="w-full md:w-auto max-w-2xl text-center md:text-left">
-          <p className="text-[20px] md:text-[24px] text-[#FFFBE8] font-bold font-inter mb-4">
-            INTERESTED IN WORKING WITH US?
-          </p>
-          <button
-            type="button"
-            onClick={() => window.open('mailto:aucklandmedicalrevue@gmail.com')}
-            className="bg-[#e5ce63] rounded-lg w-fit px-2
-              font-inter md:text-xl text-lg leading-[36px] text-[#1a1a1a]
-              no-underline transition-colors duration-300 hover:bg-[#fff0a2]"
-          >
-            Contact Us
-          </button>
-        </div>
+      <div className="mx-auto max-w-7xl">
+        {/* Decorative Top Line */}
+        <div
+          className="h-[1px] w-full bg-background-secondary mb-18"
+          aria-hidden="true"
+        />
 
-        {/* Right Side */}
-        <div className="flex justify-center sm:justify-start gap-12 mt-8">
-          <a
-            href="https://www.facebook.com/aklmedrevue/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Facebook"
-            className="transition-transform hover:scale-110"
-          >
-            <img src={facebook} alt="Facebook" className="w-8 h-8" />
-          </a>
-          <a
-            href="https://www.instagram.com/aucklandmedrevue"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram"
-            className="transition-transform hover:scale-110"
-          >
-            <img src={instagram} alt="Instagram" className="w-8 h-8" />
-          </a>
-          <a
-            href="https://www.tiktok.com/@auckland.med.revue"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="TikTok"
-            className="transition-transform hover:scale-110"
-          >
-            <img src={tiktok} alt="TikTok" className="w-8 h-8" />
-          </a>
+        {/* Grid Layout: 3 columns on desktop for perfect centering */}
+        <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-8">
+          {/* 1. Left Column: CTA */}
+          <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-2 md:gap-4 text-center md:text-left">
+            <p className="text-sm md:text-base font-bold">
+              Interested in Working with us?
+            </p>
+            <button
+              type="button"
+              onClick={() => navigate('/contact')}
+              className="text-background-secondary text-sm md:text-base font-normal
+                bg-transparent p-0 border-none cursor-pointer
+                transition-colors duration-300 hover:text-text-light"
+            >
+              Contact Us
+            </button>
+          </div>
+
+          {/* 2. Middle Column: Copyright */}
+          <div className="text-center order-last md:order-none">
+            <p className="text-background-secondary text-sm md:text-base font-normal whitespace-nowrap">
+              Copyright © 2026 University of Auckland MedRevue
+            </p>
+          </div>
+
+          {/* 3. Right Column: Social Icons */}
+          <div className="flex justify-center md:justify-end gap-5">
+            <a
+              href="https://www.facebook.com/aklmedrevue/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="text-background-secondary transition-all hover:scale-110 hover:text-text-light"
+            >
+              <FaFacebookF size={24} />
+            </a>
+            <a
+              href="https://www.instagram.com/aucklandmedrevue"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="text-background-secondary transition-all hover:scale-110 hover:text-text-light"
+            >
+              <FaInstagram size={28} />
+            </a>
+            <a
+              href="https://www.tiktok.com/@auckland.med.revue"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="TikTok"
+              className="text-background-secondary transition-all hover:scale-110 hover:text-text-light"
+            >
+              <FaTiktok size={24} />
+            </a>
+          </div>
         </div>
       </div>
     </footer>
