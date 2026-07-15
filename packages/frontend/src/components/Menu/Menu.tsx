@@ -73,18 +73,11 @@ export const Menu: React.FC = () => {
         <Link to="/" className="menu-nav-link">
           Home
         </Link>
-        <Link to="/show" className="menu-nav-link">
-          2026 Show
+        <Link to="/gallery" className="menu-nav-link">
+          Gallery
         </Link>
         <Link to="/contact" className="menu-nav-link">
           Contact
-        </Link>
-        {/*link past shows page - test*/}
-        <Link
-          to="/past_shows"
-          className="font-inter text-xl font-bold leading-[36px] text-[#cccccc] no-underline transition-colors duration-300 hover:text-[#e5ce63]"
-        >
-          Past Shows
         </Link>
         <a
           href="https://donate.mentalhealth.org.nz"

@@ -1,4 +1,4 @@
-import poster from '../../assets/medrevue_poster.png';
+import poster from '../../assets/medrevue-poster-2026.png';
 import CardStack from '../../components/CardStack';
 import CurrentShowCard, {
   type CurrentShowCardProps,

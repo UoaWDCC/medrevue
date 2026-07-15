@@ -3,7 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type React from 'react';
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import medrevuePoster from '../../../assets/medrevue_poster.png';
+import medrevuePoster from '../../../assets/medrevue-poster-2026.png';
 import { Button } from '../../Button';
 
 gsap.registerPlugin(ScrollTrigger);

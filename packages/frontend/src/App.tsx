@@ -7,7 +7,7 @@ import { ContactPage } from './pages/ContactUs';
 import HomePage from './pages/Home';
 import ReturnPolicyPage from './pages/ReturnPolicy';
 import { SponsorPage } from './pages/SponsorPage';
-import PastShowsPage from './pages/past_shows/PastShowsPage';
+import GalleryPage from './pages/gallery/GalleryPage';
 import Show2025 from './pages/show/2025show';
 
 const App: React.FC = () => {
@@ -32,15 +32,6 @@ const App: React.FC = () => {
               <Menu />
               {/* <LoadingComponent /> */}
               <Show2025 />
-            </>
-          }
-        />
-        <Route
-          path="gallery"
-          element={
-            <>
-              <Menu />
-              <h1>Gallery</h1>
             </>
           }
         />
@@ -72,11 +63,11 @@ const App: React.FC = () => {
           }
         />
         <Route
-          path="/past_shows"
+          path="/gallery"
           element={
             <>
               <Menu />
-              <PastShowsPage />
+              <GalleryPage />
             </>
           }
         />

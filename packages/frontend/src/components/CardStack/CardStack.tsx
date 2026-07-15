@@ -3,30 +3,38 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useEffect, useRef } from 'react'; // Ensure it only runs after the DOM is created
 import PastShowCard, { type PastShowCardProps } from '../Cards/PastShowCard';
 
+import gallery2023_1 from '../../assets/gallery-2023-1.png';
+import gallery2023_2 from '../../assets/gallery-2023-2.png';
+import gallery2023_3 from '../../assets/gallery-2023-3.png';
+import gallery2024_1 from '../../assets/gallery-2024-1.png';
+import gallery2024_2 from '../../assets/gallery-2024-2.png';
+import gallery2024_3 from '../../assets/gallery-2024-3.png';
 import gallery2025_2 from '../../assets/medrevue-home-castBlue.png';
 import gallery2025_1 from '../../assets/medrevue-home-castPink.png';
-import poster2025 from '../../assets/medrevue-poster.jpg';
+import poster2023 from '../../assets/medrevue-poster-2023.png';
+import poster2024 from '../../assets/medrevue-poster-2024.png';
+import poster2025 from '../../assets/medrevue-poster-2025.jpg';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const cards: PastShowCardProps[] = [
   {
-    year: '2024',
-    title: 'Grease',
+    year: '2025',
+    title: 'Back to the Suture',
     posterUrl: poster2025,
     galleryUrls: [gallery2025_1, gallery2025_2, 'placeholder3.png'],
   },
   {
-    year: '2023',
-    title: 'Wicked',
-    posterUrl: 'bye',
-    galleryUrls: ['placeholder1.png', 'placeholder2.png', 'placeholder3.png'],
+    year: '2024',
+    title: 'Mean Docs',
+    posterUrl: poster2024,
+    galleryUrls: [gallery2024_1, gallery2024_2, gallery2024_3],
   },
   {
-    year: '2022',
-    title: 'Hamilton',
-    posterUrl: 'goodnight',
-    galleryUrls: ['placeholder1.png', 'placeholder2.png', 'placeholder3.png'],
+    year: '2023',
+    title: 'Medtilda',
+    posterUrl: poster2023,
+    galleryUrls: [gallery2023_1, gallery2023_2, gallery2023_3],
   },
 ];
 
