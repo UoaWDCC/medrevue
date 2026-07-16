@@ -68,7 +68,7 @@ export const SponsorPage: React.FC = () => {
           </div>
         </section>
 
-        <div className="w-full h-8 sm:h-16 bg-background-primary" />
+        <div className="w-full h-8 md:h-15 bg-background-primary" />
 
         <section className="bg-background-secondary px-4 py-10 text-left">
           <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-2">
@@ -86,7 +86,7 @@ export const SponsorPage: React.FC = () => {
           </div>
         </section>
 
-        <section className="bg-background-white px-4 mt-10 text-center">
+        <section className="bg-background-white px-4 mt-5 md:mt-10 text-center">
           <h2 className="text-2xl md:text-3xl leading-none font-semibold font-sans text-black mb-6">
             Our Impact
           </h2>
@@ -98,10 +98,10 @@ export const SponsorPage: React.FC = () => {
         </section>
 
         {/* Divider */}
-        <section className="bg-background-primary h-15 sm:h-30" />
+        <section className="bg-background-primary h-8 md:h-15" />
 
         {/* Sponsors Content */}
-        <section className="bg-background-white px-4 py-3 flex flex-col items-center md:mb-20 mb-10 md:mt-15 mt-10">
+        <section className="bg-background-white px-4 py-3 flex flex-col items-center my-5 md:my-10">
           <div className="mx-auto flex w-full max-w-6xl flex-col items-center">
             <h2 className="flex text-2xl md:text-3xl items-center gap-3 leading-none font-semibold font-sans text-black">
               Previous Sponsors
@@ -110,9 +110,6 @@ export const SponsorPage: React.FC = () => {
             <PreviousSponsors />
           </div>
         </section>
-
-        {/* Bottom Divider */}
-        <section className="bg-background-primary h-15 sm:h-30" />
       </div>
     </>
   );
