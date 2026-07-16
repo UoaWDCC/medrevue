@@ -253,11 +253,11 @@ const sponsors: Sponsor[] = [
 
 export const PreviousSponsors: React.FC = () => {
   const Logo = ({ src, alt }: { src: string; alt: string }) => (
-    <div className="h-[240px] w-full flex items-center justify-center">
+    <div className="h-36 md:h-44 w-full flex items-center justify-center">
       <img
         src={src}
         alt={alt}
-        className="h-full w-auto mb:max-w-[220px] object-contain"
+        className="h-full w-auto max-w-full object-contain"
       />
     </div>
   );
@@ -269,14 +269,14 @@ export const PreviousSponsors: React.FC = () => {
         px-4 sm:px-8 lg:px-16
         py-10
         flex flex-wrap justify-center
-        gap-x-6 sm:gap-x-12 lg:gap-x-24
+        gap-x-6 sm:gap-x-10 lg:gap-x-16
         gap-y-4 sm:gap-y-6 lg:gap-y-10
       "
     >
       {sponsors.map((sponsor) => (
         <a
           key={sponsor.name}
-          className="w-[220px]"
+          className="w-36 md:w-44"
           href={sponsor.href}
           target="_blank"
           rel="noopener noreferrer"

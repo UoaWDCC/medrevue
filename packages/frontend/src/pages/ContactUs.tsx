@@ -167,14 +167,16 @@ export const ContactPage: React.FC = () => {
     <div className="max-w-6xl mx-auto px-4 pb-12">
       {/* header for the page */}
       <div className="bg-black text-center py-12 w-screen relative left-1/2 right-1/2 -mx-[50vw]">
-        <h1 className="text-3xl sm:text-5xl font-bold text-yellow-300">
+        <h1 className="text-[32px] md:text-[56px] font-bold text-background-secondary">
           Contact Us
         </h1>
-        <p className="text-xl italic text-white mt-2">Want to get in touch?</p>
+        <p className="text-lg md:text-2xl italic text-text-light mt-2">
+          Want to get in touch?
+        </p>
       </div>
       <div className="bg-background-secondary h-4 w-screen relative left-1/2 right-1/2 -mx-[50vw]" />
       <br />
-      <div className="text-center">
+      <div className="text-center text-base md:text-lg leading-relaxed">
         <p>
           Auckland Medical Revue is one of New Zealand's largest student-led
           productions, entirely written, directed, and performed by University
@@ -190,8 +192,10 @@ export const ContactPage: React.FC = () => {
       <div className="bg-black py-12 px-4 w-screen relative left-1/2 right-1/2 -mx-[50vw]">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row rounded-xl overflow-hidden shadow-lg">
           {/* Left panel - contact info */}
-          <div className="bg-background-secondary p-8 md:w-1/2 relative">
-            <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
+          <div className="bg-background-secondary p-8 md:w-1/2 relative text-base md:text-lg">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6">
+              Contact Information
+            </h2>
             <p className="flex items-center gap-2 mb-4">
               <img src={EmailIcon} alt="" className="w-5 h-5" />
               aucklandmedicalrevue@gmail.com
@@ -223,13 +227,16 @@ export const ContactPage: React.FC = () => {
           {/* Right panel - your existing form */}
           <div className="bg-white p-8 md:w-2/3">
             {/* your <form> goes here */}
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-4 text-base md:text-lg"
+            >
               {/* form fields for user input */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6">
                 <div>
                   <label
                     htmlFor="firstName"
-                    className="block text-sm text-black mb-1"
+                    className="block text-base text-black mb-1"
                   >
                     First Name
                   </label>
@@ -248,7 +255,7 @@ export const ContactPage: React.FC = () => {
 
                 <div>
                   <label
-                    className="block text-sm text-black mb-1"
+                    className="block text-base text-black mb-1"
                     htmlFor="lastName"
                   >
                     Last Name
@@ -271,7 +278,7 @@ export const ContactPage: React.FC = () => {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm text-black mb-1"
+                    className="block text-base text-black mb-1"
                   >
                     Email
                   </label>
@@ -290,7 +297,7 @@ export const ContactPage: React.FC = () => {
                 <div>
                   <label
                     htmlFor="phoneNumber"
-                    className="block text-sm text-black mb-1"
+                    className="block text-base text-black mb-1"
                   >
                     Phone Number
                   </label>
@@ -329,7 +336,7 @@ export const ContactPage: React.FC = () => {
               <div>
                 <label
                   htmlFor="message"
-                  className="block text-sm text-black mb-1"
+                  className="block text-base text-black mb-1"
                 >
                   Message
                 </label>
@@ -357,7 +364,7 @@ export const ContactPage: React.FC = () => {
         </div>
       </div>
       <br />
-      <p className="text-center text-2xl font-bold">Our Team</p>
+      <p className="text-center text-2xl md:text-3xl font-bold">Our Team</p>
       <br />
       <div className="flex flex-wrap justify-center gap-4">
         {allMembers.map((member) => (
