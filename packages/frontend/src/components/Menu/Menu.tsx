@@ -74,10 +74,10 @@ export const Menu: React.FC = () => {
           Home
         </Link>
         <Link to="/show" className="menu-nav-link">
-          2025 Show
+          2026 Show
         </Link>
-        <Link to="/sponsors" className="menu-nav-link">
-          Sponsors
+        <Link to="/contact" className="menu-nav-link">
+          Contact
         </Link>
         {/*link past shows page - test*/}
         <Link
@@ -87,7 +87,7 @@ export const Menu: React.FC = () => {
           Past Shows
         </Link>
         <a
-          href="https://fundraise.msf.org.au/fundraisers/aucklandmedicalrevue/auckland-medical-revue?utm_source=qr&utm_medium=print"
+          href="https://donate.mentalhealth.org.nz"
           target="_blank"
           rel="noopener noreferrer"
           className="menu-nav-link"
@@ -98,8 +98,12 @@ export const Menu: React.FC = () => {
           Sponsor Us
         </Link>
         {location.pathname !== '/buy' && (
-          <Link to="#" className="menu-btn-outlined">
-            Order Tickets
+          <Link
+            to="https://www.iticket.co.nz/events/2026/aug/the-consultant-of-oz"
+            target="_blank"
+            className="menu-btn-outlined"
+          >
+            Buy Tickets
           </Link>
         )}
       </nav>
