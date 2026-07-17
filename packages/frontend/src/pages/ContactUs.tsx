@@ -1,8 +1,20 @@
+import axios from 'axios';
 import { useState } from 'react';
 import EmailIcon from '../assets/emailIcon.svg';
 import FaceBookIcon from '../assets/facebook.svg';
 import InstagramIcon from '../assets/instagram.svg';
 import LocationIcon from '../assets/locationIcon.svg';
+
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000';
+
+type ContactFormErrors = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  subject: string;
+  message: string;
+};
 
 export const ContactPage: React.FC = () => {
   const [form, setForm] = useState({
@@ -14,6 +26,9 @@ export const ContactPage: React.FC = () => {
     phoneNumber: '',
     subject: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [submitSuccess, setSubmitSuccess] = useState('');
 
   // handles form input changes
   const handleChange = (
@@ -36,8 +51,10 @@ export const ContactPage: React.FC = () => {
   ];
 
   // handles form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError('');
+    setSubmitSuccess('');
 
     const validationErrors = validateForm();
     setErrors(validationErrors);
@@ -50,32 +67,55 @@ export const ContactPage: React.FC = () => {
       return;
     }
 
-    // Logging data as front-end only code
-    console.log('Form submitted:', form);
-    // Email sending logic would go here, e.g., using an API endpoint or third-party service
-    // Thank you message for users
-    alert('Thank you for contacting us! We will get back to you soon.');
-    // Reset form after submission, clearing all fields
-    setForm({
-      firstName: '',
-      lastName: '',
-      email: '',
-      message: '',
-      phoneNumber: '',
-      subject: '',
-    });
+    setIsSubmitting(true);
+
+    try {
+      await axios.post(`${API_BASE_URL}/api/v1/contact`, form);
+      setSubmitSuccess(
+        'Thank you for contacting us! We will get back to you soon.',
+      );
+      // Reset form after submission, clearing all fields
+      setForm({
+        firstName: '',
+        lastName: '',
+        email: '',
+        message: '',
+        phoneNumber: '',
+        subject: '',
+      });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const responseErrors = error.response?.data?.errors;
+        if (responseErrors && typeof responseErrors === 'object') {
+          setErrors((prev) => ({ ...prev, ...responseErrors }));
+        }
+      }
+
+      setSubmitError(
+        'Sorry, your message could not be sent. Please try again.',
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   //state for form validation errors
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<ContactFormErrors>({
     firstName: '',
     lastName: '',
     email: '',
+    subject: '',
     message: '',
   });
 
   const validateForm = () => {
-    const newErrors = { firstName: '', lastName: '', email: '', message: '' };
+    const newErrors: ContactFormErrors = {
+      firstName: '',
+      lastName: '',
+      email: '',
+      subject: '',
+      message: '',
+    };
 
     // if first name field is left empty, set error message
     if (!form.firstName.trim()) {
@@ -93,6 +133,10 @@ export const ContactPage: React.FC = () => {
       newErrors.email =
         'Please enter a valid email address, e.g hello@gmail.com';
     }
+    // If no subject is selected.
+    if (!form.subject) {
+      newErrors.subject = 'Please select a subject.';
+    }
     // If the message field is left empty.
     if (!form.message.trim()) {
       newErrors.message = 'Please enter your message.';
@@ -103,65 +147,6 @@ export const ContactPage: React.FC = () => {
 
   // form itself
   const radioOptions = ['General Inquiry', 'Sponsorship'];
-
-  // cast and crew
-  const teamMembers = [
-    {
-      // Actors
-      title: 'Actors',
-      members: [
-        { name: 'Grace Baek', role: 'Actor' },
-        { name: 'Jess Brewerton', role: 'Actor' },
-        { name: 'Jimmy Austin', role: 'Actor' },
-        { name: 'Ashvin Peiris', role: 'Actor' },
-        { name: 'Sasan Danawala Gamage', role: 'Actor' },
-      ],
-    },
-    // Dancers
-    {
-      title: 'Dancers',
-      members: [
-        { name: 'Sophie Johnston', role: 'Dancer' },
-        { name: 'Sabrina Joe', role: 'Dancer' },
-        { name: 'Jules Torres', role: 'Dancer' },
-      ],
-    },
-    // Barbershop
-    {
-      title: 'Barbershop',
-      members: [
-        { name: 'Dalon Shih', role: 'Barbershop' },
-        { name: 'Ethan Moy', role: 'Barbershop' },
-        { name: 'Michelle Chan', role: 'Barbershop' },
-      ],
-    },
-    // Band
-    {
-      title: 'Band',
-      members: [
-        { name: 'Cindy Kim', role: 'Band' },
-        { name: 'Gloria Lee', role: 'Band' },
-      ],
-    },
-    // Backstage
-    {
-      title: 'Backstage',
-      members: [
-        { name: 'Carter Wu', role: 'Backstage' },
-        { name: 'Jade Edwards-Bell', role: 'Backstage' },
-      ],
-    },
-    // Production
-    {
-      title: 'Production',
-      members: [
-        { name: 'Amanda Li', role: 'Production' },
-        { name: 'Eve Lekach', role: 'Production' },
-        { name: 'Kasper Lenoir', role: 'Production' },
-      ],
-    },
-  ];
-  const allMembers = teamMembers.flatMap((section) => section.members);
 
   return (
     <div className="max-w-6xl mx-auto px-4 pb-12">
@@ -198,11 +183,16 @@ export const ContactPage: React.FC = () => {
             </h2>
             <p className="flex items-center gap-2 mb-4">
               <img src={EmailIcon} alt="" className="w-5 h-5" />
-              aucklandmedicalrevue@gmail.com
+              <a
+                href="mailto:aucklandmedicalrevue@gmail.com"
+                className="hover:underline"
+              >
+                aucklandmedicalrevue@gmail.com
+              </a>
             </p>
             <p className="flex items-center gap-2 mb-4">
               <img src={LocationIcon} alt="" className="w-5 h-5" />
-              85 Park Road Grafton Auckland 1023
+              85 Park Road, Grafton, Auckland
             </p>
 
             <div className="absolute bottom-6 right-6 flex gap-3">
@@ -331,6 +321,9 @@ export const ContactPage: React.FC = () => {
                   </label>
                 ))}
               </div>
+              {errors.subject && (
+                <p className="text-red-500 text-sm mt-1">{errors.subject}</p>
+              )}
               <br />
 
               <div>
@@ -352,38 +345,25 @@ export const ContactPage: React.FC = () => {
                 )}
               </div>
 
+              {submitError && (
+                <p className="text-red-500 text-sm">{submitError}</p>
+              )}
+              {submitSuccess && (
+                <p className="text-green-700 text-sm">{submitSuccess}</p>
+              )}
+
               {/* Form submit button */}
               <button
                 type="submit"
-                className="bg-background-secondary hover:bg-secondary-darker px-6 py-2 rounded-full font-semibold"
+                disabled={isSubmitting}
+                className="bg-background-secondary hover:bg-secondary-darker px-6 py-2 rounded-full font-semibold disabled:cursor-not-allowed disabled:opacity-70"
               >
-                Send Message
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
             </form>
           </div>
         </div>
       </div>
-      <br />
-      <p className="text-center text-2xl md:text-3xl font-bold">Our Team</p>
-      <br />
-      <div className="flex flex-wrap justify-center gap-4">
-        {allMembers.map((member) => (
-          <div
-            key={member.name}
-            className="bg-background-secondary rounded-lg shadow-md p-4 flex flex-col items-center text-center w-50"
-          >
-            <div className="w-40 h-32 bg-gray-100 mb-3 rounded-lg" />
-            <p>
-              <b>{member.name}</b>
-            </p>
-            <p className="text-text-brown">
-              <i>{member.role}</i>
-            </p>
-          </div>
-        ))}
-      </div>
-      <br />
-
       {/* /////////////////////////// comment  */}
       <br />
     </div>

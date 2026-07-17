@@ -1,13 +1,9 @@
 import crypto from 'node:crypto';
 import QRCode from 'qrcode';
 import type { IOrder } from '../models/order';
+import { sendBrevoEmail } from './sendBrevoEmail';
 
 export async function sendConfirmationEmail(order: IOrder): Promise<void> {
-  const brevoApiKey = process.env.BREVO_API_KEY;
-  if (!brevoApiKey) {
-    console.warn('BREVO_API_KEY not set. Skipping email notification.');
-    return;
-  }
   const orderId = (order._id as string | { toString(): string }).toString();
   const qrCodeSecret = process.env.QRCODE_SECRET;
   if (!qrCodeSecret) {
@@ -404,14 +400,7 @@ export async function sendConfirmationEmail(order: IOrder): Promise<void> {
   };
 
   try {
-    await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'api-key': brevoApiKey,
-      },
-      body: JSON.stringify(emailPayload),
-    });
+    await sendBrevoEmail(emailPayload);
   } catch (emailError) {
     console.error('Failed to send confirmation email:', emailError);
   }
