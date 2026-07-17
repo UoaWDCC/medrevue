@@ -7,15 +7,26 @@ export const ShowInfoCard: React.FC = () => {
         <h2 className="mb-6 font-poppins text-3xl font-bold text-text-grey md:text-4xl">
           The Consultant of Oz
         </h2>
+        <p className="mx-auto mb-6 font-poppins text-base leading-relaxed text-text-light-grey md:text-xl">
+          <strong>
+            <em>The Consultant of Oz</em>
+          </strong>{' '}
+          is a bold, student-led musical parody inspired by <em>Wicked</em> and{' '}
+          <em>The Wizard of Oz</em>, reimagined within the high-pressure world
+          of medicine. The production features iconic songs with a fresh twist,
+          thrillifying choreography, a titillating live band, and an enormous
+          cast of passionate student performers. Beneath the comedy lies a
+          powerful message about courage, belonging, and challenging the systems
+          that shape who gets to succeed.
+        </p>
         <p className="mx-auto font-poppins text-base leading-relaxed text-text-light-grey md:text-xl">
-          The Consultant of Oz is a bold, student-led musical parody inspired by
-          Wicked and The Wizard of Oz, reimagined within the high-pressure world
-          of medicine. Through a stunning mix of acting, song and dance, a live
-          band, and reimagined musical numbers, The Consultant of Oz explores
-          healthcare equity, systemic bias, burnout, exclusion, and the courage
-          required to challenge authority. Ultimately, it is a celebration of
-          belonging, integrity, and the belief that medicine is greatest when
-          everyone has a place within it.
+          Whether you're a musical theatre lover, healthcare professional,
+          student, or simply looking for an unforgettable night at the theatre,{' '}
+          <strong>
+            <em>The Consultant of Oz</em>
+          </strong>{' '}
+          promises a performance that is as entertaining as it is
+          thought-provoking.
         </p>
       </div>
     </section>

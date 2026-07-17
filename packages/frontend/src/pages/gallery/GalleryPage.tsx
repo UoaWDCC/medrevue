@@ -1,4 +1,4 @@
-import poster from '../../assets/medrevue_poster.png';
+import poster from '../../assets/medrevue-poster-2026.png';
 import CardStack from '../../components/CardStack';
 import CurrentShowCard, {
   type CurrentShowCardProps,
@@ -21,13 +21,13 @@ export default function PastShowsPage() {
   return (
     <div className="overflow-x-hidden bg-[var(--color-background-secondary)]">
       <section className="bg-[var(--color-background-primary)] w-screen h-[100vh] flex flex-col justify-center items-center">
-        <h1 className="font-bold text-32px md:text-[56px] pb-10 text-[var(--color-background-secondary)]">
+        <h1 className="font-bold text-[32px] md:text-[56px] pb-10 text-[var(--color-background-secondary)]">
           Gallery
         </h1>
         <CurrentShowCard {...currentShowInfo} />
       </section>
       <section className="w-full absolute flex justify-center mt-15">
-        <h1 className="font-bold absolute top-0 text-[56px] text-[#000000] text-center">
+        <h1 className="font-bold absolute top-0 text-[32px] md:text-[56px] text-[#000000] text-center">
           Past Shows
         </h1>
       </section>

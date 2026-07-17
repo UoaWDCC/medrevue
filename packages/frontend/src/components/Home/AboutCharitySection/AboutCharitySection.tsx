@@ -95,7 +95,7 @@ export const AboutCharitySection: React.FC = () => {
   }, []);
 
   return (
-    <section className="w-full grid grid-cols-1 md:grid-cols-2 bg-black">
+    <section className="w-full grid grid-cols-1 md:grid-cols-2 bg-black overflow-hidden">
       <div className="order-1">
         <InfoCard
           title="About Med Revue"

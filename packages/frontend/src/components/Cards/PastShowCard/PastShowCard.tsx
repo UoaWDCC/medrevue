@@ -13,7 +13,7 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
   posterUrl,
   galleryUrls,
 }) => {
-  const visibleImages = galleryUrls.slice(0, 2);
+  const visibleImages = galleryUrls.slice(0, 3);
 
   return (
     <div className="card absolute w-full md:max-w-[720px] lg:max-w-[1000px] xl:max-w-[1200px] mx-auto">
@@ -107,22 +107,6 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
                     />
                   </div>
                 ))}
-
-                {/* View more tile */}
-                <div
-                  className="rounded-lg flex-shrink-0 flex items-end justify-left cursor-pointer
-                     bg-text-grey border border-text-grey
-                     hover:bg-text-grey transition-colors duration-200
-                     w-20 h-20 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44"
-                >
-                  <span className="m-2 lg:m-5 leading-tight text-[0.6rem] md:text-[0.7rem] lg:text-[0.9rem] text-background-secondary">
-                    <>
-                      View
-                      <br />
-                      more...
-                    </>
-                  </span>
-                </div>
               </div>
             </div>
           </div>

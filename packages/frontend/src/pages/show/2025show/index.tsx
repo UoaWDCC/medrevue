@@ -1,5 +1,5 @@
 import type React from 'react';
-import Show2025Poster from '../../../assets/medrevue-poster.png';
+import Show2025Poster from '../../../assets/medrevue-poster-2025.jpg';
 
 const Show2025: React.FC = () => (
   <>
