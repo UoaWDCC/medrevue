@@ -50,12 +50,13 @@ const CardStack = () => {
     const ctx = gsap.context(() => {
       // Grab all card elements as an array so we can index them
       const cardsArray = gsap.utils.toArray<HTMLElement>('.card');
+      const mobileCardYOffset = window.innerWidth < 768 ? 12 : 0;
 
       // Set initial position
       gsap.set(cardsArray, {
         position: 'absolute',
         zIndex: (i: number) => cardsArray.length - i,
-        y: (i: number) => 12 * i,
+        y: (i: number) => mobileCardYOffset + 12 * i,
         top: '50%',
         left: '50%',
         xPercent: -50,
@@ -90,7 +91,7 @@ const CardStack = () => {
 
   return (
     <div
-      className="w-screen h-screen flex items-center justify-center"
+      className="w-full h-[100svh] flex items-center justify-center px-3 md:px-0"
       ref={containerRef}
     >
       {cards.map((card) => (

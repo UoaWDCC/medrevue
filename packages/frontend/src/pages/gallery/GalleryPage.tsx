@@ -20,8 +20,8 @@ export default function PastShowsPage() {
 
   return (
     <div className="overflow-x-hidden bg-[var(--color-background-secondary)]">
-      <section className="bg-[var(--color-background-primary)] w-screen h-[100vh] flex flex-col justify-center items-center">
-        <h1 className="font-bold text-[32px] md:text-[56px] pb-10 text-[var(--color-background-secondary)]">
+      <section className="bg-[var(--color-background-primary)] w-full min-h-[calc(100svh-5rem)] md:min-h-screen flex flex-col justify-center items-center gap-6 px-4 py-10 md:gap-10 md:py-0">
+        <h1 className="font-bold text-[32px] md:text-[56px] text-[var(--color-background-secondary)]">
           Gallery
         </h1>
         <CurrentShowCard {...currentShowInfo} />
