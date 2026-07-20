@@ -1,6 +1,5 @@
 import type React from 'react';
 import { Route, Routes } from 'react-router';
-import { Cookie } from './components/Cookie';
 import { Footer } from './components/Footer';
 import { Menu } from './components/Menu';
 import { ContactPage } from './pages/ContactUs';
@@ -84,7 +83,6 @@ const App: React.FC = () => {
       </Routes>
 
       {!isAdminPage && <Footer />}
-      <Cookie />
     </>
   );
 };
