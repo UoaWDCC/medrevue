@@ -4,6 +4,7 @@ import type React from 'react';
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import medrevuePoster from '../../../assets/medrevue-poster-2026.png';
+import { TICKET_URL } from '../../../constants/links';
 import { Button } from '../../Button';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -113,9 +114,11 @@ export const HeroSection: React.FC = () => {
           </div>
 
           <div className="flex flex-row gap-3 items-center mt-[clamp(0.25rem,1vh,0.5rem)]">
-            <Button
-              onClick={() => navigate('/buy')}
-              className="p-0 bg-transparent hover:bg-transparent w-[clamp(110px,18vw,130px)] h-[clamp(34px,6vh,42px)]"
+            <a
+              href={TICKET_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-0 bg-transparent hover:bg-transparent w-[clamp(110px,18vw,130px)] h-[clamp(34px,6vh,42px)] inline-flex"
             >
               <svg
                 viewBox="0 0 160 50"
@@ -145,7 +148,7 @@ export const HeroSection: React.FC = () => {
                   Order Tickets
                 </text>
               </svg>
-            </Button>
+            </a>
 
             <Button
               onClick={() => navigate('/sponsors')}

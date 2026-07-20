@@ -9,8 +9,9 @@ import gallery2023_3 from '../../assets/gallery-2023-3.png';
 import gallery2024_1 from '../../assets/gallery-2024-1.png';
 import gallery2024_2 from '../../assets/gallery-2024-2.png';
 import gallery2024_3 from '../../assets/gallery-2024-3.png';
-import gallery2025_2 from '../../assets/medrevue-home-castBlue.png';
-import gallery2025_1 from '../../assets/medrevue-home-castPink.png';
+import gallery2025_1 from '../../assets/gallery-2025-1.png';
+import gallery2025_2 from '../../assets/gallery-2025-2.png';
+import gallery2025_3 from '../../assets/gallery-2025-3.png';
 import poster2023 from '../../assets/medrevue-poster-2023.png';
 import poster2024 from '../../assets/medrevue-poster-2024.png';
 import poster2025 from '../../assets/medrevue-poster-2025.jpg';
@@ -22,7 +23,7 @@ const cards: PastShowCardProps[] = [
     year: '2025',
     title: 'Back to the Suture',
     posterUrl: poster2025,
-    galleryUrls: [gallery2025_1, gallery2025_2, 'placeholder3.png'],
+    galleryUrls: [gallery2025_1, gallery2025_2, gallery2025_3],
   },
   {
     year: '2024',
