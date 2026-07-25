@@ -75,8 +75,12 @@ export const SponsorsSection: React.FC = () => {
               Presenting this years show
             </h4>
             <p className="text-background-primary text-sm md:text-base leading-relaxed">
-              Auckland's Waitemata Endoscopy offers specialized endoscopy
-              services like gastroscopy, colonoscopy, and endoscopic ultrasound.
+              Waitemata Endoscopy is a centre of excellence for endoscopy care,
+              serving patients Auckland wide for nearly 20 years. With increased
+              capacity, Waitemata Endoscopy can provide appointments for most
+              standard Colonoscopy and Gastroscopy procedures within 7 working
+              days, offering greater access to a group of experienced
+              Gastroenterologists and Surgeons.
             </p>
           </div>
         </div>
