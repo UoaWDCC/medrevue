@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import medrevueLogo from '../../assets/medrevuelogo.png';
+import { TICKET_URL } from '../../constants/links';
 import './styles.css';
 
 export const Menu: React.FC = () => {
@@ -91,13 +92,14 @@ export const Menu: React.FC = () => {
           Sponsor Us
         </Link>
         {location.pathname !== '/buy' && (
-          <Link
-            to="https://www.iticket.co.nz/events/2026/aug/the-consultant-of-oz"
+          <a
+            href={TICKET_URL}
             target="_blank"
+            rel="noopener noreferrer"
             className="menu-btn-outlined"
           >
             Buy Tickets
-          </Link>
+          </a>
         )}
       </nav>
     </header>
