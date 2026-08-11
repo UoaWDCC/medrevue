@@ -1,11 +1,8 @@
 import type React from 'react';
-import { useNavigate } from 'react-router';
-// import { Link } from 'react-router';
 import { OurTeamSection } from '../components/Contact/OurTeamSection.tsx';
 
 export const AboutUsPage: React.FC = () => {
   // Navigation hook for routing to contact page when Contact Us button is clicked
-  const navigate = useNavigate();
 
   return (
     <>
