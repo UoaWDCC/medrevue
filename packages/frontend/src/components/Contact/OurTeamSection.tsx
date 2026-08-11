@@ -55,7 +55,11 @@ export const OurTeamSection: React.FC = () => {
   return (
     <>
       <br />
-      <p className="text-center text-2xl md:text-3xl font-bold">Our Team</p>
+      <section className="bg-background-white px-4 mt-5 md:mt-10 text-center">
+        <h2 className="text-2xl md:text-3xl leading-none font-semibold font-sans text-black mb-6">
+          Our Team
+        </h2>
+      </section>
       <br />
       <div className="flex flex-wrap justify-center gap-4">
         {allMembers.map((member) => (
