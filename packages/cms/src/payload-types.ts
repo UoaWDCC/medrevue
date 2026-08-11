@@ -69,6 +69,9 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    'previous-sponsors': PreviousSponsor;
+    shows: Show;
+    sponsors: Sponsor;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +81,9 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'previous-sponsors': PreviousSponsorsSelect<false> | PreviousSponsorsSelect<true>;
+    shows: ShowsSelect<false> | ShowsSelect<true>;
+    sponsors: SponsorsSelect<false> | SponsorsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -87,8 +93,24 @@ export interface Config {
     defaultIDType: string;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    homepage: Homepage;
+    'about-med-revue': AboutMedRevue;
+    'our-charity': OurCharity;
+    'sponsor-us': SponsorUs;
+    contact: Contact;
+    'site-settings': SiteSetting;
+    'theme-settings': ThemeSetting;
+  };
+  globalsSelect: {
+    homepage: HomepageSelect<false> | HomepageSelect<true>;
+    'about-med-revue': AboutMedRevueSelect<false> | AboutMedRevueSelect<true>;
+    'our-charity': OurCharitySelect<false> | OurCharitySelect<true>;
+    'sponsor-us': SponsorUsSelect<false> | SponsorUsSelect<true>;
+    contact: ContactSelect<false> | ContactSelect<true>;
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'theme-settings': ThemeSettingsSelect<false> | ThemeSettingsSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -163,6 +185,105 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "previous-sponsors".
+ */
+export interface PreviousSponsor {
+  id: string;
+  name: string;
+  logo: string | Media;
+  url: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shows".
+ */
+export interface Show {
+  id: string;
+  title: string;
+  year: number;
+  poster: string | Media;
+  isCurrentShow?: boolean | null;
+  shortDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  performances?:
+    | {
+        startsAt: string;
+        endsAt?: string | null;
+        doorsOpenAt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  venue?: string | null;
+  address?: string | null;
+  ticketsOnSale?: boolean | null;
+  ticketLink?: string | null;
+  ticketButtonLabel?: string | null;
+  galleryImages?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  displayOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsors".
+ */
+export interface Sponsor {
+  id: string;
+  name: string;
+  logo: string | Media;
+  websiteUrl: string;
+  tier: 'platinum' | 'gold' | 'bronze';
+  headline?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  displayOrder?: number | null;
+  active?: boolean | null;
+  /**
+   * On save, creates a matching Previous Sponsor entry and removes this sponsor from the active list.
+   */
+  convertToPreviousSponsor?: boolean | null;
+  /**
+   * The Previous Sponsor entry created from this sponsor.
+   */
+  previousSponsor?: (string | null) | PreviousSponsor;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -192,6 +313,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'previous-sponsors';
+        value: string | PreviousSponsor;
+      } | null)
+    | ({
+        relationTo: 'shows';
+        value: string | Show;
+      } | null)
+    | ({
+        relationTo: 'sponsors';
+        value: string | Sponsor;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -277,6 +410,68 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "previous-sponsors_select".
+ */
+export interface PreviousSponsorsSelect<T extends boolean = true> {
+  name?: T;
+  logo?: T;
+  url?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shows_select".
+ */
+export interface ShowsSelect<T extends boolean = true> {
+  title?: T;
+  year?: T;
+  poster?: T;
+  isCurrentShow?: T;
+  shortDescription?: T;
+  performances?:
+    | T
+    | {
+        startsAt?: T;
+        endsAt?: T;
+        doorsOpenAt?: T;
+        id?: T;
+      };
+  venue?: T;
+  address?: T;
+  ticketsOnSale?: T;
+  ticketLink?: T;
+  ticketButtonLabel?: T;
+  galleryImages?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  displayOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsors_select".
+ */
+export interface SponsorsSelect<T extends boolean = true> {
+  name?: T;
+  logo?: T;
+  websiteUrl?: T;
+  tier?: T;
+  headline?: T;
+  description?: T;
+  displayOrder?: T;
+  active?: T;
+  convertToPreviousSponsor?: T;
+  previousSponsor?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -314,6 +509,332 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage".
+ */
+export interface Homepage {
+  id: string;
+  heroOrganisationTitle: string;
+  heroTagline?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-med-revue".
+ */
+export interface AboutMedRevue {
+  id: string;
+  heading: string;
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  image: string | Media;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "our-charity".
+ */
+export interface OurCharity {
+  id: string;
+  heading: string;
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  image: string | Media;
+  donationLink?: string | null;
+  donationLinkLabel?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsor-us".
+ */
+export interface SponsorUs {
+  id: string;
+  title: string;
+  subtitle?: string | null;
+  heroImage?: (string | null) | Media;
+  introduction?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  contactButtonLabel?: string | null;
+  contactButtonLink?: string | null;
+  impactSectionTitle?: string | null;
+  impactSectionDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  impactCards?:
+    | {
+        icon?: (string | null) | Media;
+        title: string;
+        description: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  statisticsSectionTitle?: string | null;
+  statistics?:
+    | {
+        value: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  previousSponsorsTitle?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact".
+ */
+export interface Contact {
+  id: string;
+  pageTitle: string;
+  subtitle?: string | null;
+  introduction?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  contactInformationHeading?: string | null;
+  email?: string | null;
+  location?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: string;
+  footerCtaText?: string | null;
+  footerCtaLabel?: string | null;
+  footerCtaLink?: string | null;
+  copyrightText?: string | null;
+  facebookUrl?: string | null;
+  instagramUrl?: string | null;
+  tiktokUrl?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "theme-settings".
+ */
+export interface ThemeSetting {
+  id: string;
+  primaryBackground: string;
+  secondaryBrand: string;
+  secondaryHover: string;
+  lightText: string;
+  white: string;
+  primaryText: string;
+  mutedText: string;
+  accent1: string;
+  accent2: string;
+  warmBrown: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage_select".
+ */
+export interface HomepageSelect<T extends boolean = true> {
+  heroOrganisationTitle?: T;
+  heroTagline?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-med-revue_select".
+ */
+export interface AboutMedRevueSelect<T extends boolean = true> {
+  heading?: T;
+  body?: T;
+  image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "our-charity_select".
+ */
+export interface OurCharitySelect<T extends boolean = true> {
+  heading?: T;
+  body?: T;
+  image?: T;
+  donationLink?: T;
+  donationLinkLabel?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsor-us_select".
+ */
+export interface SponsorUsSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  heroImage?: T;
+  introduction?: T;
+  contactButtonLabel?: T;
+  contactButtonLink?: T;
+  impactSectionTitle?: T;
+  impactSectionDescription?: T;
+  impactCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  statisticsSectionTitle?: T;
+  statistics?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  previousSponsorsTitle?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact_select".
+ */
+export interface ContactSelect<T extends boolean = true> {
+  pageTitle?: T;
+  subtitle?: T;
+  introduction?: T;
+  contactInformationHeading?: T;
+  email?: T;
+  location?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  footerCtaText?: T;
+  footerCtaLabel?: T;
+  footerCtaLink?: T;
+  copyrightText?: T;
+  facebookUrl?: T;
+  instagramUrl?: T;
+  tiktokUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "theme-settings_select".
+ */
+export interface ThemeSettingsSelect<T extends boolean = true> {
+  primaryBackground?: T;
+  secondaryBrand?: T;
+  secondaryHover?: T;
+  lightText?: T;
+  white?: T;
+  primaryText?: T;
+  mutedText?: T;
+  accent1?: T;
+  accent2?: T;
+  warmBrown?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
