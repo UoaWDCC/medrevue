@@ -22,18 +22,24 @@ const cards: PastShowCardProps[] = [
   {
     year: '2025',
     title: 'Back to the Suture',
+    description:
+      'Back to the Suture takes Auckland MedRevue on a hilarious journey through medicine and time itself. When a medical mishap sends our characters hurtling through different eras, they must navigate the chaos of the past, present, and future to find their way home. Expect comedy, music, medical mishaps, and plenty of inside jokes along the way.',
     posterUrl: poster2025,
     galleryUrls: [gallery2025_1, gallery2025_2, gallery2025_3],
   },
   {
     year: '2024',
     title: 'Mean Docs',
+    description:
+      'Mean Docs takes Auckland MedRevue into the chaotic world of medical school, where friendships, drama, and competition collide. Follow a group of students as they navigate the pressures of med school, complicated friendships, and the ever-present battle to come out on top. Expect hilarious musical numbers, questionable medical decisions, dramatic rivalries, and plenty of moments that hit a little too close to home — all with the signature MedRevue twist.',
     posterUrl: poster2024,
     galleryUrls: [gallery2024_1, gallery2024_2, gallery2024_3],
   },
   {
     year: '2023',
     title: 'Medtilda',
+    description:
+      'Medtilda is a hilarious medical twist on the beloved story of Matilda the Musical. Follow a clever young med student as she navigates the chaos of medical school, questionable teaching, and larger-than-life characters. Packed with comedy, music, and plenty of medical humour, Medtilda is one night of pure medrevue madness.',
     posterUrl: poster2023,
     galleryUrls: [gallery2023_1, gallery2023_2, gallery2023_3],
   },
