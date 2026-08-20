@@ -52,8 +52,12 @@ export const SeatPlanning: React.FC<{
     rowXOffsets[rowLabel] = offset;
   }
 
+  // Call centerOnLoad on mount if provided. Guard to avoid calling when the
+  // prop is omitted (some pages render SeatPlanning without passing it).
   useEffect(() => {
-    centerOnLoad?.(0, 0);
+    if (typeof centerOnLoad === 'function') {
+      centerOnLoad(0, 0);
+    }
   }, [centerOnLoad]);
 
   useEffect(() => {

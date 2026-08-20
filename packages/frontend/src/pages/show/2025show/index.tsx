@@ -1,5 +1,6 @@
 import type React from 'react';
-import Show2025Poster from '../../../assets/medrevue-poster.png';
+import Show2025Poster from '../../../assets/medrevue-poster-2025.jpg';
+import { TICKET_URL } from '../../../constants/links';
 
 const Show2025: React.FC = () => (
   <>
@@ -71,18 +72,19 @@ const Show2025: React.FC = () => (
             Student Tickets <span className="font-normal italic">$25</span>
           </p>
 
-          <button
-            type="button"
+          <a
+            href={TICKET_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="     
               bg-[#e5ce63] rounded-lg w-fit px-2
               font-inter text-md font-semibold leading-[36px] text-[#1a1a1a]
               no-underline transition-colors duration-300 hover:bg-[#fff0a2] mt-6
             "
+            aria-label="Buy tickets"
           >
-            <a href="/buy" className="no-underline" aria-label="Buy tickets">
-              Buy Tickets
-            </a>
-          </button>
+            Buy Tickets
+          </a>
         </div>
       </div>
     </div>

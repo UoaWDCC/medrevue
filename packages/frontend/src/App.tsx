@@ -1,22 +1,12 @@
 import type React from 'react';
-import { Link, Route, Routes } from 'react-router';
-import { AdminMenu } from './components/AdminMenu';
-import { Cookie } from './components/Cookie';
+import { Route, Routes } from 'react-router';
 import { Footer } from './components/Footer';
 import { Menu } from './components/Menu';
-import CancelPage from './pages/CancelPage';
+import { ContactPage } from './pages/ContactUs';
 import HomePage from './pages/Home';
-import OrderStatsDashboard from './pages/OrderStatsDashboard';
-import QrCodePage from './pages/QrCodePage';
-import QrCodeScanner from './pages/QrCodeScanner';
 import ReturnPolicyPage from './pages/ReturnPolicy';
 import { SponsorPage } from './pages/SponsorPage';
-import SuccessPage from './pages/SuccessPage';
-import UserDetail from './pages/UserDetail';
-import AdminPanelPage from './pages/admin_panel/admin_panel';
-import BookingManagement from './pages/booking_management/BookingManagement';
-import BookingOverview from './pages/booking_overview/BookingOverview';
-import SeatSelectionPage from './pages/seat_selection';
+import GalleryPage from './pages/gallery/GalleryPage';
 import Show2025 from './pages/show/2025show';
 
 const App: React.FC = () => {
@@ -45,29 +35,11 @@ const App: React.FC = () => {
           }
         />
         <Route
-          path="gallery"
-          element={
-            <>
-              <Menu />
-              <h1>Gallery</h1>
-            </>
-          }
-        />
-        <Route
           path="about"
           element={
             <>
               <Menu />
               <h1>About</h1>
-            </>
-          }
-        />
-        <Route
-          path="buy"
-          element={
-            <>
-              <Menu />
-              <SeatSelectionPage />
             </>
           }
         />
@@ -81,41 +53,6 @@ const App: React.FC = () => {
           }
         />
         <Route
-          path="/seat-selection"
-          element={
-            <Link to="/seat-selection">
-              <SeatSelectionPage />
-            </Link>
-          }
-        />
-        <Route
-          path="/user-detail"
-          element={
-            <>
-              <Menu />
-              <UserDetail />
-            </>
-          }
-        />
-        <Route
-          path="/success"
-          element={
-            <>
-              <Menu />
-              <SuccessPage />
-            </>
-          }
-        />
-        <Route
-          path="/cancel"
-          element={
-            <>
-              <Menu />
-              <CancelPage />
-            </>
-          }
-        />
-        <Route
           path="/return-policy"
           element={
             <>
@@ -125,56 +62,27 @@ const App: React.FC = () => {
           }
         />
         <Route
-          path="/qrcode/:orderId/:signature"
+          path="/gallery"
           element={
             <>
               <Menu />
-              <QrCodePage />
+              <GalleryPage />
             </>
           }
         />
-        <Route path="admin" element={<AdminPanelPage />} />
 
         <Route
-          path="/admin/dashboard"
-          element={
-            <>
-              <AdminMenu />
-              <OrderStatsDashboard />
-            </>
-          }
-        />
-        <Route
-          path="/dashboard/qrcode/scanner"
+          path="/contact"
           element={
             <>
               <Menu />
-              <QrCodeScanner />
-            </>
-          }
-        />
-        <Route
-          path="/admin/booking"
-          element={
-            <>
-              <AdminMenu />
-              <BookingOverview />
-            </>
-          }
-        />
-        <Route
-          path="/admin/manage"
-          element={
-            <>
-              <AdminMenu />
-              <BookingManagement />
+              <ContactPage />
             </>
           }
         />
       </Routes>
 
       {!isAdminPage && <Footer />}
-      <Cookie />
     </>
   );
 };
