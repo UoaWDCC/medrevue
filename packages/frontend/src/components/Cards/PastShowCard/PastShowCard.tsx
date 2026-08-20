@@ -3,6 +3,7 @@ import type React from 'react';
 export interface PastShowCardProps {
   year: string;
   title: string;
+  description: string;
   posterUrl: string;
   galleryUrls: string[];
 }
@@ -10,6 +11,7 @@ export interface PastShowCardProps {
 export const PastShowCard: React.FC<PastShowCardProps> = ({
   year,
   title,
+  description,
   posterUrl,
   galleryUrls,
 }) => {
@@ -21,7 +23,7 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
         className="
           flex flex-col rounded-[28px] lg:rounded-[38px] overflow-hidden
           border border-text-grey/[0.08]
-          md:grid md:grid-cols-[72px_1fr] md:[aspect-ratio:22/10]
+          md:grid md:grid-cols-[72px_1fr] md:[aspect-ratio:22/12]
           lg:grid-cols-[96px_1fr]
           shadow-[0_10px_25px_rgba(100,100,100,0.15)]
           hover:shadow-[0_10px_50px_rgba(100,100,100,0.35)]
@@ -77,7 +79,7 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
 
           {/* ── Right content ── */}
           <div className="flex flex-col justify-between gap-4 lg:gap-5 xl:gap-6 min-w-0 flex-1 w-full md:overflow-hidden">
-            {/* Title */}
+            {/* Title and description */}
             <div className="flex flex-col gap-2 lg:gap-3 overflow-hidden">
               <h2
                 className="
@@ -89,6 +91,14 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
               >
                 {title}
               </h2>
+              <p
+                className="
+                  leading-[1.5] m-0 text-[0.9rem] md:text-[0.68rem] lg:text-[0.95rem] xl:text-[1.1rem]
+                  text-center md:text-left text-white
+                "
+              >
+                {description}
+              </p>
             </div>
 
             {/* Thumbnail strip */}
