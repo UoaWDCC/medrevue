@@ -26,7 +26,7 @@ export default function PastShowsPage() {
         </h1>
         <CurrentShowCard {...currentShowInfo} />
       </section>
-      <section className="w-full absolute flex justify-center mt-15">
+      <section className="w-full absolute flex justify-center mt-13 mb-10">
         <h1 className="font-bold absolute top-0 text-[32px] md:text-[56px] text-[#000000] text-center">
           Past Shows
         </h1>
