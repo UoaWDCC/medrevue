@@ -105,7 +105,7 @@ export const AboutCharitySection: React.FC = () => {
         />
       </div>
 
-      <div className="order-2">
+      <div className="order-2 mt-5">
         <AboutPhoto
           src={pinkCast}
           alt="Med Revue Cast Performance Pink"
