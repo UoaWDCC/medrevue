@@ -117,7 +117,7 @@ export default function CurrentShowCard({
               </h2>
               <p
                 className="
-                  text-black leading-[1.6] m-0 mt-4
+                  text-black leading-[1.6] m-0 mt-5
                   text-[0.85rem] md:text-[0.68rem] lg:text-[1.0rem] xl:text-[1.25rem]
                   text-center md:text-left overflow-hidden
                 "
