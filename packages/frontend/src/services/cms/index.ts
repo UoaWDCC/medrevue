@@ -9,8 +9,6 @@ export type {
 } from './CmsClient';
 export { cmsBaseUrl, cmsClient } from './config';
 export { CmsHttpError, CmsNetworkError, CmsValidationError } from './errors';
-export { type CmsQueryState, useCmsQuery } from './hooks/useCmsQuery';
-export { useShows } from './hooks/useShows';
 export { mapMedia } from './mappers/mapMedia';
 export { mapShow, showAdapter } from './mappers/mapShow';
 export type { MediaAsset } from './models/Media';
