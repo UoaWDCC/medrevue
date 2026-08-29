@@ -7,6 +7,14 @@ export type {
   CollectionOptions,
   GlobalOptions,
 } from './CmsClient';
+export {
+  cmsApi,
+  useGetActiveSponsorsQuery,
+  useGetContactQuery,
+  useGetCurrentShowQuery,
+  useGetShowsQuery,
+  useGetThemeSettingsQuery,
+} from './cmsApi';
 export { cmsBaseUrl, cmsClient } from './config';
 export { CmsHttpError, CmsNetworkError, CmsValidationError } from './errors';
 export { contactAdapter, mapContact } from './mappers/mapContact';
