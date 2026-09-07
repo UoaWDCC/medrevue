@@ -10,7 +10,8 @@
     "backend": {
       "root": "packages/backend/",
       "framework": "express",
-      "entrypoint": "src/index.ts"
+      "entrypoint": "src/index.ts",
+      "buildCommand": "tsc --noEmit"
     }
   },
   "rewrites": [
