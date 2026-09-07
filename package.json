@@ -16,7 +16,7 @@
     "format:check": "biome format .",
     "lint": "biome lint --write --no-errors-on-unmatched --files-ignore-unknown=true .",
     "lint:check": "biome lint --no-errors-on-unmatched --files-ignore-unknown=true .",
-    "prepare": "husky",
+    "prepare": "husky || exit 0",
     "storybook": "npm run storybook -workspace @medrevue/frontend"
   },
   "lint-staged": {
