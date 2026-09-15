@@ -19,7 +19,6 @@ export const payloadShowSchema = z
     title: z.string(),
     year: z.number(),
     poster: mediaRelationshipSchema,
-    isCurrentShow: z.boolean().nullable().optional(),
     shortDescription: richTextSchema.nullable().optional(),
     performances: z.array(performanceSchema).nullable().optional(),
     venue: z.string().nullable().optional(),

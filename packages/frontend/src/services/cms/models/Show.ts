@@ -12,7 +12,6 @@ export type Show = {
   title: string;
   year: number;
   poster: MediaAsset;
-  isCurrentShow: boolean;
   shortDescription?: Record<string, unknown>;
   performances: Performance[];
   venue?: string;

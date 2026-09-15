@@ -49,9 +49,9 @@ describe('cmsApi', () => {
     expect(result.data).toEqual(page);
   });
 
-  test('getCurrentShow filters on isCurrentShow and unwraps the first doc', async () => {
+  test('getCurrentShow fetches the populated current-show global', async () => {
     const show = { id: 'show-2026' } as Show;
-    getCollectionMock.mockResolvedValue(collectionPage([show]));
+    getGlobalMock.mockResolvedValue(show);
 
     const store = createTestStore();
     const result = await store.dispatch(
@@ -59,18 +59,15 @@ describe('cmsApi', () => {
     );
 
     expect(result.data).toEqual(show);
-    expect(getCollectionMock).toHaveBeenCalledWith(
-      'shows',
-      expect.objectContaining({
-        where: { isCurrentShow: { equals: true } },
-        limit: 1,
-      }),
+    expect(getGlobalMock).toHaveBeenCalledWith(
+      'current-show',
+      expect.objectContaining({ depth: 2 }),
       expect.anything(),
     );
   });
 
-  test('getCurrentShow resolves to null when no show is marked current', async () => {
-    getCollectionMock.mockResolvedValue(collectionPage([]));
+  test('getCurrentShow resolves to null when no show is selected', async () => {
+    getGlobalMock.mockResolvedValue(null);
 
     const store = createTestStore();
     const result = await store.dispatch(

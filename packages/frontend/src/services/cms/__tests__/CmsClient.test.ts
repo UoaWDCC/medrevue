@@ -37,7 +37,7 @@ describe('CmsClient', () => {
     const result = await client.getCollection(
       'shows',
       {
-        where: { isCurrentShow: { equals: true } },
+        where: { year: { equals: 2026 } },
         depth: 1,
         limit: 1,
       },
@@ -51,7 +51,7 @@ describe('CmsClient', () => {
     const url = new URL(String(requestUrl));
     expect(url.origin).toBe('http://localhost:3001');
     expect(url.pathname).toBe('/api/shows');
-    expect(url.searchParams.get('where[isCurrentShow][equals]')).toBe('true');
+    expect(url.searchParams.get('where[year][equals]')).toBe('2026');
     expect(url.searchParams.get('depth')).toBe('1');
     expect(url.searchParams.get('limit')).toBe('1');
     expect(requestOptions).toMatchObject({

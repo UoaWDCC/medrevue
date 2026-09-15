@@ -7,6 +7,7 @@ import type {
   CmsValidationError,
 } from './errors';
 import { contactAdapter } from './mappers/mapContact';
+import { currentShowAdapter } from './mappers/mapCurrentShow';
 import { showAdapter } from './mappers/mapShow';
 import { sponsorAdapter } from './mappers/mapSponsor';
 import { themeSettingsAdapter } from './mappers/mapThemeSettings';
@@ -39,16 +40,12 @@ export const cmsApi = createApi({
     getCurrentShow: builder.query<Show | null, void>({
       queryFn: async (_arg, api) => {
         try {
-          const data = await cmsClient.getCollection(
-            'shows',
-            {
-              where: { isCurrentShow: { equals: true } },
-              limit: 1,
-              signal: api.signal,
-            },
-            showAdapter,
+          const data = await cmsClient.getGlobal(
+            'current-show',
+            { depth: 2, signal: api.signal },
+            currentShowAdapter,
           );
-          return { data: data.docs[0] ?? null };
+          return { data };
         } catch (error) {
           return { error: error as CmsError };
         }

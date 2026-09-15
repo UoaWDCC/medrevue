@@ -9,7 +9,6 @@ export function mapShow(show: PayloadShow, cmsBaseUrl: string): Show {
     title: show.title,
     year: show.year,
     poster: mapMedia(show.poster, cmsBaseUrl),
-    isCurrentShow: show.isCurrentShow ?? false,
     shortDescription: show.shortDescription ?? undefined,
     performances: (show.performances ?? []).map((performance) => ({
       id: performance.id ?? undefined,

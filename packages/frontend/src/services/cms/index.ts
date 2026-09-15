@@ -18,6 +18,10 @@ export {
 export { cmsBaseUrl, cmsClient } from './config';
 export { CmsHttpError, CmsNetworkError, CmsValidationError } from './errors';
 export { contactAdapter, mapContact } from './mappers/mapContact';
+export {
+  currentShowAdapter,
+  mapCurrentShow,
+} from './mappers/mapCurrentShow';
 export { mapMedia } from './mappers/mapMedia';
 export { mapShow, showAdapter } from './mappers/mapShow';
 export { mapSponsor, sponsorAdapter } from './mappers/mapSponsor';
