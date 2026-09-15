@@ -17,6 +17,7 @@ import type { Sponsor } from './models/Sponsor';
 import type { ThemeSettings } from './models/ThemeSettings';
 
 type CmsError = CmsHttpError | CmsNetworkError | CmsValidationError;
+const ACTIVE_SPONSORS_LIMIT = 20;
 
 export const cmsApi = createApi({
   reducerPath: 'cmsApi',
@@ -60,6 +61,7 @@ export const cmsApi = createApi({
               where: { active: { equals: true } },
               sort: 'displayOrder',
               signal: api.signal,
+              limit: ACTIVE_SPONSORS_LIMIT,
             },
             sponsorAdapter,
           );

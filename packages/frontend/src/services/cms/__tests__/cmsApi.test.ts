@@ -92,6 +92,7 @@ describe('cmsApi', () => {
       expect.objectContaining({
         where: { active: { equals: true } },
         sort: 'displayOrder',
+        limit: 20,
       }),
       expect.anything(),
     );
