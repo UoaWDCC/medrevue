@@ -130,12 +130,18 @@ describe('cmsApi', () => {
     );
   });
 
-  test('surfaces a CmsClient error as the query error instead of throwing', async () => {
+  test('converts a CmsClient error to a serializable query error', async () => {
     getGlobalMock.mockRejectedValue(new CmsHttpError(500, 'http://x/contact'));
 
     const store = createTestStore();
     const result = await store.dispatch(cmsApi.endpoints.getContact.initiate());
 
-    expect(result.error).toBeInstanceOf(CmsHttpError);
+    expect(result.error).toEqual({
+      kind: 'http',
+      message: 'CMS request failed with status 500',
+      status: 500,
+      url: 'http://x/contact',
+    });
+    expect(result.error).not.toBeInstanceOf(Error);
   });
 });

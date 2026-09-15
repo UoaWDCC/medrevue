@@ -15,6 +15,8 @@ export {
   useGetShowsQuery,
   useGetThemeSettingsQuery,
 } from './cmsApi';
+export { toCmsApiError } from './cmsApiError';
+export type { CmsApiError } from './cmsApiError';
 export { cmsBaseUrl, cmsClient } from './config';
 export { CmsHttpError, CmsNetworkError, CmsValidationError } from './errors';
 export { contactAdapter, mapContact } from './mappers/mapContact';

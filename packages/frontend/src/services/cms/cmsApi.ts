@@ -1,11 +1,7 @@
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { CmsPage, CollectionOptions } from './CmsClient';
+import { type CmsApiError, toCmsApiError } from './cmsApiError';
 import { cmsClient } from './config';
-import type {
-  CmsHttpError,
-  CmsNetworkError,
-  CmsValidationError,
-} from './errors';
 import { contactAdapter } from './mappers/mapContact';
 import { currentShowAdapter } from './mappers/mapCurrentShow';
 import { showAdapter } from './mappers/mapShow';
@@ -16,12 +12,11 @@ import type { Show } from './models/Show';
 import type { Sponsor } from './models/Sponsor';
 import type { ThemeSettings } from './models/ThemeSettings';
 
-type CmsError = CmsHttpError | CmsNetworkError | CmsValidationError;
 const ACTIVE_SPONSORS_LIMIT = 20;
 
 export const cmsApi = createApi({
   reducerPath: 'cmsApi',
-  baseQuery: fakeBaseQuery<CmsError>(),
+  baseQuery: fakeBaseQuery<CmsApiError>(),
   endpoints: (builder) => ({
     // biome-ignore lint/suspicious/noConfusingVoidType: RTK Query uses `void` args to make the hook callable with no argument
     getShows: builder.query<CmsPage<Show>, CollectionOptions | void>({
@@ -34,7 +29,7 @@ export const cmsApi = createApi({
           );
           return { data };
         } catch (error) {
-          return { error: error as CmsError };
+          return { error: toCmsApiError(error) };
         }
       },
     }),
@@ -48,7 +43,7 @@ export const cmsApi = createApi({
           );
           return { data };
         } catch (error) {
-          return { error: error as CmsError };
+          return { error: toCmsApiError(error) };
         }
       },
     }),
@@ -67,7 +62,7 @@ export const cmsApi = createApi({
           );
           return { data: data.docs };
         } catch (error) {
-          return { error: error as CmsError };
+          return { error: toCmsApiError(error) };
         }
       },
     }),
@@ -81,7 +76,7 @@ export const cmsApi = createApi({
           );
           return { data };
         } catch (error) {
-          return { error: error as CmsError };
+          return { error: toCmsApiError(error) };
         }
       },
     }),
@@ -95,7 +90,7 @@ export const cmsApi = createApi({
           );
           return { data };
         } catch (error) {
-          return { error: error as CmsError };
+          return { error: toCmsApiError(error) };
         }
       },
     }),
