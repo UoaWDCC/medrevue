@@ -1,22 +1,20 @@
 import type { CmsAdapter } from '../CmsClient';
-import type { Team, TeamMember } from '../models/Team';
-import { type PayloadTeam, payloadTeamSchema } from '../schemas/teamSchema';
 
-export function mapTeam(team: PayloadTeam): Team {
-  return team.docs
-    .map(
-      (member): TeamMember => ({
-        name: member.name,
-        role: member.role,
-        category: member.category,
-        image: member.image.url,
-        displayOrder: member.displayOrder,
-      }),
-    )
-    .sort((a, b) => a.displayOrder - b.displayOrder);
-}
+import type { TeamMember } from '../models/Team';
 
-export const teamAdapter: CmsAdapter<PayloadTeam, Team> = {
-  schema: payloadTeamSchema,
-  map: (team) => mapTeam(team),
+import {
+  type PayloadTeamMember,
+  payloadTeamMemberSchema,
+} from '../schemas/teamSchema';
+
+export const teamAdapter: CmsAdapter<PayloadTeamMember, TeamMember> = {
+  schema: payloadTeamMemberSchema,
+
+  map: (member, context) => ({
+    name: member.name,
+    role: member.role,
+    category: member.category,
+    image: new URL(member.image.url, context.cmsBaseUrl).toString(),
+    displayOrder: member.displayOrder,
+  }),
 };
