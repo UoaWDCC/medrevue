@@ -13,7 +13,7 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
 
   return (
     <footer
-      className={`w-full pt-10 pb-18 px-6 sm:px-10 bg-background-primary text-background-white font-sans ${className}`}
+      className={`w-full pt-10 pb-18 px-10 md:px-16 lg:px-24 bg-background-primary text-background-white font-sans ${className}`}
     >
       <div className="mx-auto max-w-7xl">
         {/* Decorative Top Line */}
