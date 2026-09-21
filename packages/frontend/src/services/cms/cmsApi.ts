@@ -6,10 +6,12 @@ import { contactAdapter } from './mappers/mapContact';
 import { currentShowAdapter } from './mappers/mapCurrentShow';
 import { showAdapter } from './mappers/mapShow';
 import { sponsorAdapter } from './mappers/mapSponsor';
+import { teamAdapter } from './mappers/mapTeam';
 import { themeSettingsAdapter } from './mappers/mapThemeSettings';
 import type { Contact } from './models/Contact';
 import type { Show } from './models/Show';
 import type { Sponsor } from './models/Sponsor';
+import type { Team } from './models/Team';
 import type { ThemeSettings } from './models/ThemeSettings';
 
 const ACTIVE_SPONSORS_LIMIT = 20;
@@ -80,6 +82,24 @@ export const cmsApi = createApi({
         }
       },
     }),
+    getTeam: builder.query<Team, void>({
+      queryFn: async (_arg, api) => {
+        try {
+          const data = await cmsClient.getCollection(
+            'team-members',
+            {
+              sort: 'displayOrder',
+              signal: api.signal,
+            },
+            teamAdapter,
+          );
+
+          return { data: data.docs };
+        } catch (error) {
+          return { error: toCmsApiError(error) };
+        }
+      },
+    }),
     getThemeSettings: builder.query<ThemeSettings, void>({
       queryFn: async (_arg, api) => {
         try {
@@ -102,5 +122,6 @@ export const {
   useGetCurrentShowQuery,
   useGetActiveSponsorsQuery,
   useGetContactQuery,
+  useGetTeamQuery,
   useGetThemeSettingsQuery,
 } = cmsApi;
