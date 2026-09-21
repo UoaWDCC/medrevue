@@ -109,7 +109,7 @@ export const SponsorsSection: React.FC = () => {
         </div>
       </div>
 
-      <div className="w-full max-w-4xl flex flex-col items-center mb-16">
+      <div className="w-full max-w-4xl flex flex-col items-center mb-4">
         <h3 className="text-background-primary font-bold text-2xl font-poppins mb-6">
           Bronze
         </h3>
