@@ -93,7 +93,6 @@ export const cmsApi = createApi({
             },
             teamAdapter,
           );
-
           return { data: data.docs };
         } catch (error) {
           return { error: toCmsApiError(error) };
