@@ -9,9 +9,11 @@ import { Media } from './collections/Media';
 import { PreviousSponsors } from './collections/PreviousSponsors';
 import { Shows } from './collections/Shows';
 import { Sponsors } from './collections/Sponsors';
+import { TeamMembers } from './collections/TeamMembers';
 import { Users } from './collections/Users';
 import { AboutMedRevue } from './globals/AboutMedRevue';
 import { Contact } from './globals/Contact';
+import { CurrentShow } from './globals/CurrentShow';
 import { Homepage } from './globals/Homepage';
 import { OurCharity } from './globals/OurCharity';
 import { SiteSettings } from './globals/SiteSettings';
@@ -29,7 +31,7 @@ export default buildConfig({
     },
   },
   cors: [process.env.FRONTEND_URL || 'http://localhost:5173'],
-  collections: [Users, Media, PreviousSponsors, Shows, Sponsors],
+  collections: [Users, Media, PreviousSponsors, Shows, Sponsors, TeamMembers],
   globals: [
     Homepage,
     AboutMedRevue,
@@ -38,6 +40,7 @@ export default buildConfig({
     Contact,
     SiteSettings,
     ThemeSettings,
+    CurrentShow,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

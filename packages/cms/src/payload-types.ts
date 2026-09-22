@@ -72,6 +72,7 @@ export interface Config {
     'previous-sponsors': PreviousSponsor;
     shows: Show;
     sponsors: Sponsor;
+    'team-members': TeamMember;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +85,7 @@ export interface Config {
     'previous-sponsors': PreviousSponsorsSelect<false> | PreviousSponsorsSelect<true>;
     shows: ShowsSelect<false> | ShowsSelect<true>;
     sponsors: SponsorsSelect<false> | SponsorsSelect<true>;
+    'team-members': TeamMembersSelect<false> | TeamMembersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -101,6 +103,7 @@ export interface Config {
     contact: Contact;
     'site-settings': SiteSetting;
     'theme-settings': ThemeSetting;
+    'current-show': CurrentShow;
   };
   globalsSelect: {
     homepage: HomepageSelect<false> | HomepageSelect<true>;
@@ -110,6 +113,7 @@ export interface Config {
     contact: ContactSelect<false> | ContactSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'theme-settings': ThemeSettingsSelect<false> | ThemeSettingsSelect<true>;
+    'current-show': CurrentShowSelect<false> | CurrentShowSelect<true>;
   };
   locale: null;
   widgets: {
@@ -204,7 +208,6 @@ export interface Show {
   title: string;
   year: number;
   poster: string | Media;
-  isCurrentShow?: boolean | null;
   shortDescription?: {
     root: {
       type: string;
@@ -284,6 +287,20 @@ export interface Sponsor {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team-members".
+ */
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  category: 'Actors' | 'Dancers' | 'Barbershop' | 'Band' | 'Backstage' | 'Production';
+  image: string | Media;
+  displayOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -325,6 +342,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'sponsors';
         value: string | Sponsor;
+      } | null)
+    | ({
+        relationTo: 'team-members';
+        value: string | TeamMember;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -427,7 +448,6 @@ export interface ShowsSelect<T extends boolean = true> {
   title?: T;
   year?: T;
   poster?: T;
-  isCurrentShow?: T;
   shortDescription?: T;
   performances?:
     | T
@@ -467,6 +487,19 @@ export interface SponsorsSelect<T extends boolean = true> {
   active?: T;
   convertToPreviousSponsor?: T;
   previousSponsor?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team-members_select".
+ */
+export interface TeamMembersSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  category?: T;
+  image?: T;
+  displayOrder?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -717,6 +750,16 @@ export interface ThemeSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "current-show".
+ */
+export interface CurrentShow {
+  id: string;
+  show?: (string | null) | Show;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "homepage_select".
  */
 export interface HomepageSelect<T extends boolean = true> {
@@ -832,6 +875,16 @@ export interface ThemeSettingsSelect<T extends boolean = true> {
   accent1?: T;
   accent2?: T;
   warmBrown?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "current-show_select".
+ */
+export interface CurrentShowSelect<T extends boolean = true> {
+  show?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
