@@ -6,7 +6,7 @@ export const Shows: CollectionConfig = {
   slug: 'shows',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'year', 'isCurrentShow', 'updatedAt'],
+    defaultColumns: ['title', 'year', 'updatedAt'],
   },
   access: {
     create: authenticated,
@@ -18,7 +18,6 @@ export const Shows: CollectionConfig = {
     { name: 'title', type: 'text', required: true },
     { name: 'year', type: 'number', required: true, min: 2000 },
     { name: 'poster', type: 'upload', relationTo: 'media', required: true },
-    { name: 'isCurrentShow', type: 'checkbox', defaultValue: false },
     { name: 'shortDescription', type: 'richText' },
     {
       name: 'performances',

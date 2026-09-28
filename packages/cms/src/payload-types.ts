@@ -101,6 +101,7 @@ export interface Config {
     contact: Contact;
     'site-settings': SiteSetting;
     'theme-settings': ThemeSetting;
+    'current-show': CurrentShow;
   };
   globalsSelect: {
     homepage: HomepageSelect<false> | HomepageSelect<true>;
@@ -110,6 +111,7 @@ export interface Config {
     contact: ContactSelect<false> | ContactSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'theme-settings': ThemeSettingsSelect<false> | ThemeSettingsSelect<true>;
+    'current-show': CurrentShowSelect<false> | CurrentShowSelect<true>;
   };
   locale: null;
   widgets: {
@@ -204,7 +206,6 @@ export interface Show {
   title: string;
   year: number;
   poster: string | Media;
-  isCurrentShow?: boolean | null;
   shortDescription?: {
     root: {
       type: string;
@@ -427,7 +428,6 @@ export interface ShowsSelect<T extends boolean = true> {
   title?: T;
   year?: T;
   poster?: T;
-  isCurrentShow?: T;
   shortDescription?: T;
   performances?:
     | T
@@ -717,6 +717,16 @@ export interface ThemeSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "current-show".
+ */
+export interface CurrentShow {
+  id: string;
+  show?: (string | null) | Show;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "homepage_select".
  */
 export interface HomepageSelect<T extends boolean = true> {
@@ -832,6 +842,16 @@ export interface ThemeSettingsSelect<T extends boolean = true> {
   accent1?: T;
   accent2?: T;
   warmBrown?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "current-show_select".
+ */
+export interface CurrentShowSelect<T extends boolean = true> {
+  show?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
