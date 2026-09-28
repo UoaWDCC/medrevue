@@ -74,7 +74,7 @@ export const HeroSection: React.FC = () => {
     <div className="relative w-full overflow-hidden">
       <section
         ref={bgRef}
-        className="relative w-full min-h-[90vh] lg:h-[115vh] bg-background-primary flex flex-col md:flex-row items-center justify-center gap-10 px-8 md:px-32 pt-32 pb-16 md:py-16"
+        className="relative w-full min-h-[90vh] lg:h-[115vh] bg-background-primary flex flex-col md:flex-row items-center justify-center gap-10 px-12 md:px-44 lg:px-56 pt-32 pb-16 md:py-16"
       >
         <div
           aria-hidden="true"

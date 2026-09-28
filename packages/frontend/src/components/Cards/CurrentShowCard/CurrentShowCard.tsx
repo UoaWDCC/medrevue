@@ -102,7 +102,7 @@ export default function CurrentShowCard({
             )}
           </div>
           {/* ── Right content ── */}
-          <div className="flex flex-col justify-between gap-4 lg:gap-5 xl:gap-6 min-w-0 flex-1 w-full md:overflow-hidden">
+          <div className="flex flex-col gap-8 lg:gap-10 xl:gap-12 min-w-0 flex-1 w-full md:overflow-hidden">
             {/* Title + description */}
             <div className="flex flex-col gap-2 lg:gap-3 overflow-hidden">
               <h2
@@ -117,7 +117,7 @@ export default function CurrentShowCard({
               </h2>
               <p
                 className="
-                  text-black leading-[1.6] m-0
+                  text-black leading-[1.6] m-0 mt-5
                   text-[0.85rem] md:text-[0.68rem] lg:text-[1.0rem] xl:text-[1.25rem]
                   text-center md:text-left overflow-hidden
                 "
