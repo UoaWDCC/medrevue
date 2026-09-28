@@ -2,6 +2,7 @@ import type React from 'react';
 import { Route, Routes } from 'react-router';
 import { Footer } from './components/Footer';
 import { Menu } from './components/Menu';
+import { AboutUsPage } from './pages/AboutUsPage';
 import { ContactPage } from './pages/ContactUs';
 import HomePage from './pages/Home';
 import ReturnPolicyPage from './pages/ReturnPolicy';
@@ -39,7 +40,7 @@ const App: React.FC = () => {
           element={
             <>
               <Menu />
-              <h1>About</h1>
+              <AboutUsPage />
             </>
           }
         />

@@ -57,7 +57,7 @@ export class CmsClient {
 
   constructor(baseUrl: string, fetchFunction: FetchFunction = fetch) {
     this.baseUrl = baseUrl.replace(/\/+$/, '');
-    this.fetchFunction = fetchFunction;
+    this.fetchFunction = fetchFunction.bind(window);
   }
 
   // collection urls created here

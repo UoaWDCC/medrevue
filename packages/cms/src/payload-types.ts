@@ -72,6 +72,7 @@ export interface Config {
     'previous-sponsors': PreviousSponsor;
     shows: Show;
     sponsors: Sponsor;
+    'team-members': TeamMember;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +85,7 @@ export interface Config {
     'previous-sponsors': PreviousSponsorsSelect<false> | PreviousSponsorsSelect<true>;
     shows: ShowsSelect<false> | ShowsSelect<true>;
     sponsors: SponsorsSelect<false> | SponsorsSelect<true>;
+    'team-members': TeamMembersSelect<false> | TeamMembersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -285,6 +287,20 @@ export interface Sponsor {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team-members".
+ */
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  category: 'Actors' | 'Dancers' | 'Barbershop' | 'Band' | 'Backstage' | 'Production';
+  image: string | Media;
+  displayOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -326,6 +342,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'sponsors';
         value: string | Sponsor;
+      } | null)
+    | ({
+        relationTo: 'team-members';
+        value: string | TeamMember;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -467,6 +487,19 @@ export interface SponsorsSelect<T extends boolean = true> {
   active?: T;
   convertToPreviousSponsor?: T;
   previousSponsor?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "team-members_select".
+ */
+export interface TeamMembersSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  category?: T;
+  image?: T;
+  displayOrder?: T;
   updatedAt?: T;
   createdAt?: T;
 }
