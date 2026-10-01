@@ -17,6 +17,8 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
   galleryUrls,
 }) => {
   const visibleImages = galleryUrls.slice(0, 3);
+  // null = viewer closed, a number = index of the image that's open
+  const [viewerIndex, setViewerIndex] = useState<number | null>(null);
 
   return (
     <div className="card absolute w-[calc(100%-1.5rem)] md:w-full md:max-w-[720px] lg:max-w-[1000px] xl:max-w-[1200px] mx-auto">
@@ -106,17 +108,22 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
             <div className="flex items-end justify-center md:justify-end mt-auto">
               <div className="flex items-start gap-1.5 md:gap-2 p-1.5 md:p-3 rounded-xl bg-background-white">
                 {visibleImages.map((url, i) => (
-                  <div
+                  <button
+                    type="button" // stops it acting like a form submit button
                     key={url}
-                    className="rounded-lg overflow-hidden flex-shrink-0 bg-text-grey
-                       w-20 h-20 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44"
+                    onClick={() => {
+                      // ← NEW: runs when this thumbnail is clicked
+                      console.log('clicked image', i); // ← TEMPORARY: delete this line later
+                      setViewerIndex(i); // remember which image was clicked
+                    }}
+                    className="rounded-lg overflow-hidden flex-shrink-0 bg-text-grey cursor-pointer w-20 h-20 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44" // ← added cursor-pointer
                   >
                     <img
                       src={url}
                       alt={`${title} gallery ${i + 1}`}
                       className="w-full h-full object-cover object-center block scale-120"
                     />
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
