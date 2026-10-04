@@ -132,6 +132,15 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
       </div>
 
       {/* Only draws the viewer when viewerIndex is a number (not null) */}
+      {viewerIndex !== null && (
+        <PhotoViewer
+          images={galleryUrls} // all images, not just the first 3
+          index={viewerIndex} // which one to show first
+          title={title} // used for accessibility labels
+          onClose={() => setViewerIndex(null)} // closing = setting state back to null
+          onChange={setViewerIndex} // prev/next update the same state
+        />
+      )}
     </div>
   );
 };
