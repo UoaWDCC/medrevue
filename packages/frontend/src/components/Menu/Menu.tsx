@@ -1,13 +1,26 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 import medrevueLogo from '../../assets/medrevuelogo.png';
-import { TICKET_URL } from '../../constants/links';
+import {
+  useGetCurrentShowQuery,
+  useGetOurCharityQuery,
+  useGetSiteSettingsQuery,
+} from '../../services/cms';
+import { getExternalUrl } from '../../utils/urls';
 import './styles.css';
 
 export const Menu: React.FC = () => {
   const location = useLocation();
+  const { data: siteSettings } = useGetSiteSettingsQuery();
+  const { data: charity } = useGetOurCharityQuery();
+  const { data: currentShow } = useGetCurrentShowQuery();
   const [open, setOpen] = useState(false);
   const isHomePage = location.pathname === '/';
+  const logo = siteSettings?.navbarLogo;
+  const donationUrl = getExternalUrl(charity?.donationLink);
+  const ticketUrl = currentShow?.ticketsOnSale
+    ? getExternalUrl(currentShow.ticketLink)
+    : undefined;
 
   useEffect(() => {
     void location.pathname;
@@ -21,7 +34,11 @@ export const Menu: React.FC = () => {
       } ${open ? 'lg:static fixed top-0 left-0' : ''}`}
     >
       <Link to="/" className="menu-logo-link">
-        <img src={medrevueLogo} alt="MedRevue logo" className="h-10 w-auto" />
+        <img
+          src={logo?.url ?? medrevueLogo}
+          alt={logo?.alt || 'MedRevue logo'}
+          className="h-10 w-auto"
+        />
         <span className="menu-logo-text">MedRevue</span>
       </Link>
 
@@ -32,6 +49,8 @@ export const Menu: React.FC = () => {
         }`}
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? 'Close Menu' : 'Open Menu'}
+        aria-expanded={open}
+        aria-controls="main-navigation"
       >
         {open ? (
           <svg
@@ -70,7 +89,10 @@ export const Menu: React.FC = () => {
         )}
       </button>
 
-      <nav className={`${open ? 'flex' : 'hidden'} menu-nav`}>
+      <nav
+        id="main-navigation"
+        className={`${open ? 'flex' : 'hidden'} menu-nav`}
+      >
         <Link to="/" className="menu-nav-link">
           Home
         </Link>
@@ -80,25 +102,27 @@ export const Menu: React.FC = () => {
         <Link to="/contact" className="menu-nav-link">
           Contact
         </Link>
-        <a
-          href="https://donate.mentalhealth.org.nz"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="menu-nav-link"
-        >
-          Donate
-        </a>
+        {donationUrl && (
+          <a
+            href={donationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="menu-nav-link"
+          >
+            {charity?.donationLinkLabel?.trim() || 'Donate'}
+          </a>
+        )}
         <Link to="/sponsors" className="menu-btn-filled">
           Sponsor Us
         </Link>
-        {location.pathname !== '/buy' && (
+        {location.pathname !== '/buy' && ticketUrl && (
           <a
-            href={TICKET_URL}
+            href={ticketUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="menu-btn-outlined"
           >
-            Buy Tickets
+            {currentShow?.ticketButtonLabel?.trim() || 'Order Tickets'}
           </a>
         )}
       </nav>
