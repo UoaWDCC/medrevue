@@ -686,6 +686,10 @@ export interface Contact {
  */
 export interface SiteSetting {
   id: string;
+  /**
+   * Navbar logo. Leave empty to use the default MedRevue logo.
+   */
+  navbarLogo?: (string | null) | Media;
   footerCtaText?: string | null;
   footerCtaLabel?: string | null;
   footerCtaLink?: string | null;
@@ -816,6 +820,7 @@ export interface ContactSelect<T extends boolean = true> {
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
+  navbarLogo?: T;
   footerCtaText?: T;
   footerCtaLabel?: T;
   footerCtaLink?: T;

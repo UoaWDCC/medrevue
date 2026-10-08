@@ -4,11 +4,15 @@ import { type CmsApiError, toCmsApiError } from './cmsApiError';
 import { cmsClient } from './config';
 import { contactAdapter } from './mappers/mapContact';
 import { currentShowAdapter } from './mappers/mapCurrentShow';
+import { ourCharityAdapter } from './mappers/mapOurCharity';
 import { showAdapter } from './mappers/mapShow';
+import { siteSettingsAdapter } from './mappers/mapSiteSettings';
 import { sponsorAdapter } from './mappers/mapSponsor';
 import { themeSettingsAdapter } from './mappers/mapThemeSettings';
 import type { Contact } from './models/Contact';
+import type { OurCharity } from './models/OurCharity';
 import type { Show } from './models/Show';
+import type { SiteSettings } from './models/SiteSettings';
 import type { Sponsor } from './models/Sponsor';
 import type { ThemeSettings } from './models/ThemeSettings';
 
@@ -80,6 +84,34 @@ export const cmsApi = createApi({
         }
       },
     }),
+    getSiteSettings: builder.query<SiteSettings, void>({
+      queryFn: async (_arg, api) => {
+        try {
+          const data = await cmsClient.getGlobal(
+            'site-settings',
+            { depth: 1, signal: api.signal },
+            siteSettingsAdapter,
+          );
+          return { data };
+        } catch (error) {
+          return { error: toCmsApiError(error) };
+        }
+      },
+    }),
+    getOurCharity: builder.query<OurCharity, void>({
+      queryFn: async (_arg, api) => {
+        try {
+          const data = await cmsClient.getGlobal(
+            'our-charity',
+            { signal: api.signal },
+            ourCharityAdapter,
+          );
+          return { data };
+        } catch (error) {
+          return { error: toCmsApiError(error) };
+        }
+      },
+    }),
     getThemeSettings: builder.query<ThemeSettings, void>({
       queryFn: async (_arg, api) => {
         try {
@@ -102,5 +134,7 @@ export const {
   useGetCurrentShowQuery,
   useGetActiveSponsorsQuery,
   useGetContactQuery,
+  useGetSiteSettingsQuery,
+  useGetOurCharityQuery,
   useGetThemeSettingsQuery,
 } = cmsApi;
