@@ -55,7 +55,11 @@ export class CmsClient {
   private readonly baseUrl: string;
   private readonly fetchFunction: FetchFunction;
 
-  constructor(baseUrl: string, fetchFunction: FetchFunction = fetch) {
+  constructor(
+    baseUrl: string,
+    // Browser fetch requires the global receiver, not the CmsClient instance.
+    fetchFunction: FetchFunction = globalThis.fetch.bind(globalThis),
+  ) {
     this.baseUrl = baseUrl.replace(/\/+$/, '');
     this.fetchFunction = fetchFunction;
   }

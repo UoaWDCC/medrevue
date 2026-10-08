@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@medrevue/types": "1.0.0",
+    "@payloadcms/richtext-lexical": "3.85.0",
     "@reduxjs/toolkit": "^2.6.1",
     "@stripe/react-stripe-js": "^3.7.0",
     "@stripe/stripe-js": "^7.3.1",
