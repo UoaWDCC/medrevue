@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import type { Show } from '../../../services/cms';
@@ -37,9 +37,9 @@ const currentShow: Show = {
   displayOrder: 0,
 };
 
-function renderMenu() {
+function renderMenu(path = '/') {
   return render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={[path]}>
       <Menu />
     </MemoryRouter>,
   );
@@ -129,7 +129,80 @@ describe('Menu CMS integration', () => {
     expect(screen.getByRole('link', { name: 'Home' })).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Gallery' })).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Contact' })).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Sponsor Us' })).toBeTruthy();
+    expect(screen.getByRole('img', { name: 'MedRevue logo' })).toBeTruthy();
     expect(screen.queryByRole('link', { name: /donate/i })).toBeNull();
     expect(screen.queryByRole('link', { name: /tickets/i })).toBeNull();
+  });
+
+  test('keeps navigation and the default logo available while CMS requests load', () => {
+    for (const hook of [
+      useGetCurrentShowQueryMock,
+      useGetOurCharityQueryMock,
+      useGetSiteSettingsQueryMock,
+    ]) {
+      hook.mockReturnValue({
+        data: undefined,
+        isLoading: true,
+        isError: false,
+      });
+    }
+
+    renderMenu();
+
+    expect(screen.getByRole('img', { name: 'MedRevue logo' })).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Contact' })).toBeTruthy();
+    expect(screen.queryByRole('link', { name: /donate/i })).toBeNull();
+    expect(screen.queryByRole('link', { name: /tickets/i })).toBeNull();
+  });
+
+  test.each(['', 'not a URL', 'javascript:alert(1)'])(
+    'hides missing or unsafe external destinations: %s',
+    (url) => {
+      useGetOurCharityQueryMock.mockReturnValue({
+        data: { donationLink: url, donationLinkLabel: 'CMS Donate' },
+      });
+      useGetCurrentShowQueryMock.mockReturnValue({
+        data: { ...currentShow, ticketLink: url },
+      });
+
+      renderMenu();
+
+      expect(screen.queryByRole('link', { name: 'CMS Donate' })).toBeNull();
+      expect(screen.queryByRole('link', { name: 'CMS Tickets' })).toBeNull();
+    },
+  );
+
+  test('omits ticket sales when no current show is selected', () => {
+    useGetCurrentShowQueryMock.mockReturnValue({ data: null });
+
+    renderMenu();
+
+    expect(screen.queryByRole('link', { name: /tickets/i })).toBeNull();
+    expect(screen.getByRole('link', { name: 'CMS Donate' })).toBeTruthy();
+  });
+
+  test('continues to hide the ticket button on the buy route', () => {
+    renderMenu('/buy');
+
+    expect(screen.queryByRole('link', { name: /tickets/i })).toBeNull();
+  });
+
+  test('closes the mobile menu after navigating to another page', () => {
+    renderMenu();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Open Menu' }));
+    expect(
+      screen
+        .getByRole('button', { name: 'Close Menu' })
+        .getAttribute('aria-expanded'),
+    ).toBe('true');
+
+    fireEvent.click(screen.getByRole('link', { name: 'Contact' }));
+    expect(
+      screen
+        .getByRole('button', { name: 'Open Menu' })
+        .getAttribute('aria-expanded'),
+    ).toBe('false');
   });
 });
