@@ -1,4 +1,10 @@
-import { cleanup, render, screen, within } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import type { Show } from '../../../services/cms';
 import GalleryPage from '../GalleryPage';
@@ -204,5 +210,77 @@ describe('GalleryPage CMS integration', () => {
     render(<GalleryPage />);
 
     expect(screen.getByRole('alert').textContent).toMatch(/gallery/i);
+  });
+
+  test('retries both requests when either Gallery request fails', () => {
+    const refetchCurrentShow = vi.fn();
+    const refetchShows = vi.fn();
+    useGetCurrentShowQueryMock.mockReturnValue({
+      data: null,
+      isLoading: false,
+      isError: false,
+      refetch: refetchCurrentShow,
+    });
+    useGetShowsQueryMock.mockReturnValue({
+      isLoading: false,
+      isError: true,
+      refetch: refetchShows,
+    });
+
+    render(<GalleryPage />);
+    fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
+
+    expect(refetchCurrentShow).toHaveBeenCalledOnce();
+    expect(refetchShows).toHaveBeenCalledOnce();
+  });
+
+  test('treats an unselected current show and an empty archive as empty content, not errors', () => {
+    useGetCurrentShowQueryMock.mockReturnValue({
+      data: null,
+      isLoading: false,
+      isError: false,
+    });
+    useGetShowsQueryMock.mockReturnValue({
+      data: collectionPage([]),
+      isLoading: false,
+      isError: false,
+    });
+
+    render(<GalleryPage />);
+
+    expect(screen.getByText('No current show selected.')).toBeTruthy();
+    expect(screen.getByText('No past shows yet.')).toBeTruthy();
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect(screen.queryByRole('region', { name: 'Past shows' })).toBeNull();
+  });
+
+  test('shows the full archive when no current show is selected, using CMS order then newest year', () => {
+    const older = show('older', 2024, 'Older show');
+    const newer = show('newer', 2026, 'Newer show');
+    const promoted = {
+      ...show('promoted', 2025, 'Promoted show'),
+      displayOrder: -1,
+    };
+    useGetCurrentShowQueryMock.mockReturnValue({
+      data: null,
+      isLoading: false,
+      isError: false,
+    });
+    useGetShowsQueryMock.mockReturnValue({
+      data: collectionPage([older, newer, promoted]),
+      isLoading: false,
+      isError: false,
+    });
+
+    render(<GalleryPage />);
+
+    expect(
+      within(screen.getByRole('region', { name: 'Past shows' }))
+        .getAllByRole('heading')
+        .map((heading) => heading.textContent),
+    ).toEqual(['Promoted show', 'Newer show', 'Older show']);
+    expect(useGetShowsQueryMock).toHaveBeenCalledWith(
+      expect.objectContaining({ depth: 1, limit: 0 }),
+    );
   });
 });
