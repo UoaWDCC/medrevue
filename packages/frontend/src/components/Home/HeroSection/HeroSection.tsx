@@ -5,15 +5,60 @@ import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import medrevuePoster from '../../../assets/medrevue-poster-2026.png';
 import { TICKET_URL } from '../../../constants/links';
+import {
+  type CmsShow,
+  cmsAssetAlt,
+  cmsAssetUrl,
+} from '../../../services/cms/content';
 import { Button } from '../../Button';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export const HeroSection: React.FC = () => {
+type HeroSectionProps = {
+  homepage?: { heroOrganisationTitle?: string; heroTagline?: string } | null;
+  show?: CmsShow;
+};
+
+function formatShowDates(show?: CmsShow): string {
+  const dates = (show?.performances ?? [])
+    .map((performance) => performance.startsAt)
+    .filter((date): date is string => Boolean(date))
+    .map((date) => new Date(date))
+    .filter((date) => !Number.isNaN(date.getTime()));
+
+  if (dates.length === 0) {
+    return show
+      ? String(show.year ?? 'Dates to be announced')
+      : '13 Aug - 15 Aug 2026';
+  }
+
+  const formatter = new Intl.DateTimeFormat('en-NZ', {
+    day: 'numeric',
+    month: 'short',
+    timeZone: 'Pacific/Auckland',
+  });
+  const uniqueDates = [...new Set(dates.map((date) => formatter.format(date)))];
+  return `${uniqueDates.join(', ')} ${show?.year ?? dates[0].getFullYear()}`;
+}
+
+export const HeroSection: React.FC<HeroSectionProps> = ({ homepage, show }) => {
   const navigate = useNavigate();
   const bgRef = useRef<HTMLDivElement>(null);
   const headerSlideRef = useRef<HTMLHeadingElement>(null);
   const posterRef = useRef<HTMLImageElement>(null);
+  const organisationTitle =
+    homepage?.heroOrganisationTitle?.trim() || 'Auckland MedRevue';
+  const [firstTitleLine, ...remainingTitleWords] =
+    organisationTitle.split(/\s+/);
+  const posterUrl = cmsAssetUrl(show?.poster) ?? medrevuePoster;
+  const ticketLink = show?.ticketLink || TICKET_URL;
+  const ticketButtonLabel = show?.ticketButtonLabel || 'Order Tickets';
+  const showDetails = [
+    homepage?.heroTagline || 'A University of Auckland non-profit production.',
+    formatShowDates(show),
+    show?.venue || 'SkyCity Theatre',
+    show?.address || 'Auckland',
+  ];
 
   useEffect(() => {
     if (!bgRef.current) return;
@@ -98,57 +143,64 @@ export const HeroSection: React.FC = () => {
             ref={headerSlideRef}
             className="text-background-secondary font-bold font-poppins text-[clamp(2.75rem,min(15vw,14vh),6rem)] md:text-[clamp(3rem,min(8vw,14vh),6rem)] leading-[1.1] md:leading-[0.9] text-center md:text-left"
           >
-            Auckland
-            <br />
-            MedRevue
-            <br />
-            <span className="text-theme-green">20</span>
-            <span className="text-theme-pink">26</span>
+            <span className="block">{firstTitleLine}</span>
+            {remainingTitleWords.length > 0 && (
+              <span className="block">{remainingTitleWords.join(' ')}</span>
+            )}
+            <span className="block">
+              <span className="text-theme-green">
+                {String(show?.year ?? 2026).slice(0, 2)}
+              </span>
+              <span className="text-theme-pink">
+                {String(show?.year ?? 2026).slice(2)}
+              </span>
+            </span>
           </h1>
 
           <div className="text-text-light font-inter font-semibold text-[clamp(0.8rem,min(1.5vw,2.4vh),1.1rem)] space-y-1 text-center md:text-left">
-            <p>A University of Auckland non-profit production.</p>
-            <p>13 Aug - 15 Aug 2026</p>
-            <p>SkyCity Theatre</p>
-            <p>Auckland</p>
+            {showDetails.map((detail) => (
+              <p key={detail}>{detail}</p>
+            ))}
           </div>
 
           <div className="flex flex-row gap-3 items-center mt-[clamp(0.25rem,1vh,0.5rem)]">
-            <a
-              href={TICKET_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-0 bg-transparent hover:bg-transparent w-[clamp(110px,18vw,130px)] h-[clamp(34px,6vh,42px)] inline-flex"
-            >
-              <svg
-                viewBox="0 0 160 50"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-full h-full"
+            {show?.ticketsOnSale !== false && (
+              <a
+                href={ticketLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-0 bg-transparent hover:bg-transparent w-[clamp(110px,18vw,130px)] h-[clamp(34px,6vh,42px)] inline-flex"
               >
-                <rect
-                  x="1.5"
-                  y="1.5"
-                  width="157"
-                  height="47"
-                  rx="24"
-                  fill="var(--color-background-secondary)"
-                  stroke="var(--color-background-secondary)"
-                  strokeWidth="2"
-                />
-                <title>Order Tickets</title>
-                <text
-                  x="80"
-                  y="30"
-                  textAnchor="middle"
-                  fill="var(--color-background-primary)"
-                  fontSize="14"
-                  fontWeight="700"
-                  fontFamily="Poppins"
+                <svg
+                  viewBox="0 0 160 50"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-full h-full"
                 >
-                  Order Tickets
-                </text>
-              </svg>
-            </a>
+                  <rect
+                    x="1.5"
+                    y="1.5"
+                    width="157"
+                    height="47"
+                    rx="24"
+                    fill="var(--color-background-secondary)"
+                    stroke="var(--color-background-secondary)"
+                    strokeWidth="2"
+                  />
+                  <title>{ticketButtonLabel}</title>
+                  <text
+                    x="80"
+                    y="30"
+                    textAnchor="middle"
+                    fill="var(--color-background-primary)"
+                    fontSize="14"
+                    fontWeight="700"
+                    fontFamily="Poppins"
+                  >
+                    {ticketButtonLabel}
+                  </text>
+                </svg>
+              </a>
+            )}
 
             <Button
               onClick={() => navigate('/sponsors')}
@@ -189,8 +241,8 @@ export const HeroSection: React.FC = () => {
         <div className="relative z-10 order-1 md:order-2 flex-1 flex justify-center">
           <img
             ref={posterRef}
-            src={medrevuePoster}
-            alt="Med Revue"
+            src={posterUrl}
+            alt={cmsAssetAlt(show?.poster, 'Med Revue')}
             className="w-auto max-w-64 sm:max-w-80 md:max-w-96 max-h-[calc(100vh-12rem)] md:max-h-[calc(100vh-8rem)] rounded-lg border-4 border-background-secondary shadow-lg"
           />
         </div>
