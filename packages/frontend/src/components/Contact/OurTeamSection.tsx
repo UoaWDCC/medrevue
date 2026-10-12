@@ -1,78 +1,73 @@
-const teamMembers = [
-  {
-    title: 'Actors',
-    members: [
-      { name: 'Grace Baek', role: 'Actor' },
-      { name: 'Jess Brewerton', role: 'Actor' },
-      { name: 'Jimmy Austin', role: 'Actor' },
-      { name: 'Ashvin Peiris', role: 'Actor' },
-      { name: 'Sasan Danawala Gamage', role: 'Actor' },
-    ],
-  },
-  {
-    title: 'Dancers',
-    members: [
-      { name: 'Sophie Johnston', role: 'Dancer' },
-      { name: 'Sabrina Joe', role: 'Dancer' },
-      { name: 'Jules Torres', role: 'Dancer' },
-    ],
-  },
-  {
-    title: 'Barbershop',
-    members: [
-      { name: 'Dalon Shih', role: 'Barbershop' },
-      { name: 'Ethan Moy', role: 'Barbershop' },
-      { name: 'Michelle Chan', role: 'Barbershop' },
-    ],
-  },
-  {
-    title: 'Band',
-    members: [
-      { name: 'Cindy Kim', role: 'Band' },
-      { name: 'Gloria Lee', role: 'Band' },
-    ],
-  },
-  {
-    title: 'Backstage',
-    members: [
-      { name: 'Carter Wu', role: 'Backstage' },
-      { name: 'Jade Edwards-Bell', role: 'Backstage' },
-    ],
-  },
-  {
-    title: 'Production',
-    members: [
-      { name: 'Amanda Li', role: 'Production' },
-      { name: 'Eve Lekach', role: 'Production' },
-      { name: 'Kasper Lenoir', role: 'Production' },
-    ],
-  },
-];
+// import jazzHands from '../../assets/medrevue-sponsorus-jazzHands.png';
+import { useGetTeamQuery } from '../../services/cms/cmsApi';
+import type { TeamMember } from '../../services/cms/models/Team';
 
-const allMembers = teamMembers.flatMap((section) => section.members);
+interface TeamMemberCardProps {
+  member: TeamMember;
+}
+
+export const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member }) => {
+  return (
+    <div className="bg-background-secondary rounded-lg shadow-md p-4 flex flex-col items-center text-center w-50">
+      <img
+        src={member.image}
+        alt={member.name}
+        className="w-40 h-32 object-cover mb-3 rounded-lg"
+      />
+
+      <p>
+        <b>{member.name}</b>
+      </p>
+
+      <p className="text-text-brown">
+        <i>{member.role}</i>
+      </p>
+    </div>
+  );
+};
+
+const TeamMemberSkeleton: React.FC = () => {
+  return (
+    <div className="bg-background-secondary rounded-lg shadow-md p-4 flex flex-col items-center text-center w-50">
+      <div className="w-40 h-32 mb-3 rounded-lg bg-gray-200 animate-pulse" />
+
+      <div className="w-28 h-5 mb-2 rounded bg-gray-200 animate-pulse" />
+
+      <div className="w-20 h-4 rounded bg-gray-200 animate-pulse" />
+    </div>
+  );
+};
 
 export const OurTeamSection: React.FC = () => {
+  const { data: team, isLoading, isError } = useGetTeamQuery();
+
   return (
     <>
       <br />
-      <p className="text-center text-2xl md:text-3xl font-bold">Our Team</p>
+
+      <section className="bg-background-white px-4 mt-5 md:mt-10 text-center">
+        <h2 className="text-2xl md:text-3xl leading-none font-semibold font-sans text-black mb-6">
+          Our Team
+        </h2>
+      </section>
+
       <br />
+
       <div className="flex flex-wrap justify-center gap-4">
-        {allMembers.map((member) => (
-          <div
-            key={member.name}
-            className="bg-background-secondary rounded-lg shadow-md p-4 flex flex-col items-center text-center w-50"
-          >
-            <div className="w-40 h-32 bg-gray-100 mb-3 rounded-lg" />
-            <p>
-              <b>{member.name}</b>
-            </p>
-            <p className="text-text-brown">
-              <i>{member.role}</i>
-            </p>
-          </div>
-        ))}
+        {isLoading &&
+          Array.from({ length: 8 }, (_, i) => `skeleton-${i}`).map((id) => (
+            <TeamMemberSkeleton key={id} />
+          ))}
+
+        {!isLoading &&
+          !isError &&
+          team?.map((member) => (
+            <TeamMemberCard key={member.name} member={member} />
+          ))}
       </div>
+
+      {isError && <div className="text-center">Unable to load team.</div>}
+
       <br />
     </>
   );
