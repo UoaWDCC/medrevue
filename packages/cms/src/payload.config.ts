@@ -12,6 +12,7 @@ import { Sponsors } from './collections/Sponsors';
 import { Users } from './collections/Users';
 import { AboutMedRevue } from './globals/AboutMedRevue';
 import { Contact } from './globals/Contact';
+import { CurrentShow } from './globals/CurrentShow';
 import { Homepage } from './globals/Homepage';
 import { OurCharity } from './globals/OurCharity';
 import { SiteSettings } from './globals/SiteSettings';
@@ -38,6 +39,7 @@ export default buildConfig({
     Contact,
     SiteSettings,
     ThemeSettings,
+    CurrentShow,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
