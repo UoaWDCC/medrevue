@@ -95,7 +95,7 @@ export const AboutCharitySection: React.FC = () => {
   }, []);
 
   return (
-    <section className="w-full grid grid-cols-1 md:grid-cols-2 bg-black overflow-hidden">
+    <section className="w-full grid grid-cols-1 md:grid-cols-2 bg-black overflow-visible p-4 md:p-12">
       <div className="order-1">
         <InfoCard
           title="About Med Revue"
@@ -105,7 +105,7 @@ export const AboutCharitySection: React.FC = () => {
         />
       </div>
 
-      <div className="order-2">
+      <div className="order-2 mt-5">
         <AboutPhoto
           src={pinkCast}
           alt="Med Revue Cast Performance Pink"
