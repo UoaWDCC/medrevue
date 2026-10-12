@@ -102,6 +102,9 @@ export const Menu: React.FC = () => {
         <Link to="/contact" className="menu-nav-link">
           Contact
         </Link>
+        <Link to="/about" className="menu-nav-link">
+          About Us
+        </Link>
         {donationUrl && (
           <a
             href={donationUrl}

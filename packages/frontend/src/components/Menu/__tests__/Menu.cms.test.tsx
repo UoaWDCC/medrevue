@@ -129,6 +129,9 @@ describe('Menu CMS integration', () => {
     expect(screen.getByRole('link', { name: 'Home' })).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Gallery' })).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Contact' })).toBeTruthy();
+    expect(
+      screen.getByRole('link', { name: 'About Us' }).getAttribute('href'),
+    ).toBe('/about');
     expect(screen.getByRole('link', { name: 'Sponsor Us' })).toBeTruthy();
     expect(screen.getByRole('img', { name: 'MedRevue logo' })).toBeTruthy();
     expect(screen.queryByRole('link', { name: /donate/i })).toBeNull();

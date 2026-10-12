@@ -15,6 +15,7 @@ export {
   useGetOurCharityQuery,
   useGetShowsQuery,
   useGetSiteSettingsQuery,
+  useGetTeamQuery,
   useGetThemeSettingsQuery,
 } from './cmsApi';
 export { toCmsApiError } from './cmsApiError';
