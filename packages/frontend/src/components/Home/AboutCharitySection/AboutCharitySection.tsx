@@ -4,6 +4,13 @@ import type React from 'react';
 import { useEffect, useRef } from 'react';
 import blueCast from '../../../assets/medrevue-home-castBlue.png';
 import pinkCast from '../../../assets/medrevue-home-castPink.png';
+import {
+  type CmsMedia,
+  type CmsRichText,
+  cmsAssetAlt,
+  cmsAssetUrl,
+} from '../../../services/cms/content';
+import { RichText } from '../../RichText/RichText';
 import { AboutPhoto } from './AboutPhoto';
 import { InfoCard } from './InfoCard';
 
@@ -15,7 +22,21 @@ const aboutBody =
 const charityBody =
   'The Mental Health Foundation of New Zealand works towards creating a society free from discrimination, where all people enjoy positive mental health and well-being. Focusing on suicide prevention, building individual, community well-being, and influencing policy to ensure everyone has the tools for good mental health.';
 
-export const AboutCharitySection: React.FC = () => {
+type AboutContent = {
+  heading?: string;
+  body?: CmsRichText;
+  image?: CmsMedia;
+};
+
+type AboutCharitySectionProps = {
+  aboutMedRevue?: AboutContent | null;
+  ourCharity?: AboutContent | null;
+};
+
+export const AboutCharitySection: React.FC<AboutCharitySectionProps> = ({
+  aboutMedRevue,
+  ourCharity,
+}) => {
   const divFadeInRef = useRef<HTMLDivElement>(null);
   const h2FadeInRef = useRef<HTMLHeadingElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
@@ -95,11 +116,17 @@ export const AboutCharitySection: React.FC = () => {
   }, []);
 
   return (
-    <section className="w-full grid grid-cols-1 md:grid-cols-2 bg-black overflow-hidden">
+    <section className="w-full grid grid-cols-1 md:grid-cols-2 bg-background-primary overflow-hidden">
       <div className="order-1">
         <InfoCard
-          title="About Med Revue"
-          body={aboutBody}
+          title={aboutMedRevue?.heading || 'About Med Revue'}
+          body={
+            aboutMedRevue?.body ? (
+              <RichText value={aboutMedRevue.body} />
+            ) : (
+              aboutBody
+            )
+          }
           titleRef={textRef}
           bodyRef={divFadeInRef}
         />
@@ -107,8 +134,11 @@ export const AboutCharitySection: React.FC = () => {
 
       <div className="order-2">
         <AboutPhoto
-          src={pinkCast}
-          alt="Med Revue Cast Performance Pink"
+          src={cmsAssetUrl(aboutMedRevue?.image) ?? pinkCast}
+          alt={cmsAssetAlt(
+            aboutMedRevue?.image,
+            'Med Revue Cast Performance Pink',
+          )}
           rotation="clockwise"
           zoomed
         />
@@ -116,16 +146,25 @@ export const AboutCharitySection: React.FC = () => {
 
       <div className="order-4 md:order-3">
         <AboutPhoto
-          src={blueCast}
-          alt="Med Revue Cast Performance Blue"
+          src={cmsAssetUrl(ourCharity?.image) ?? blueCast}
+          alt={cmsAssetAlt(
+            ourCharity?.image,
+            'Med Revue Cast Performance Blue',
+          )}
           rotation="anticlockwise"
         />
       </div>
 
       <div className="order-3 md:order-4">
         <InfoCard
-          title="Our Charity"
-          body={charityBody}
+          title={ourCharity?.heading || 'Our Charity'}
+          body={
+            ourCharity?.body ? (
+              <RichText value={ourCharity.body} />
+            ) : (
+              charityBody
+            )
+          }
           titleRef={h2FadeInRef}
         />
       </div>

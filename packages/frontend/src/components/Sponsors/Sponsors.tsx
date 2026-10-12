@@ -14,6 +14,11 @@ import respmedLogo from '../../assets/respmed.png';
 import tamakihealthLogo from '../../assets/tamaki-health.png';
 import coffeeClubLogo from '../../assets/the-coffee-club.png';
 import weLogo from '../../assets/we.png';
+import {
+  type CmsMedia,
+  cmsAssetAlt,
+  cmsAssetUrl,
+} from '../../services/cms/content';
 
 export const Sponsors: React.FC = () => {
   return (
@@ -198,7 +203,7 @@ type Sponsor = {
   href: string;
 };
 
-const sponsors: Sponsor[] = [
+const sponsorsFallback: Sponsor[] = [
   {
     name: 'We Getting to the Guts of it',
     logo: weLogo,
@@ -251,7 +256,24 @@ const sponsors: Sponsor[] = [
   },
 ];
 
-export const PreviousSponsors: React.FC = () => {
+type PreviousSponsorContent = {
+  id?: string;
+  name: string;
+  logo?: CmsMedia;
+  url?: string;
+};
+
+export const PreviousSponsors: React.FC<{
+  sponsors?: PreviousSponsorContent[] | null;
+}> = ({ sponsors = null }) => {
+  const sponsorsToDisplay =
+    sponsors ??
+    sponsorsFallback.map((sponsor) => ({
+      name: sponsor.name,
+      logo: sponsor.logo,
+      url: sponsor.href,
+    }));
+
   const Logo = ({ src, alt }: { src: string; alt: string }) => (
     <div className="h-36 md:h-44 w-full flex items-center justify-center">
       <img
@@ -273,17 +295,24 @@ export const PreviousSponsors: React.FC = () => {
         gap-y-4 sm:gap-y-6 lg:gap-y-10
       "
     >
-      {sponsors.map((sponsor) => (
-        <a
-          key={sponsor.name}
-          className="w-36 md:w-44"
-          href={sponsor.href}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Logo src={sponsor.logo} alt={sponsor.name} />
-        </a>
-      ))}
+      {sponsorsToDisplay.map((sponsor) => {
+        const logo =
+          cmsAssetUrl(sponsor.logo) ??
+          (typeof sponsor.logo === 'string' ? sponsor.logo : undefined);
+        if (!logo || !sponsor.url) return null;
+
+        return (
+          <a
+            key={sponsor.id ?? sponsor.name}
+            className="w-36 md:w-44"
+            href={sponsor.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Logo src={logo} alt={cmsAssetAlt(sponsor.logo, sponsor.name)} />
+          </a>
+        );
+      })}
     </section>
   );
 };
