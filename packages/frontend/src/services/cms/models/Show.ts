@@ -19,6 +19,6 @@ export type Show = {
   ticketsOnSale: boolean;
   ticketLink?: string;
   ticketButtonLabel: string;
-  galleryImages: MediaAsset[];
+  galleryImages: (MediaAsset & { rowId?: string })[];
   displayOrder: number;
 };

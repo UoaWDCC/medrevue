@@ -4,12 +4,16 @@ import { type CmsApiError, toCmsApiError } from './cmsApiError';
 import { cmsClient } from './config';
 import { contactAdapter } from './mappers/mapContact';
 import { currentShowAdapter } from './mappers/mapCurrentShow';
+import { ourCharityAdapter } from './mappers/mapOurCharity';
 import { showAdapter } from './mappers/mapShow';
+import { siteSettingsAdapter } from './mappers/mapSiteSettings';
 import { sponsorAdapter } from './mappers/mapSponsor';
 import { teamAdapter } from './mappers/mapTeam';
 import { themeSettingsAdapter } from './mappers/mapThemeSettings';
 import type { Contact } from './models/Contact';
+import type { OurCharity } from './models/OurCharity';
 import type { Show } from './models/Show';
+import type { SiteSettings } from './models/SiteSettings';
 import type { Sponsor } from './models/Sponsor';
 import type { Team } from './models/Team';
 import type { ThemeSettings } from './models/ThemeSettings';
@@ -87,13 +91,38 @@ export const cmsApi = createApi({
         try {
           const data = await cmsClient.getCollection(
             'team-members',
-            {
-              sort: 'displayOrder',
-              signal: api.signal,
-            },
+            { depth: 1, limit: 0, sort: 'displayOrder', signal: api.signal },
             teamAdapter,
           );
           return { data: data.docs };
+        } catch (error) {
+          return { error: toCmsApiError(error) };
+        }
+      },
+    }),
+    getSiteSettings: builder.query<SiteSettings, void>({
+      queryFn: async (_arg, api) => {
+        try {
+          const data = await cmsClient.getGlobal(
+            'site-settings',
+            { depth: 1, signal: api.signal },
+            siteSettingsAdapter,
+          );
+          return { data };
+        } catch (error) {
+          return { error: toCmsApiError(error) };
+        }
+      },
+    }),
+    getOurCharity: builder.query<OurCharity, void>({
+      queryFn: async (_arg, api) => {
+        try {
+          const data = await cmsClient.getGlobal(
+            'our-charity',
+            { signal: api.signal },
+            ourCharityAdapter,
+          );
+          return { data };
         } catch (error) {
           return { error: toCmsApiError(error) };
         }
@@ -122,5 +151,7 @@ export const {
   useGetActiveSponsorsQuery,
   useGetContactQuery,
   useGetTeamQuery,
+  useGetSiteSettingsQuery,
+  useGetOurCharityQuery,
   useGetThemeSettingsQuery,
 } = cmsApi;

@@ -21,9 +21,10 @@ export function mapShow(show: PayloadShow, cmsBaseUrl: string): Show {
     ticketsOnSale: show.ticketsOnSale ?? false,
     ticketLink: show.ticketLink ?? undefined,
     ticketButtonLabel: show.ticketButtonLabel ?? 'Order Tickets',
-    galleryImages: (show.galleryImages ?? []).map(({ image }) =>
-      mapMedia(image, cmsBaseUrl),
-    ),
+    galleryImages: (show.galleryImages ?? []).map(({ image, id }) => ({
+      ...mapMedia(image, cmsBaseUrl),
+      rowId: id ?? undefined,
+    })),
     displayOrder: show.displayOrder ?? 0,
   };
 }

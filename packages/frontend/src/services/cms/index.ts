@@ -12,7 +12,10 @@ export {
   useGetActiveSponsorsQuery,
   useGetContactQuery,
   useGetCurrentShowQuery,
+  useGetOurCharityQuery,
   useGetShowsQuery,
+  useGetSiteSettingsQuery,
+  useGetTeamQuery,
   useGetThemeSettingsQuery,
 } from './cmsApi';
 export { toCmsApiError } from './cmsApiError';
@@ -25,7 +28,12 @@ export {
   mapCurrentShow,
 } from './mappers/mapCurrentShow';
 export { mapMedia } from './mappers/mapMedia';
+export { mapOurCharity, ourCharityAdapter } from './mappers/mapOurCharity';
 export { mapShow, showAdapter } from './mappers/mapShow';
+export {
+  mapSiteSettings,
+  siteSettingsAdapter,
+} from './mappers/mapSiteSettings';
 export { mapSponsor, sponsorAdapter } from './mappers/mapSponsor';
 export {
   mapThemeSettings,
@@ -33,6 +41,8 @@ export {
 } from './mappers/mapThemeSettings';
 export type { Contact } from './models/Contact';
 export type { MediaAsset } from './models/Media';
+export type { OurCharity } from './models/OurCharity';
 export type { Performance, Show } from './models/Show';
+export type { SiteSettings } from './models/SiteSettings';
 export type { Sponsor, SponsorTier } from './models/Sponsor';
 export type { ThemeSettings } from './models/ThemeSettings';
