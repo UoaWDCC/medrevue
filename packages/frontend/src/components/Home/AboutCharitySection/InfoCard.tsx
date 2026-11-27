@@ -3,7 +3,7 @@ import type { Ref } from 'react';
 
 interface InfoCardProps {
   title: string;
-  body: string;
+  body: React.ReactNode;
   titleRef?: Ref<HTMLHeadingElement>;
   bodyRef?: Ref<HTMLDivElement>;
 }
@@ -24,9 +24,9 @@ export const InfoCard: React.FC<InfoCardProps> = ({
       </h2>
       <div
         ref={bodyRef}
-        className="text-[#606060] font-inter text-base md:text-lg leading-relaxed space-y-4"
+        className="text-text-light-grey font-inter text-base md:text-lg leading-relaxed space-y-4"
       >
-        <p>{body}</p>
+        {typeof body === 'string' ? <p>{body}</p> : body}
       </div>
     </div>
   );

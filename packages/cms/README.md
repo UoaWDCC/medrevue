@@ -62,6 +62,25 @@ Alternatively, you can use [Docker](https://www.docker.com) to spin up this temp
 
 That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
 
+## Vercel Blob storage
+
+The `media` collection stores uploads in Vercel Blob when `BLOB_READ_WRITE_TOKEN`
+is set. Without a token, local development continues to store uploads locally.
+Direct client uploads are enabled so images can exceed Vercel's server upload limit.
+
+1. In the CMS project's Vercel dashboard, open **Storage**, create a **public Blob**
+   store, and connect it to the CMS project.
+2. Make sure `BLOB_READ_WRITE_TOKEN` is available in the project's **Production**
+   environment (and **Preview** if you deploy previews).
+3. Redeploy the CMS, then upload an image through `/admin` and check that it appears
+   in the Blob store and can be viewed from its media URL.
+
+To use the same storage locally, add the token to `packages/cms/.env` and restart
+the CMS. Existing local uploads are not migrated automatically; re-upload them
+through the admin panel if they need to be available in the deployed CMS.
+
+See [Payload's Vercel Blob documentation](https://payloadcms.com/docs/upload/storage-adapters#vercel-blob-storage).
+
 ## Questions
 
 If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).

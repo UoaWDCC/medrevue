@@ -2,6 +2,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { mongooseAdapter } from '@payloadcms/db-mongodb';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
 import { buildConfig } from 'payload';
 import sharp from 'sharp';
 
@@ -9,6 +10,7 @@ import { Media } from './collections/Media';
 import { PreviousSponsors } from './collections/PreviousSponsors';
 import { Shows } from './collections/Shows';
 import { Sponsors } from './collections/Sponsors';
+import { TeamMembers } from './collections/TeamMembers';
 import { Users } from './collections/Users';
 import { AboutMedRevue } from './globals/AboutMedRevue';
 import { Contact } from './globals/Contact';
@@ -30,7 +32,7 @@ export default buildConfig({
     },
   },
   cors: [process.env.FRONTEND_URL || 'http://localhost:5173'],
-  collections: [Users, Media, PreviousSponsors, Shows, Sponsors],
+  collections: [Users, Media, PreviousSponsors, Shows, Sponsors, TeamMembers],
   globals: [
     Homepage,
     AboutMedRevue,
@@ -50,5 +52,13 @@ export default buildConfig({
     url: process.env.DATABASE_URL || '',
   }),
   sharp,
-  plugins: [],
+  plugins: [
+    vercelBlobStorage({
+      collections: {
+        media: true,
+      },
+      clientUploads: true,
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    }),
+  ],
 });

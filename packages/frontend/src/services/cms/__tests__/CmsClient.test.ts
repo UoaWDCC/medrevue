@@ -29,6 +29,28 @@ function jsonResponse(body: unknown, status = 200): Response {
 }
 
 describe('CmsClient', () => {
+  test('preserves the global receiver required by browser fetch', async () => {
+    const browserFetch = vi
+      .spyOn(globalThis, 'fetch')
+      .mockImplementation(function (this: unknown) {
+        if (this !== globalThis) {
+          throw new TypeError('Illegal invocation');
+        }
+        return Promise.resolve(jsonResponse({ id: 'contact' }));
+      });
+
+    try {
+      const client = new CmsClient('http://localhost:3001');
+
+      await expect(
+        client.getGlobal('contact', {}, documentAdapter),
+      ).resolves.toEqual({ id: 'contact' });
+      expect(browserFetch).toHaveBeenCalledOnce();
+    } finally {
+      browserFetch.mockRestore();
+    }
+  });
+
   test('builds a collection URL and returns validated documents', async () => {
     const fetchMock = vi.fn<typeof fetch>();
     fetchMock.mockResolvedValue(jsonResponse(collectionResponse));

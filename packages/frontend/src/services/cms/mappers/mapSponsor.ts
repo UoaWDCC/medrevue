@@ -1,5 +1,6 @@
 import type { CmsAdapter } from '../CmsClient';
 import type { Sponsor } from '../models/Sponsor';
+import { safeHref } from '../safeHref';
 import {
   type PayloadSponsor,
   payloadSponsorSchema,
@@ -14,7 +15,7 @@ export function mapSponsor(
     id: sponsor.id,
     name: sponsor.name,
     logo: mapMedia(sponsor.logo, cmsBaseUrl),
-    websiteUrl: sponsor.websiteUrl,
+    websiteUrl: safeHref(sponsor.websiteUrl),
     tier: sponsor.tier,
     headline: sponsor.headline ?? undefined,
     description: sponsor.description ?? undefined,

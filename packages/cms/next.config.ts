@@ -7,6 +7,10 @@ const __filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(__filename);
 
 const nextConfig: NextConfig = {
+  experimental: {
+    // This entry point also exports server utilities; keep those out of the admin bundle.
+    optimizePackageImports: ['@payloadcms/plugin-cloud-storage/utilities'],
+  },
   images: {
     localPatterns: [
       {

@@ -7,7 +7,10 @@ export interface PastShowCardProps {
   title: string;
   description: string;
   posterUrl: string;
+  posterAlt?: string;
   galleryUrls: string[];
+  galleryAlts?: string[];
+  galleryIds: string[];
 }
 
 export const PastShowCard: React.FC<PastShowCardProps> = ({
@@ -15,9 +18,17 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
   title,
   description,
   posterUrl,
+  posterAlt,
   galleryUrls,
+  galleryAlts,
+  galleryIds,
 }) => {
-  const visibleImages = galleryUrls.slice(0, 3);
+  // Identify each CMS row, not its upload: the same photo may be used repeatedly.
+  const galleryPhotos = galleryUrls.map((url, index) => ({
+    id: galleryIds[index],
+    url,
+    alt: galleryAlts?.[index] || `${title} gallery ${index + 1}`,
+  }));
   // null = viewer closed, a number = index of the image that's open
   const [viewerIndex, setViewerIndex] = useState<number | null>(null);
 
@@ -75,7 +86,7 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
             {posterUrl && (
               <img
                 src={posterUrl}
-                alt={`${title} poster`}
+                alt={posterAlt || `${title} poster`}
                 className="w-full h-full object-cover"
               />
             )}
@@ -95,39 +106,44 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
               >
                 {title}
               </h2>
-              <p
-                className="
+              {description && (
+                <p
+                  className="
                   leading-[1.5] m-0 text-[0.9rem] md:text-[0.68rem] lg:text-[0.95rem] xl:text-[1.1rem]
                   text-center md:text-left text-white
                 "
-              >
-                {description}
-              </p>
+                >
+                  {description}
+                </p>
+              )}
             </div>
 
             {/* Thumbnail strip */}
-            <div className="flex items-end justify-center md:justify-end mt-auto">
-              <div className="flex items-start gap-1.5 md:gap-2 p-1.5 md:p-3 rounded-xl bg-background-white">
-                {/* Clicking a thumbnail opens the viewer */}
-                {visibleImages.map((url, i) => (
-                  <button
-                    type="button"
-                    key={url}
-                    aria-label={`Open ${title} photo ${i + 1} of ${visibleImages.length}`}
-                    onClick={() => {
-                      setViewerIndex(i);
-                    }}
-                    className="rounded-lg overflow-hidden flex-shrink-0 bg-text-grey cursor-pointer w-20 h-20 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44"
-                  >
-                    <img
-                      src={url}
-                      alt={`${title} gallery ${i + 1}`}
-                      className="w-full h-full object-cover object-center block scale-120"
-                    />
-                  </button>
-                ))}
+            {galleryUrls.length > 0 && (
+              <div className="flex items-end justify-center md:justify-end mt-auto min-w-0">
+                <div className="flex items-start gap-1.5 md:gap-2 p-1.5 md:p-3 rounded-xl bg-background-white max-w-full overflow-x-auto">
+                  {/* Clicking a thumbnail opens the viewer */}
+                  {galleryPhotos.map((photo, i) => (
+                    <button
+                      type="button"
+                      key={photo.id}
+                      aria-label={`Open ${title} photo ${i + 1} of ${galleryPhotos.length}`}
+                      onClick={() => {
+                        setViewerIndex(i);
+                      }}
+                      className="rounded-lg overflow-hidden flex-shrink-0 bg-text-grey cursor-pointer
+                       w-20 h-20 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44"
+                    >
+                      <img
+                        src={photo.url}
+                        alt={photo.alt}
+                        className="w-full h-full object-cover object-center block scale-120"
+                      />
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

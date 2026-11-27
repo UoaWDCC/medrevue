@@ -1,5 +1,6 @@
 import type { CmsAdapter } from '../CmsClient';
 import type { Show } from '../models/Show';
+import { safeHref } from '../safeHref';
 import { type PayloadShow, payloadShowSchema } from '../schemas/showSchema';
 import { mapMedia } from './mapMedia';
 
@@ -19,11 +20,12 @@ export function mapShow(show: PayloadShow, cmsBaseUrl: string): Show {
     venue: show.venue ?? undefined,
     address: show.address ?? undefined,
     ticketsOnSale: show.ticketsOnSale ?? false,
-    ticketLink: show.ticketLink ?? undefined,
+    ticketLink: safeHref(show.ticketLink),
     ticketButtonLabel: show.ticketButtonLabel ?? 'Order Tickets',
-    galleryImages: (show.galleryImages ?? []).map(({ image }) =>
-      mapMedia(image, cmsBaseUrl),
-    ),
+    galleryImages: (show.galleryImages ?? []).map(({ image, id }) => ({
+      ...mapMedia(image, cmsBaseUrl),
+      rowId: id ?? undefined,
+    })),
     displayOrder: show.displayOrder ?? 0,
   };
 }
