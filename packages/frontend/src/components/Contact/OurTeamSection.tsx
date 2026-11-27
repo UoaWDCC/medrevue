@@ -12,7 +12,7 @@ export const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member }) => {
       <img
         src={member.image}
         alt={member.name}
-        className="w-40 h-32 object-cover mb-3 rounded-lg"
+        className="size-40 object-cover mb-3 rounded-lg"
       />
 
       <p>
@@ -29,7 +29,7 @@ export const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member }) => {
 const TeamMemberSkeleton: React.FC = () => {
   return (
     <div className="bg-background-secondary rounded-lg shadow-md p-4 flex flex-col items-center text-center w-50">
-      <div className="w-40 h-32 mb-3 rounded-lg bg-gray-200 animate-pulse" />
+      <div className="size-40 mb-3 rounded-lg bg-gray-200 animate-pulse" />
 
       <div className="w-28 h-5 mb-2 rounded bg-gray-200 animate-pulse" />
 
