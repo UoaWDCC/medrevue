@@ -26,7 +26,7 @@ export const AboutPhoto: React.FC<AboutPhotoProps> = ({
     <div
       className={`w-full bg-background-white px-2 pt-8 pb-14 md:px-2 md:pt-6 md:pb-14 ${rotationClass} ${frameScaleClass}`}
     >
-      <div className="h-64 md:h-[450px] w-full overflow-hidden">
+      <div className="aspect-[3/2] w-full overflow-hidden">
         <img
           src={src}
           alt={alt}
