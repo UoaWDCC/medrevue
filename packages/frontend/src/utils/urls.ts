@@ -10,15 +10,3 @@ export function getExternalUrl(value?: string): string | undefined {
     return undefined;
   }
 }
-
-export function getSiteLink(value?: string): string | undefined {
-  const link = value?.trim();
-  if (!link) return undefined;
-
-  // Root-relative routes are internal; protocol-relative URLs are not.
-  if (link.startsWith('/') && !link.startsWith('//') && !link.includes('\\')) {
-    return link;
-  }
-
-  return getExternalUrl(link);
-}

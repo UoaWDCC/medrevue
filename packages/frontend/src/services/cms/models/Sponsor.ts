@@ -6,7 +6,7 @@ export type Sponsor = {
   id: string;
   name: string;
   logo: MediaAsset;
-  websiteUrl: string;
+  websiteUrl?: string;
   tier: SponsorTier;
   headline?: string;
   description?: Record<string, unknown>;

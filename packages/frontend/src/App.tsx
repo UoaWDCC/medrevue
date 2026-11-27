@@ -1,17 +1,28 @@
 import type React from 'react';
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router';
 import { Footer } from './components/Footer';
 import { Menu } from './components/Menu';
 import { AboutUsPage } from './pages/AboutUsPage';
 import { ContactPage } from './pages/ContactUs';
 import HomePage from './pages/Home';
-import ReturnPolicyPage from './pages/ReturnPolicy';
 import { SponsorPage } from './pages/SponsorPage';
 import GalleryPage from './pages/gallery/GalleryPage';
-import Show2025 from './pages/show/2025show';
+import { useGetThemeSettingsQuery } from './services/cms';
+import { applyTheme, saveTheme } from './utils/theme';
 
 const App: React.FC = () => {
   const isAdminPage = location.pathname.startsWith('/admin');
+  const { data: themeSettings } = useGetThemeSettingsQuery(undefined, {
+    skip: isAdminPage,
+  });
+
+  useEffect(() => {
+    if (!themeSettings) return;
+
+    applyTheme(themeSettings);
+    saveTheme(themeSettings);
+  }, [themeSettings]);
 
   return (
     <>
@@ -22,16 +33,6 @@ const App: React.FC = () => {
             <>
               <Menu />
               <HomePage />
-            </>
-          }
-        />
-        <Route
-          path="show"
-          element={
-            <>
-              <Menu />
-              {/* <LoadingComponent /> */}
-              <Show2025 />
             </>
           }
         />
@@ -50,15 +51,6 @@ const App: React.FC = () => {
             <>
               <Menu />
               <SponsorPage />
-            </>
-          }
-        />
-        <Route
-          path="/return-policy"
-          element={
-            <>
-              <Menu />
-              <ReturnPolicyPage />
             </>
           }
         />
