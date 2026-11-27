@@ -132,15 +132,17 @@ export const SponsorPage: React.FC = () => {
         <section className="bg-background-primary h-8 md:h-15" />
 
         {/* Sponsors Content */}
-        <section className="bg-background-white px-4 py-3 flex flex-col items-center my-5 md:my-10">
-          <div className="mx-auto flex w-full max-w-6xl flex-col items-center">
-            <h2 className="flex text-2xl md:text-3xl items-center gap-3 leading-none font-semibold font-sans text-text-grey">
-              {sponsorUs?.previousSponsorsTitle || 'Previous Sponsors'}
-            </h2>
+        {previousSponsors && previousSponsors.length > 0 && (
+          <section className="bg-background-white px-4 py-3 flex flex-col items-center my-5 md:my-10">
+            <div className="mx-auto flex w-full max-w-6xl flex-col items-center">
+              <h2 className="flex text-2xl md:text-3xl items-center gap-3 leading-none font-semibold font-sans text-text-grey">
+                {sponsorUs?.previousSponsorsTitle || 'Previous Sponsors'}
+              </h2>
 
-            <PreviousSponsors sponsors={previousSponsors} />
-          </div>
-        </section>
+              <PreviousSponsors sponsors={previousSponsors} />
+            </div>
+          </section>
+        )}
       </div>
     </>
   );
