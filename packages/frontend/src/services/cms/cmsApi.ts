@@ -2,19 +2,27 @@ import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { CmsPage, CollectionOptions } from './CmsClient';
 import { type CmsApiError, toCmsApiError } from './cmsApiError';
 import { cmsClient } from './config';
+import { aboutMedRevueAdapter } from './mappers/mapAboutMedRevue';
 import { contactAdapter } from './mappers/mapContact';
 import { currentShowAdapter } from './mappers/mapCurrentShow';
+import { homepageAdapter } from './mappers/mapHomepage';
 import { ourCharityAdapter } from './mappers/mapOurCharity';
+import { previousSponsorAdapter } from './mappers/mapPreviousSponsor';
 import { showAdapter } from './mappers/mapShow';
 import { siteSettingsAdapter } from './mappers/mapSiteSettings';
 import { sponsorAdapter } from './mappers/mapSponsor';
+import { sponsorUsAdapter } from './mappers/mapSponsorUs';
 import { teamAdapter } from './mappers/mapTeam';
 import { themeSettingsAdapter } from './mappers/mapThemeSettings';
+import type { AboutMedRevue } from './models/AboutMedRevue';
 import type { Contact } from './models/Contact';
+import type { Homepage } from './models/Homepage';
 import type { OurCharity } from './models/OurCharity';
+import type { PreviousSponsor } from './models/PreviousSponsor';
 import type { Show } from './models/Show';
 import type { SiteSettings } from './models/SiteSettings';
 import type { Sponsor } from './models/Sponsor';
+import type { SponsorUs } from './models/SponsorUs';
 import type { Team } from './models/Team';
 import type { ThemeSettings } from './models/ThemeSettings';
 
@@ -119,7 +127,7 @@ export const cmsApi = createApi({
         try {
           const data = await cmsClient.getGlobal(
             'our-charity',
-            { signal: api.signal },
+            { depth: 1, signal: api.signal },
             ourCharityAdapter,
           );
           return { data };
@@ -142,6 +150,62 @@ export const cmsApi = createApi({
         }
       },
     }),
+    getHomepage: builder.query<Homepage, void>({
+      queryFn: async (_arg, api) => {
+        try {
+          const data = await cmsClient.getGlobal(
+            'homepage',
+            { signal: api.signal },
+            homepageAdapter,
+          );
+          return { data };
+        } catch (error) {
+          return { error: toCmsApiError(error) };
+        }
+      },
+    }),
+    getAboutMedRevue: builder.query<AboutMedRevue, void>({
+      queryFn: async (_arg, api) => {
+        try {
+          const data = await cmsClient.getGlobal(
+            'about-med-revue',
+            { depth: 2, signal: api.signal },
+            aboutMedRevueAdapter,
+          );
+          return { data };
+        } catch (error) {
+          return { error: toCmsApiError(error) };
+        }
+      },
+    }),
+    getSponsorUs: builder.query<SponsorUs, void>({
+      queryFn: async (_arg, api) => {
+        try {
+          const data = await cmsClient.getGlobal(
+            'sponsor-us',
+            { depth: 2, signal: api.signal },
+            sponsorUsAdapter,
+          );
+          return { data };
+        } catch (error) {
+          return { error: toCmsApiError(error) };
+        }
+      },
+    }),
+    getPreviousSponsors: builder.query<PreviousSponsor[], void>({
+      queryFn: async (_arg, api) => {
+        try {
+          const data = await cmsClient.getCollection(
+            'previous-sponsors',
+            { depth: 1, limit: 0, sort: 'name', signal: api.signal },
+            previousSponsorAdapter,
+          );
+          return { data: data.docs };
+        } catch (error) {
+          return { error: toCmsApiError(error) };
+        }
+      },
+    }),
   }),
 });
 
@@ -154,4 +218,8 @@ export const {
   useGetSiteSettingsQuery,
   useGetOurCharityQuery,
   useGetThemeSettingsQuery,
+  useGetHomepageQuery,
+  useGetAboutMedRevueQuery,
+  useGetSponsorUsQuery,
+  useGetPreviousSponsorsQuery,
 } = cmsApi;

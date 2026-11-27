@@ -1,5 +1,6 @@
 import type { CmsAdapter } from '../CmsClient';
 import type { SiteSettings } from '../models/SiteSettings';
+import { safeHref } from '../safeHref';
 import {
   type PayloadSiteSettings,
   payloadSiteSettingsSchema,
@@ -16,11 +17,11 @@ export function mapSiteSettings(
       : undefined,
     footerCtaText: settings.footerCtaText?.trim() || undefined,
     footerCtaLabel: settings.footerCtaLabel?.trim() || undefined,
-    footerCtaLink: settings.footerCtaLink?.trim() || undefined,
+    footerCtaLink: safeHref(settings.footerCtaLink),
     copyrightText: settings.copyrightText?.trim() || undefined,
-    facebookUrl: settings.facebookUrl?.trim() || undefined,
-    instagramUrl: settings.instagramUrl?.trim() || undefined,
-    tiktokUrl: settings.tiktokUrl?.trim() || undefined,
+    facebookUrl: safeHref(settings.facebookUrl),
+    instagramUrl: safeHref(settings.instagramUrl),
+    tiktokUrl: safeHref(settings.tiktokUrl),
   };
 }
 
