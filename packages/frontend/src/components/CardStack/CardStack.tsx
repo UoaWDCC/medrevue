@@ -1,20 +1,53 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useEffect, useRef } from 'react';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PastShowCard, { type PastShowCardProps } from '../Cards/PastShowCard';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export type CardStackCard = PastShowCardProps & { id: string };
 
-const CardStack = ({ cards }: { cards: CardStackCard[] }) => {
+type CardStackProps = {
+  cards: CardStackCard[];
+  // Rendered above the cards and pinned with them while scrolling.
+  heading?: React.ReactNode;
+};
+
+const CardStack = ({ cards, heading }: CardStackProps) => {
   const containerRef = useRef<HTMLElement>(null);
+  // Cards stack and scroll away only when a whole card fits on screen; otherwise they show as a plain list.
+  const [stacked, setStacked] = useState(true);
+
+  useEffect(() => {
+    const updateStacked = () => {
+      const cardEls =
+        containerRef.current?.querySelectorAll<HTMLElement>('.card');
+      if (!cardEls?.length) return;
+      const tallestCard = Math.max(
+        ...[...cardEls].map((card) => card.offsetHeight),
+      );
+      // The top card can sit up to 12px lower on mobile, so leave room for that.
+      setStacked(tallestCard + 12 <= window.innerHeight);
+    };
+    updateStacked();
+    window.addEventListener('resize', updateStacked);
+    return () => window.removeEventListener('resize', updateStacked);
+  }, []);
 
   // useEffect(callback, deps)
   //     callback: the function that runs after the component mounts
   //     deps (dependency array): controls when effect re-runs
   useEffect(() => {
     if (cards.length === 0) return;
+    if (!stacked) {
+      for (const card of containerRef.current?.querySelectorAll<HTMLElement>(
+        '.card',
+      ) ?? []) {
+        card.inert = false;
+      }
+      return;
+    }
     // Scope animation to containerRef
     const ctx = gsap.context(() => {
       // Grab all card elements as an array so we can index them
@@ -23,13 +56,8 @@ const CardStack = ({ cards }: { cards: CardStackCard[] }) => {
 
       // Set initial position
       gsap.set(cardsArray, {
-        position: 'absolute',
         zIndex: (i: number) => cardsArray.length - i,
         y: (i: number) => mobileCardYOffset + 12 * i,
-        top: '50%',
-        left: '50%',
-        xPercent: -50,
-        yPercent: -50,
       });
 
       // Only the card on top should be reachable with Tab; the rest are hidden or animated away.
@@ -51,7 +79,14 @@ const CardStack = ({ cards }: { cards: CardStackCard[] }) => {
         onUpdate: () => updateInertCards(tl.progress()),
         scrollTrigger: {
           trigger: containerRef.current,
-          start: 'top top',
+          // On short screens the heading and card don't both fit, so pin later to keep the whole card in view.
+          start: () => {
+            const container = containerRef.current;
+            const overflow = container
+              ? Math.max(0, container.scrollHeight - container.clientHeight)
+              : 0;
+            return `top top-=${overflow}px`;
+          },
           end: `+=${(cards.length - 1) * window.innerHeight} top`,
           scrub: 1,
           pin: true,
@@ -72,19 +107,27 @@ const CardStack = ({ cards }: { cards: CardStackCard[] }) => {
 
     // Clean up on unmount (returns a function reference insteads of running it)
     return () => ctx.revert();
-  }, [cards]);
+  }, [cards, stacked]);
 
   return (
     <section
-      className="w-full h-[100svh] flex items-center justify-center px-3 md:px-0"
+      className={`w-full px-3 md:px-0 ${stacked ? 'h-[100svh] flex flex-col' : ''}`}
       ref={containerRef}
       aria-label="Past shows"
     >
-      {cards.map((card) => (
-        <div key={card.id}>
-          <PastShowCard {...card} />
+      <div className={stacked ? 'my-auto' : 'pb-16'}>
+        {heading}
+        {/* When stacked, every card shares one grid cell, so the cell is as tall as the tallest card. */}
+        <div
+          className={
+            stacked ? 'grid *:[grid-area:1/1] pb-8' : 'flex flex-col gap-8'
+          }
+        >
+          {cards.map((card) => (
+            <PastShowCard key={card.id} {...card} />
+          ))}
         </div>
-      ))}
+      </div>
     </section>
   );
 };

@@ -132,7 +132,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ homepage, show }) => {
     <div className="relative w-full overflow-hidden">
       <section
         ref={bgRef}
-        className="relative w-full min-h-[90vh] lg:h-[115vh] bg-background-primary flex flex-col md:flex-row items-center justify-center gap-10 px-8 md:px-32 pt-32 pb-16 md:py-16"
+        className="relative w-full min-h-[90vh] lg:h-[115vh] bg-background-primary flex flex-col md:flex-row items-center justify-center gap-10 px-8 md:px-16 lg:px-32 pt-32 pb-16 md:py-16"
       >
         <div
           aria-hidden="true"
@@ -154,7 +154,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ homepage, show }) => {
         <div className="relative z-10 order-2 md:order-1 flex-1 flex flex-col gap-[clamp(0.75rem,2vh,1.5rem)] items-center justify-center text-center md:items-start md:justify-start md:text-left mb-6 md:mb-0">
           <h1
             ref={headerSlideRef}
-            className="text-background-secondary font-bold font-poppins text-[clamp(2.75rem,min(15vw,14vh),6rem)] md:text-[clamp(3rem,min(8vw,14vh),6rem)] leading-[1.1] md:leading-[0.9] text-center md:text-left"
+            className="text-background-secondary font-bold font-poppins text-[clamp(2.25rem,min(12vw,11vh),6rem)] md:text-[clamp(3rem,min(8vw,14vh),6rem)] leading-[1.1] md:leading-[0.9] text-center md:text-left"
           >
             <span className="block">{firstTitleLine}</span>
             {remainingTitleWords.length > 0 && (
@@ -251,12 +251,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ homepage, show }) => {
           </div>
         </div>
 
-        <div className="relative z-10 order-1 md:order-2 flex-1 flex justify-center">
+        <div className="relative z-10 order-1 md:order-2 flex-1 min-w-0 flex justify-center">
           <img
             ref={posterRef}
             src={posterUrl}
             alt={show?.poster.alt ?? 'Med Revue'}
-            className="w-auto max-w-64 sm:max-w-80 md:max-w-96 max-h-[calc(100vh-12rem)] md:max-h-[calc(100vh-8rem)] rounded-lg border-4 border-background-secondary shadow-lg"
+            className="w-auto max-w-64 sm:max-w-80 md:max-w-[min(24rem,100%)] max-h-[calc(100vh-12rem)] md:max-h-[calc(100vh-8rem)] rounded-lg border-4 border-background-secondary shadow-lg"
           />
         </div>
       </section>

@@ -13,6 +13,7 @@ export type Show = {
   year: number;
   poster: MediaAsset;
   shortDescription?: Record<string, unknown>;
+  description?: Record<string, unknown>;
   performances: Performance[];
   venue?: string;
   address?: string;

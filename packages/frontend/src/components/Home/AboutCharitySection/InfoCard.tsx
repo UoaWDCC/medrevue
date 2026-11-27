@@ -15,7 +15,7 @@ export const InfoCard: React.FC<InfoCardProps> = ({
   bodyRef,
 }) => {
   return (
-    <div className="flex flex-col justify-center items-center bg-background-secondary px-6 py-10 md:px-12 md:py-16 text-center m-6 md:m-20 rounded-3xl">
+    <div className="flex flex-col justify-center items-center bg-background-secondary px-6 py-10 md:px-12 md:py-16 text-center m-6 md:m-12 xl:m-20 rounded-3xl">
       <h2
         ref={titleRef}
         className="text-background-primary font-bold font-poppins text-3xl md:text-4xl mb-6"

@@ -11,6 +11,7 @@ export function mapShow(show: PayloadShow, cmsBaseUrl: string): Show {
     year: show.year,
     poster: mapMedia(show.poster, cmsBaseUrl),
     shortDescription: show.shortDescription ?? undefined,
+    description: show.description ?? undefined,
     performances: (show.performances ?? []).map((performance) => ({
       id: performance.id ?? undefined,
       startsAt: performance.startsAt,

@@ -3,15 +3,17 @@ import type { Show } from '../../../services/cms';
 import { RichText } from '../../RichText/RichText';
 
 export const ShowInfoCard: React.FC<{ show?: Show | null }> = ({ show }) => {
+  const description = show?.description ?? show?.shortDescription;
+
   return (
     <section className="w-full bg-background-primary px-6 pb-12 md:px-32">
       <div className="mx-auto max-w-3xl rounded-[2rem] bg-background-white px-6 py-12 text-center md:rounded-[4.5rem] md:px-16 md:py-12">
         <h2 className="mb-6 font-poppins text-3xl font-bold text-text-grey md:text-4xl">
           {show?.title || 'The Consultant of Oz'}
         </h2>
-        {show?.shortDescription ? (
+        {description ? (
           <RichText
-            value={show.shortDescription}
+            value={description}
             className="mx-auto font-poppins text-base leading-relaxed text-text-light-grey md:text-xl"
           />
         ) : (

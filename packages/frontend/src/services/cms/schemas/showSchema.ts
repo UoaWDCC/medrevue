@@ -20,6 +20,7 @@ export const payloadShowSchema = z
     year: z.number(),
     poster: mediaRelationshipSchema,
     shortDescription: richTextSchema.nullable().optional(),
+    description: richTextSchema.nullable().optional(),
     performances: z.array(performanceSchema).nullable().optional(),
     venue: z.string().nullable().optional(),
     address: z.string().nullable().optional(),

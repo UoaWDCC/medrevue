@@ -105,7 +105,7 @@ export const AboutCharitySection: React.FC<AboutCharitySectionProps> = ({
   }, []);
 
   return (
-    <section className="w-full grid grid-cols-1 md:grid-cols-2 bg-background-primary overflow-hidden">
+    <section className="w-full grid grid-cols-1 lg:grid-cols-2 bg-background-primary overflow-hidden">
       <div className="order-1">
         <InfoCard
           title={aboutMedRevue?.heading || 'About Med Revue'}
@@ -121,7 +121,7 @@ export const AboutCharitySection: React.FC<AboutCharitySectionProps> = ({
         />
       </div>
 
-      <div className="order-2">
+      <div className="order-2 w-full max-w-xl mx-auto py-6 md:py-10 lg:max-w-none">
         <AboutPhoto
           src={aboutMedRevue?.image.url ?? pinkCast}
           alt={aboutMedRevue?.image.alt ?? 'Med Revue Cast Performance Pink'}
@@ -130,7 +130,7 @@ export const AboutCharitySection: React.FC<AboutCharitySectionProps> = ({
         />
       </div>
 
-      <div className="order-4 md:order-3">
+      <div className="order-4 lg:order-3 w-full max-w-xl mx-auto py-6 md:py-10 lg:max-w-none">
         <AboutPhoto
           src={ourCharity?.image?.url ?? blueCast}
           alt={ourCharity?.image?.alt ?? 'Med Revue Cast Performance Blue'}
@@ -138,7 +138,7 @@ export const AboutCharitySection: React.FC<AboutCharitySectionProps> = ({
         />
       </div>
 
-      <div className="order-3 md:order-4">
+      <div className="order-3 lg:order-4">
         <InfoCard
           title={ourCharity?.heading || 'Our Charity'}
           body={
