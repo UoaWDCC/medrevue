@@ -1,13 +1,11 @@
-import { useCallback, useEffect } from 'react'; // useCallback keeps prev/next stable between redraws
-import { createPortal } from 'react-dom'; // draws the viewer outside the card
+import { useLayoutEffect, useRef } from 'react';
 
-// The list of things PastShowCard must hand to the viewer
 interface PhotoViewerProps {
-  images: string[]; // every image URL for this show
-  index: number; // which image is showing right now
-  title: string; // show title, used for accessibility text
-  onClose: () => void; // function to call to close the viewer
-  onChange: (index: number) => void; // function to call to switch images
+  images: string[];
+  index: number;
+  title: string;
+  onClose: () => void;
+  onChange: (index: number) => void;
 }
 
 export const PhotoViewer = ({
@@ -17,59 +15,44 @@ export const PhotoViewer = ({
   onClose,
   onChange,
 }: PhotoViewerProps) => {
-  // Go back one image; "+ images.length" stops the number going negative.
-  // useCallback: only rebuild this function if one of the values in the list changes.
-  const prev = useCallback(
-    () => onChange((index - 1 + images.length) % images.length),
-    [index, images.length, onChange],
-  );
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
-  // Go forward one image; "%" wraps back to 0 after the last image.
-  const next = useCallback(
-    () => onChange((index + 1) % images.length),
-    [index, images.length, onChange],
-  );
+  const prev = () => onChange((index - 1 + images.length) % images.length);
+  const next = () => onChange((index + 1) % images.length);
 
-  // useEffect is for things outside React's drawing, like browser key events.
-  useEffect(() => {
-    // Runs on every key press while the viewer is open
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-      if (e.key === 'ArrowLeft') prev();
-      if (e.key === 'ArrowRight') next();
-    };
+  // Layout effect so close() runs before React removes the dialog, which lets the
+  // browser return focus to the thumbnail. showModal() traps focus and makes the page inert.
+  useLayoutEffect(() => {
+    const dialog = dialogRef.current;
+    const previousOverflow = document.body.style.overflow;
 
-    // Start listening for key presses
-    window.addEventListener('keydown', onKey);
-    // Stop the page scrolling behind the overlay
+    dialog?.showModal();
     document.body.style.overflow = 'hidden';
 
-    // Cleanup: runs when the viewer closes
     return () => {
-      // Stop listening so listeners don't pile up
-      window.removeEventListener('keydown', onKey);
-      // Let the page scroll again
-      document.body.style.overflow = '';
+      if (dialog?.open) dialog.close();
+      document.body.style.overflow = previousOverflow;
     };
-    // Re-run if any of the functions the effect uses are rebuilt
-  }, [prev, next, onClose]);
+  }, []);
 
-  return createPortal(
-    // Backdrop: "fixed inset-0" covers the whole screen.
+  return (
     <dialog
-      open
-      className="fixed inset-0 z-50 m-0 flex h-screen w-screen max-h-none max-w-none items-center justify-center border-0 bg-black/90 p-0" // ← CHANGED: extra classes added
+      ref={dialogRef}
+      className="m-0 flex h-dvh w-screen max-h-none max-w-none touch-pinch-zoom items-center justify-center overscroll-contain border-0 bg-black/90 p-0"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
-      // If the user presses Escape, close the viewer.
-      onKeyDown={(e) => {
-        if (e.key === 'Escape') onClose();
+      // Keep React state as the source of truth instead of letting the browser close it.
+      onCancel={(e) => {
+        e.preventDefault();
+        onClose();
       }}
-      aria-modal="true"
+      onKeyDown={(e) => {
+        if (e.key === 'ArrowLeft') prev();
+        if (e.key === 'ArrowRight') next();
+      }}
       aria-label={`${title} photo viewer`}
     >
-      {/* Close button, top right */}
       <button
         type="button"
         className="absolute top-4 right-4 text-white text-3xl"
@@ -79,52 +62,37 @@ export const PhotoViewer = ({
         ×
       </button>
 
-      {/* Previous arrow to go back in the images */}
       {images.length > 1 && (
         <button
           type="button"
           className="absolute left-4 text-white text-4xl"
-          onClick={(e) => {
-            // Stop the click from bubbling up to the backdrop.
-            e.stopPropagation();
-            prev();
-          }}
+          onClick={prev}
           aria-label="Previous image"
         >
           ‹
         </button>
       )}
 
-      {/* The main image */}
       <img
-        // The image currently selected
         src={images[index]}
         alt={`${title} gallery ${index + 1}`}
-        // Fit the screen without cropping
         className="max-w-[90vw] max-h-[85vh] object-contain"
       />
 
-      {/* Next arrow */}
       {images.length > 1 && (
         <button
           type="button"
           className="absolute right-4 text-white text-4xl"
-          onClick={(e) => {
-            e.stopPropagation();
-            next();
-          }}
+          onClick={next}
           aria-label="Next image"
         >
           ›
         </button>
       )}
 
-      {/* Counter of what image the user is viewing */}
       <span className="absolute bottom-4 text-white text-sm">
-        {/* Shows the current image number out of the total */}
         {index + 1} / {images.length}
       </span>
-    </dialog>,
-    document.body, // draw it at the top level of the page, not inside the card
+    </dialog>
   );
 };

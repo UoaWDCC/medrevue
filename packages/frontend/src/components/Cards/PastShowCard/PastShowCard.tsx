@@ -108,15 +108,15 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
             {/* Thumbnail strip */}
             <div className="flex items-end justify-center md:justify-end mt-auto">
               <div className="flex items-start gap-1.5 md:gap-2 p-1.5 md:p-3 rounded-xl bg-background-white">
-                {/* Thumbnail buttons for the first 3 images. Clicking opens the viewer. */}
+                {/* Clicking a thumbnail opens the viewer */}
                 {visibleImages.map((url, i) => (
                   <button
-                    type="button" // stops it acting like a form submit button
+                    type="button"
                     key={url}
                     onClick={() => {
-                      setViewerIndex(i); // remember which image was clicked
+                      setViewerIndex(i);
                     }}
-                    className="rounded-lg overflow-hidden flex-shrink-0 bg-text-grey cursor-pointer w-20 h-20 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44" // ← added cursor-pointer
+                    className="rounded-lg overflow-hidden flex-shrink-0 bg-text-grey cursor-pointer w-20 h-20 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44"
                   >
                     <img
                       src={url}
@@ -131,14 +131,13 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
         </div>
       </div>
 
-      {/* Only draws the viewer when viewerIndex is a number (not null) */}
       {viewerIndex !== null && (
         <PhotoViewer
-          images={galleryUrls} // all images, not just the first 3
-          index={viewerIndex} // which one to show first
-          title={title} // used for accessibility labels
-          onClose={() => setViewerIndex(null)} // closing = setting state back to null
-          onChange={setViewerIndex} // prev/next update the same state
+          images={galleryUrls}
+          index={viewerIndex}
+          title={title}
+          onClose={() => setViewerIndex(null)}
+          onChange={setViewerIndex}
         />
       )}
     </div>
