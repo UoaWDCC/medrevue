@@ -1,4 +1,6 @@
 import type React from 'react';
+import { useState } from 'react';
+import { PhotoViewer } from './PhotoViewer';
 
 export interface PastShowCardProps {
   year: string;
@@ -27,6 +29,9 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
     url,
     alt: galleryAlts?.[index] || `${title} gallery ${index + 1}`,
   }));
+  // null = viewer closed, a number = index of the image that's open
+  const [viewerIndex, setViewerIndex] = useState<number | null>(null);
+
   return (
     <div className="card absolute w-[calc(100%-1.5rem)] md:w-full md:max-w-[720px] lg:max-w-[1000px] xl:max-w-[1200px] mx-auto">
       <div
@@ -117,10 +122,16 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
             {galleryUrls.length > 0 && (
               <div className="flex items-end justify-center md:justify-end mt-auto min-w-0">
                 <div className="flex items-start gap-1.5 md:gap-2 p-1.5 md:p-3 rounded-xl bg-background-white max-w-full overflow-x-auto">
-                  {galleryPhotos.map((photo) => (
-                    <div
+                  {/* Clicking a thumbnail opens the viewer */}
+                  {galleryPhotos.map((photo, i) => (
+                    <button
+                      type="button"
                       key={photo.id}
-                      className="rounded-lg overflow-hidden flex-shrink-0 bg-text-grey
+                      aria-label={`Open ${title} photo ${i + 1} of ${galleryPhotos.length}`}
+                      onClick={() => {
+                        setViewerIndex(i);
+                      }}
+                      className="rounded-lg overflow-hidden flex-shrink-0 bg-text-grey cursor-pointer
                        w-20 h-20 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44"
                     >
                       <img
@@ -128,7 +139,7 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
                         alt={photo.alt}
                         className="w-full h-full object-cover object-center block scale-120"
                       />
-                    </div>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -136,6 +147,16 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
           </div>
         </div>
       </div>
+
+      {viewerIndex !== null && (
+        <PhotoViewer
+          images={galleryUrls}
+          index={viewerIndex}
+          title={title}
+          onClose={() => setViewerIndex(null)}
+          onChange={setViewerIndex}
+        />
+      )}
     </div>
   );
 };
