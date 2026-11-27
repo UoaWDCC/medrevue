@@ -17,6 +17,7 @@ describe('safeHref', () => {
     'data:text/html,hi',
     '//evil.example.com',
     '/\\evil.example.com',
+    '/\t/evil.example.com',
     'not a url',
     '   ',
     null,

@@ -19,7 +19,7 @@ const dateFormatOptions = { timeZone: 'Pacific/Auckland' } as const;
 
 // e.g. "13 – 15 Aug 2026" for a run in one month, "30 Aug – 2 Sep 2026" across two.
 function formatShowDates(show?: Show | null): string {
-  if (!show) return '13 Aug - 15 Aug 2026';
+  if (!show) return '13 – 15 Aug 2026';
 
   const dates = show.performances
     .map((performance) => new Date(performance.startsAt))
