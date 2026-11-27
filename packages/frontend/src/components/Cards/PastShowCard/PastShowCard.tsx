@@ -33,7 +33,7 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
   const [viewerIndex, setViewerIndex] = useState<number | null>(null);
 
   return (
-    <div className="card absolute w-[calc(100%-1.5rem)] md:w-full md:max-w-[720px] lg:max-w-[1000px] xl:max-w-[1200px] mx-auto">
+    <div className="card w-full md:max-w-[720px] lg:max-w-[1000px] xl:max-w-[1200px] mx-auto">
       <div
         className="
           flex flex-col rounded-[28px] lg:rounded-[38px] overflow-hidden

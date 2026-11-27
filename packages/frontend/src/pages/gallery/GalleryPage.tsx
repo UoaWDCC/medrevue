@@ -53,9 +53,15 @@ export default function GalleryPage() {
     );
   }
 
+  const pastShowsHeading = (
+    <h2 className="font-bold pt-10 pb-6 text-[32px] md:text-[56px] text-black text-center">
+      Past Shows
+    </h2>
+  );
+
   return (
     <div className="overflow-x-hidden bg-[var(--color-background-secondary)]">
-      <section className="bg-[var(--color-background-primary)] w-full min-h-[calc(100svh-5rem)] md:min-h-screen flex flex-col justify-center items-center gap-6 px-4 py-10 md:gap-10 md:py-0">
+      <section className="bg-[var(--color-background-primary)] w-full min-h-[calc(100svh-5rem)] md:min-h-screen flex flex-col justify-center items-center gap-6 px-5 py-10 md:gap-10 md:px-8">
         <h1 className="font-bold text-[32px] md:text-[56px] text-[var(--color-background-secondary)]">
           Gallery
         </h1>
@@ -65,16 +71,14 @@ export default function GalleryPage() {
           <p className="text-background-secondary">No current show selected.</p>
         )}
       </section>
-      <section className="relative">
-        <h2 className="font-bold pt-15 text-[32px] md:text-[56px] text-black text-center">
-          Past Shows
-        </h2>
-        {pastCards.length > 0 ? (
-          <CardStack cards={pastCards} />
-        ) : (
+      {pastCards.length > 0 ? (
+        <CardStack cards={pastCards} heading={pastShowsHeading} />
+      ) : (
+        <section>
+          {pastShowsHeading}
           <p className="py-12 text-center">No past shows yet.</p>
-        )}
-      </section>
+        </section>
+      )}
     </div>
   );
 }
