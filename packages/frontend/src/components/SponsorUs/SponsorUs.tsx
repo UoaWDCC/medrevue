@@ -2,30 +2,19 @@ import type React from 'react';
 import charityIcon from '../../assets/charity.svg';
 import exposureIcon from '../../assets/exposure.svg';
 import peopleIcon from '../../assets/people.svg';
-import {
-  type CmsMedia,
-  type CmsRichText,
-  cmsAssetAlt,
-  cmsAssetUrl,
-} from '../../services/cms/content';
+import type {
+  ImpactCard as ImpactCardModel,
+  Statistic,
+} from '../../services/cms';
 import { RichText } from '../RichText/RichText';
 
-export type ImpactCardContent = {
-  id?: string;
-  title: string;
-  description: CmsRichText;
-  icon?: CmsMedia;
+// Default cards have plain-text descriptions and bundled icons.
+type ImpactCardProps = Omit<ImpactCardModel, 'description'> & {
+  description: ImpactCardModel['description'] | string;
+  fallbackIcon?: string;
 };
 
-export type StatisticContent = {
-  id?: string;
-  value: string;
-  label: string;
-};
-
-type ImpactCardProps = ImpactCardContent & { fallbackIcon?: string };
-
-const defaultImpactCards: Array<ImpactCardProps> = [
+const defaultImpactCards: ImpactCardProps[] = [
   {
     title: 'Exposure',
     description:
@@ -46,10 +35,10 @@ const defaultImpactCards: Array<ImpactCardProps> = [
   },
 ];
 
-export const ImpactCards: React.FC<{
-  cards?: ImpactCardContent[] | null;
-}> = ({ cards = null }) => {
-  const cardsToDisplay = cards ?? defaultImpactCards;
+export const ImpactCards: React.FC<{ cards?: ImpactCardModel[] }> = ({
+  cards,
+}) => {
+  const cardsToDisplay = cards?.length ? cards : defaultImpactCards;
 
   return (
     <>
@@ -72,14 +61,14 @@ const ImpactCard: React.FC<ImpactCardProps> = ({
   icon,
   fallbackIcon,
 }) => {
-  const iconUrl = cmsAssetUrl(icon) ?? fallbackIcon ?? exposureIcon;
+  const iconUrl = icon?.url ?? fallbackIcon ?? exposureIcon;
 
   return (
     <div className="shadow-[0_4px_8px_rgba(0,0,0,0.25)] bg-background-white rounded-[32px] p-4 md:p-10">
       <h2 className="flex items-center gap-3 text-xl md:text-2xl leading-none font-semibold font-sans text-text-grey mb-4">
         <img
           src={iconUrl}
-          alt={cmsAssetAlt(icon, title)}
+          alt={icon?.alt || title}
           className="w-8 h-8 md:w-13 md:h-13"
         />
         {title}
@@ -93,10 +82,12 @@ const ImpactCard: React.FC<ImpactCardProps> = ({
   );
 };
 
-export const StatCards: React.FC<{
-  statistics?: StatisticContent[] | null;
-}> = ({ statistics = null }) => {
-  const statisticsToDisplay = statistics ?? defaultStatistics;
+export const StatCards: React.FC<{ statistics?: Statistic[] }> = ({
+  statistics,
+}) => {
+  const statisticsToDisplay = statistics?.length
+    ? statistics
+    : defaultStatistics;
 
   return (
     <>
@@ -107,14 +98,14 @@ export const StatCards: React.FC<{
   );
 };
 
-const defaultStatistics: StatisticContent[] = [
+const defaultStatistics: Statistic[] = [
   { value: '148', label: 'Total Cast Members\n(Across 2 Years)' },
   { value: '3', label: 'Unforgettable\nShow Nights' },
   { value: '1864', label: 'Tickets Sold' },
   { value: '$10.5k', label: 'Raised for Charity' },
 ];
 
-const StatCard: React.FC<StatisticContent> = ({ value, label }) => {
+const StatCard: React.FC<Statistic> = ({ value, label }) => {
   return (
     <div className="px-4 md:px-8 border-l-4 border-text-brown">
       <p className="text-3xl md:text-5xl font-bold leading-[1.1] font-sans text-text-grey mb-3">

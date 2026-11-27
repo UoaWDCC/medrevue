@@ -5,40 +5,48 @@ import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import medrevuePoster from '../../../assets/medrevue-poster-2026.png';
 import { TICKET_URL } from '../../../constants/links';
-import {
-  type CmsShow,
-  cmsAssetAlt,
-  cmsAssetUrl,
-} from '../../../services/cms/content';
+import type { Homepage, Show } from '../../../services/cms';
 import { Button } from '../../Button';
 
 gsap.registerPlugin(ScrollTrigger);
 
 type HeroSectionProps = {
-  homepage?: { heroOrganisationTitle?: string; heroTagline?: string } | null;
-  show?: CmsShow;
+  homepage?: Homepage;
+  show?: Show | null;
 };
 
-function formatShowDates(show?: CmsShow): string {
-  const dates = (show?.performances ?? [])
-    .map((performance) => performance.startsAt)
-    .filter((date): date is string => Boolean(date))
-    .map((date) => new Date(date))
-    .filter((date) => !Number.isNaN(date.getTime()));
+const dateFormatOptions = { timeZone: 'Pacific/Auckland' } as const;
 
-  if (dates.length === 0) {
-    return show
-      ? String(show.year ?? 'Dates to be announced')
-      : '13 Aug - 15 Aug 2026';
-  }
+// e.g. "13 – 15 Aug 2026" for a run in one month, "30 Aug – 2 Sep 2026" across two.
+function formatShowDates(show?: Show | null): string {
+  if (!show) return '13 Aug - 15 Aug 2026';
 
-  const formatter = new Intl.DateTimeFormat('en-NZ', {
+  const dates = show.performances
+    .map((performance) => new Date(performance.startsAt))
+    .filter((date) => !Number.isNaN(date.getTime()))
+    .sort((a, b) => a.getTime() - b.getTime());
+
+  if (dates.length === 0) return String(show.year);
+
+  const dayMonth = new Intl.DateTimeFormat('en-NZ', {
+    ...dateFormatOptions,
     day: 'numeric',
     month: 'short',
-    timeZone: 'Pacific/Auckland',
   });
-  const uniqueDates = [...new Set(dates.map((date) => formatter.format(date)))];
-  return `${uniqueDates.join(', ')} ${show?.year ?? dates[0].getFullYear()}`;
+  const day = new Intl.DateTimeFormat('en-NZ', {
+    ...dateFormatOptions,
+    day: 'numeric',
+  });
+  const first = dates[0];
+  const last = dates[dates.length - 1];
+  const firstDayMonth = dayMonth.format(first);
+  const lastDayMonth = dayMonth.format(last);
+
+  if (firstDayMonth === lastDayMonth) return `${firstDayMonth} ${show.year}`;
+
+  const sameMonth = firstDayMonth.split(' ')[1] === lastDayMonth.split(' ')[1];
+  const start = sameMonth ? day.format(first) : firstDayMonth;
+  return `${start} – ${lastDayMonth} ${show.year}`;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ homepage, show }) => {
@@ -50,14 +58,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ homepage, show }) => {
     homepage?.heroOrganisationTitle?.trim() || 'Auckland MedRevue';
   const [firstTitleLine, ...remainingTitleWords] =
     organisationTitle.split(/\s+/);
-  const posterUrl = cmsAssetUrl(show?.poster) ?? medrevuePoster;
+  const posterUrl = show?.poster.url ?? medrevuePoster;
   const ticketLink = show?.ticketLink || TICKET_URL;
   const ticketButtonLabel = show?.ticketButtonLabel || 'Order Tickets';
   const showDetails = [
-    homepage?.heroTagline || 'A University of Auckland non-profit production.',
-    formatShowDates(show),
-    show?.venue || 'SkyCity Theatre',
-    show?.address || 'Auckland',
+    {
+      field: 'tagline',
+      text:
+        homepage?.heroTagline ||
+        'A University of Auckland non-profit production.',
+    },
+    { field: 'dates', text: formatShowDates(show) },
+    { field: 'venue', text: show?.venue || 'SkyCity Theatre' },
+    { field: 'address', text: show?.address || 'Auckland' },
   ];
 
   useEffect(() => {
@@ -158,8 +171,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ homepage, show }) => {
           </h1>
 
           <div className="text-text-light font-inter font-semibold text-[clamp(0.8rem,min(1.5vw,2.4vh),1.1rem)] space-y-1 text-center md:text-left">
-            {showDetails.map((detail) => (
-              <p key={detail}>{detail}</p>
+            {showDetails.map(({ field, text }) => (
+              <p key={field}>{text}</p>
             ))}
           </div>
 
@@ -242,7 +255,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ homepage, show }) => {
           <img
             ref={posterRef}
             src={posterUrl}
-            alt={cmsAssetAlt(show?.poster, 'Med Revue')}
+            alt={show?.poster.alt ?? 'Med Revue'}
             className="w-auto max-w-64 sm:max-w-80 md:max-w-96 max-h-[calc(100vh-12rem)] md:max-h-[calc(100vh-8rem)] rounded-lg border-4 border-background-secondary shadow-lg"
           />
         </div>

@@ -1,4 +1,5 @@
 import { Fragment, type ReactNode } from 'react';
+import { safeHref } from '../../services/cms/safeHref';
 
 type LexicalNode = {
   type?: string;
@@ -20,20 +21,6 @@ type RichTextProps = {
 
 function isLexicalNode(value: unknown): value is LexicalNode {
   return typeof value === 'object' && value !== null;
-}
-
-function safeLinkUrl(url: string | undefined): string | undefined {
-  if (!url) return undefined;
-  if (url.startsWith('/') || url.startsWith('#')) return url;
-
-  try {
-    const parsed = new URL(url);
-    return ['http:', 'https:', 'mailto:', 'tel:'].includes(parsed.protocol)
-      ? url
-      : undefined;
-  } catch {
-    return undefined;
-  }
 }
 
 function formattedText(node: LexicalNode, key: string): ReactNode {
@@ -86,7 +73,7 @@ function renderNode(node: LexicalNode, key: string): ReactNode {
       return <blockquote key={key}>{children}</blockquote>;
     case 'link':
     case 'autolink': {
-      const href = safeLinkUrl(node.fields?.url ?? node.url);
+      const href = safeHref(node.fields?.url ?? node.url);
       return href ? (
         <a key={key} href={href}>
           {children}

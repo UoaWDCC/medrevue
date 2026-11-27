@@ -1,8 +1,8 @@
 import type React from 'react';
-import type { CmsShow } from '../../../services/cms/content';
+import type { Show } from '../../../services/cms';
 import { RichText } from '../../RichText/RichText';
 
-export const ShowInfoCard: React.FC<{ show?: CmsShow }> = ({ show }) => {
+export const ShowInfoCard: React.FC<{ show?: Show | null }> = ({ show }) => {
   return (
     <section className="w-full bg-background-primary px-6 pb-12 md:px-32">
       <div className="mx-auto max-w-3xl rounded-[2rem] bg-background-white px-6 py-12 text-center md:rounded-[4.5rem] md:px-16 md:py-12">

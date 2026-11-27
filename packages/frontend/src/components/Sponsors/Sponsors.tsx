@@ -14,11 +14,7 @@ import respmedLogo from '../../assets/respmed.png';
 import tamakihealthLogo from '../../assets/tamaki-health.png';
 import coffeeClubLogo from '../../assets/the-coffee-club.png';
 import weLogo from '../../assets/we.png';
-import {
-  type CmsMedia,
-  cmsAssetAlt,
-  cmsAssetUrl,
-} from '../../services/cms/content';
+import type { PreviousSponsor } from '../../services/cms';
 
 export const Sponsors: React.FC = () => {
   return (
@@ -197,82 +193,73 @@ export const Sponsors: React.FC = () => {
   );
 };
 
-type Sponsor = {
-  name: string;
-  logo: string;
-  href: string;
+// The fields shared by CMS previous sponsors and the local fallback sponsors.
+type PreviousSponsorLogo = Pick<PreviousSponsor, 'name' | 'url'> & {
+  id?: string;
+  logo: { url: string; alt: string };
 };
 
-const sponsorsFallback: Sponsor[] = [
+const sponsorsFallback: PreviousSponsorLogo[] = [
   {
     name: 'We Getting to the Guts of it',
     logo: weLogo,
-    href: 'https://waitemataendoscopy.co.nz',
+    url: 'https://waitemataendoscopy.co.nz',
   },
   {
     name: 'RESPMED',
     logo: respmedLogo,
-    href: 'https://www.resmed.com/en-us/',
+    url: 'https://www.resmed.com/en-us/',
   },
   {
     name: 'Tamaki Health',
     logo: tamakihealthLogo,
-    href: 'https://www.tamakihealth.co.nz',
+    url: 'https://www.tamakihealth.co.nz',
   },
   {
     name: 'Pizza Club',
     logo: pizzaclubLogo,
-    href: 'https://pizzaclub.co.nz',
+    url: 'https://pizzaclub.co.nz',
   },
   {
     name: 'MPS',
     logo: mpsLogo,
-    href: 'https://www.medicalprotection.org',
+    url: 'https://www.medicalprotection.org',
   },
   {
     name: 'One Health',
     logo: oneHealthLogo,
-    href: 'https://www.onehealth.co.nz',
+    url: 'https://www.onehealth.co.nz',
   },
   {
     name: 'ANZCA',
     logo: anzcaLogo,
-    href: 'https://www.anzca.edu.au',
+    url: 'https://www.anzca.edu.au',
   },
   {
     name: 'After',
     logo: afterLogo,
-    href: 'https://www.after.net.nz',
+    url: 'https://www.after.net.nz',
   },
   {
     name: 'BL Stringer',
     logo: BLStringerLogo,
-    href: 'https://blstringer.co.nz/',
+    url: 'https://blstringer.co.nz/',
   },
   {
     name: 'The Coffee Club',
     logo: coffeeClubLogo,
-    href: 'https://www.thecoffeeclub.co.nz/',
+    url: 'https://www.thecoffeeclub.co.nz/',
   },
-];
+].map(({ name, logo, url }) => ({
+  name,
+  logo: { url: logo, alt: name },
+  url,
+}));
 
-type PreviousSponsorContent = {
-  id?: string;
-  name: string;
-  logo?: CmsMedia;
-  url?: string;
-};
-
-export const PreviousSponsors: React.FC<{
-  sponsors?: PreviousSponsorContent[] | null;
-}> = ({ sponsors = null }) => {
-  const sponsorsToDisplay =
-    sponsors ??
-    sponsorsFallback.map((sponsor) => ({
-      name: sponsor.name,
-      logo: sponsor.logo,
-      url: sponsor.href,
-    }));
+export const PreviousSponsors: React.FC<{ sponsors?: PreviousSponsor[] }> = ({
+  sponsors,
+}) => {
+  const sponsorsToDisplay = sponsors?.length ? sponsors : sponsorsFallback;
 
   const Logo = ({ src, alt }: { src: string; alt: string }) => (
     <div className="h-36 md:h-44 w-full flex items-center justify-center">
@@ -295,13 +282,8 @@ export const PreviousSponsors: React.FC<{
         gap-y-4 sm:gap-y-6 lg:gap-y-10
       "
     >
-      {sponsorsToDisplay.map((sponsor) => {
-        const logo =
-          cmsAssetUrl(sponsor.logo) ??
-          (typeof sponsor.logo === 'string' ? sponsor.logo : undefined);
-        if (!logo || !sponsor.url) return null;
-
-        return (
+      {sponsorsToDisplay.map((sponsor) =>
+        sponsor.url ? (
           <a
             key={sponsor.id ?? sponsor.name}
             className="w-36 md:w-44"
@@ -309,10 +291,14 @@ export const PreviousSponsors: React.FC<{
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Logo src={logo} alt={cmsAssetAlt(sponsor.logo, sponsor.name)} />
+            <Logo src={sponsor.logo.url} alt={sponsor.logo.alt} />
           </a>
-        );
-      })}
+        ) : (
+          <div key={sponsor.id ?? sponsor.name} className="w-36 md:w-44">
+            <Logo src={sponsor.logo.url} alt={sponsor.logo.alt} />
+          </div>
+        ),
+      )}
     </section>
   );
 };

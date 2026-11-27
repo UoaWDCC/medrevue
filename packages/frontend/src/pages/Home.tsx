@@ -6,47 +6,19 @@ import {
   SponsorsSection,
 } from '../components/Home';
 import {
-  type CmsMedia,
-  type CmsPage,
-  type CmsRichText,
-  type CmsShow,
-  type CmsSponsor,
-  useCmsResource,
-} from '../services/cms/content';
-
-type CurrentShowGlobal = { show?: CmsShow | string | null };
-type AboutMedRevueGlobal = {
-  heading?: string;
-  body?: CmsRichText;
-  image?: CmsMedia;
-};
-type OurCharityGlobal = {
-  heading?: string;
-  body?: CmsRichText;
-  image?: CmsMedia;
-};
+  useGetAboutMedRevueQuery,
+  useGetActiveSponsorsQuery,
+  useGetCurrentShowQuery,
+  useGetHomepageQuery,
+  useGetOurCharityQuery,
+} from '../services/cms';
 
 const HomePage: React.FC = () => {
-  const homepage = useCmsResource<{
-    heroOrganisationTitle?: string;
-    heroTagline?: string;
-  }>('globals/homepage');
-  const currentShowGlobal = useCmsResource<CurrentShowGlobal>(
-    'globals/current-show?depth=2',
-  );
-  const aboutMedRevue = useCmsResource<AboutMedRevueGlobal>(
-    'globals/about-med-revue?depth=2',
-  );
-  const ourCharity = useCmsResource<OurCharityGlobal>(
-    'globals/our-charity?depth=2',
-  );
-  const activeSponsors = useCmsResource<CmsPage<CmsSponsor>>(
-    'sponsors?where[active][equals]=true&sort=displayOrder&depth=1&limit=100',
-  );
-  const show =
-    currentShowGlobal?.show && typeof currentShowGlobal.show !== 'string'
-      ? currentShowGlobal.show
-      : undefined;
+  const { data: homepage } = useGetHomepageQuery();
+  const { data: show } = useGetCurrentShowQuery();
+  const { data: aboutMedRevue } = useGetAboutMedRevueQuery();
+  const { data: ourCharity } = useGetOurCharityQuery();
+  const { data: activeSponsors } = useGetActiveSponsorsQuery();
 
   return (
     <div className="overflow-y-auto bg-background-white overflow-x-hidden">
@@ -62,7 +34,7 @@ const HomePage: React.FC = () => {
 
       <div className="w-full h-4 bg-background-secondary" />
 
-      <SponsorsSection sponsors={activeSponsors?.docs ?? null} />
+      <SponsorsSection sponsors={activeSponsors} />
     </div>
   );
 };

@@ -3,32 +3,42 @@ import { FaFacebookF, FaInstagram } from 'react-icons/fa';
 import { FaTiktok } from 'react-icons/fa6';
 import { Link } from 'react-router';
 import { useGetSiteSettingsQuery } from '../../services/cms';
-import { getExternalUrl, getSiteLink } from '../../utils/urls';
 
 interface FooterProps {
   className?: string;
 }
+
+const DEFAULT_CTA_TEXT = 'Interested in Working with us?';
+const DEFAULT_CTA_LABEL = 'Contact Us';
+const DEFAULT_CTA_LINK = '/contact';
+const DEFAULT_COPYRIGHT_TEXT =
+  'Copyright © 2026 University of Auckland MedRevue';
+const DEFAULT_FACEBOOK_URL = 'https://www.facebook.com/aklmedrevue/';
+const DEFAULT_INSTAGRAM_URL = 'https://www.instagram.com/aucklandmedrevue';
+const DEFAULT_TIKTOK_URL = 'https://www.tiktok.com/@auckland.med.revue';
 
 const ctaClassName =
   'text-background-secondary text-sm md:text-base font-normal transition-colors duration-300 hover:text-text-light';
 
 export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
   const { data: siteSettings } = useGetSiteSettingsQuery();
-  const ctaLink = getSiteLink(siteSettings?.footerCtaLink);
+  const ctaLink = siteSettings?.footerCtaLink ?? DEFAULT_CTA_LINK;
+  const ctaLabel = siteSettings?.footerCtaLabel ?? DEFAULT_CTA_LABEL;
+  const opensInNewTab = /^https?:/i.test(ctaLink);
   const socialLinks = [
     {
       label: 'Facebook',
-      url: getExternalUrl(siteSettings?.facebookUrl),
+      url: siteSettings?.facebookUrl ?? DEFAULT_FACEBOOK_URL,
       icon: <FaFacebookF size={24} />,
     },
     {
       label: 'Instagram',
-      url: getExternalUrl(siteSettings?.instagramUrl),
+      url: siteSettings?.instagramUrl ?? DEFAULT_INSTAGRAM_URL,
       icon: <FaInstagram size={28} />,
     },
     {
       label: 'TikTok',
-      url: getExternalUrl(siteSettings?.tiktokUrl),
+      url: siteSettings?.tiktokUrl ?? DEFAULT_TIKTOK_URL,
       icon: <FaTiktok size={24} />,
     },
   ];
@@ -48,55 +58,46 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
         <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-8">
           {/* 1. Left Column: CTA */}
           <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-2 md:gap-4 text-center md:text-left">
-            {siteSettings?.footerCtaText && (
-              <p className="text-sm md:text-base font-bold break-words">
-                {siteSettings.footerCtaText}
-              </p>
+            <p className="text-sm md:text-base font-bold break-words">
+              {siteSettings?.footerCtaText ?? DEFAULT_CTA_TEXT}
+            </p>
+            {ctaLink.startsWith('/') ? (
+              <Link to={ctaLink} className={ctaClassName}>
+                {ctaLabel}
+              </Link>
+            ) : (
+              <a
+                href={ctaLink}
+                target={opensInNewTab ? '_blank' : undefined}
+                rel={opensInNewTab ? 'noopener noreferrer' : undefined}
+                className={ctaClassName}
+              >
+                {ctaLabel}
+              </a>
             )}
-            {siteSettings?.footerCtaLabel &&
-              ctaLink &&
-              (ctaLink.startsWith('/') ? (
-                <Link to={ctaLink} className={ctaClassName}>
-                  {siteSettings.footerCtaLabel}
-                </Link>
-              ) : (
-                <a
-                  href={ctaLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={ctaClassName}
-                >
-                  {siteSettings.footerCtaLabel}
-                </a>
-              ))}
           </div>
 
           {/* 2. Middle Column: Copyright */}
           <div className="text-center order-last md:order-none min-w-0">
-            {siteSettings?.copyrightText && (
-              <p className="text-background-secondary text-sm md:text-base font-normal break-words">
-                {siteSettings.copyrightText}
-              </p>
-            )}
+            <p className="text-background-secondary text-sm md:text-base font-normal break-words">
+              {siteSettings?.copyrightText ?? DEFAULT_COPYRIGHT_TEXT}
+            </p>
           </div>
 
           {/* 3. Right Column: Social Icons */}
           <div className="flex justify-center md:justify-end gap-5">
-            {socialLinks.map(
-              ({ label, url, icon }) =>
-                url && (
-                  <a
-                    key={label}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    className="text-background-secondary transition-all hover:scale-110 hover:text-text-light"
-                  >
-                    {icon}
-                  </a>
-                ),
-            )}
+            {socialLinks.map(({ label, url, icon }) => (
+              <a
+                key={label}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="text-background-secondary transition-all hover:scale-110 hover:text-text-light"
+              >
+                {icon}
+              </a>
+            ))}
           </div>
         </div>
       </div>

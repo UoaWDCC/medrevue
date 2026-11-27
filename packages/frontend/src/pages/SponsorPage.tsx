@@ -1,69 +1,29 @@
 import type React from 'react';
+import { Link } from 'react-router';
 import pinkCast from '../assets/medrevue-sponsorus-jazzHands.png';
 import { RichText } from '../components/RichText/RichText';
 import { ImpactCards, StatCards } from '../components/SponsorUs/SponsorUs.tsx';
-// import { Link } from 'react-router';
 import { PreviousSponsors } from '../components/Sponsors/Sponsors.tsx';
 import {
-  type CmsMedia,
-  type CmsPage,
-  type CmsRichText,
-  type CmsSponsor,
-  cmsAssetAlt,
-  cmsAssetUrl,
-  useCmsResource,
-} from '../services/cms/content';
+  useGetPreviousSponsorsQuery,
+  useGetSponsorUsQuery,
+} from '../services/cms';
 
-type SponsorUsContent = {
-  title?: string;
-  subtitle?: string;
-  heroImage?: CmsMedia;
-  introduction?: CmsRichText;
-  contactButtonLabel?: string;
-  contactButtonLink?: string;
-  impactSectionTitle?: string;
-  impactSectionDescription?: CmsRichText;
-  impactCards?: Array<{
-    id?: string;
-    title: string;
-    description: CmsRichText;
-    icon?: CmsMedia;
-  }>;
-  statisticsSectionTitle?: string;
-  statistics?: Array<{ id?: string; value: string; label: string }>;
-  previousSponsorsTitle?: string;
-};
-
-function safeContactHref(value?: string): string {
-  if (!value) return '/contact';
-  if (value.startsWith('/') || value.startsWith('#')) return value;
-
-  try {
-    const parsed = new URL(value);
-    return ['http:', 'https:', 'mailto:'].includes(parsed.protocol)
-      ? value
-      : '/contact';
-  } catch {
-    return '/contact';
-  }
-}
+const contactButtonClassName = `
+  order-first
+  lg:order-none
+  bg-background-secondary
+  rounded-full w-fit px-5 py-2.5
+  text-[18px] font-semibold font-[Inter] leading-[36px] text-text-grey
+  no-underline transition-colors duration-300 hover:bg-secondary-darker
+`;
 
 export const SponsorPage: React.FC = () => {
-  const sponsorUs = useCmsResource<SponsorUsContent>(
-    'globals/sponsor-us?depth=2',
-  );
-  const previousSponsorResponse = useCmsResource<CmsPage<CmsSponsor>>(
-    'previous-sponsors?sort=name&depth=1&limit=100',
-  );
-  const previousSponsors = previousSponsorResponse?.docs?.map((sponsor) => ({
-    id: sponsor.id,
-    name: sponsor.name,
-    logo: sponsor.logo,
-    url: sponsor.url,
-  }));
-  const contactHref = safeContactHref(sponsorUs?.contactButtonLink);
-  const externalContactHref = /^https?:\/\//i.test(contactHref);
-  const heroImage = cmsAssetUrl(sponsorUs?.heroImage) ?? pinkCast;
+  const { data: sponsorUs } = useGetSponsorUsQuery();
+  const { data: previousSponsors } = useGetPreviousSponsorsQuery();
+  const contactHref = sponsorUs?.contactButtonLink ?? '/contact';
+  const contactLabel = sponsorUs?.contactButtonLabel ?? 'Contact Us';
+  const opensInNewTab = /^https?:/i.test(contactHref);
 
   return (
     <>
@@ -87,11 +47,10 @@ export const SponsorPage: React.FC = () => {
             {/* Top Right: Pink Cast Image Placeholder */}
             <div className="h-64 md:h-[450px] w-full order-1 overflow-hidden">
               <img
-                src={heroImage}
-                alt={cmsAssetAlt(
-                  sponsorUs?.heroImage,
-                  'Med Revue Cast Performance Pink',
-                )}
+                src={sponsorUs?.heroImage?.url ?? pinkCast}
+                alt={
+                  sponsorUs?.heroImage?.alt ?? 'Med Revue Cast Performance Pink'
+                }
                 className="w-full h-full object-cover scale-[1.3] object-center bg-background-primary"
               />
             </div>
@@ -113,21 +72,20 @@ export const SponsorPage: React.FC = () => {
                   </p>
                 )}
 
-                <a
-                  href={contactHref}
-                  target={externalContactHref ? '_blank' : undefined}
-                  rel={externalContactHref ? 'noopener noreferrer' : undefined}
-                  className="
-                  order-first
-                  lg:order-none
-                  bg-background-secondary
-                  rounded-full w-fit px-5 py-2.5
-                  text-[18px] font-semibold font-[Inter] leading-[36px] text-text-grey
-                  no-underline transition-colors duration-300 hover:bg-secondary-darker
-                "
-                >
-                  {sponsorUs?.contactButtonLabel || 'Contact Us'}
-                </a>
+                {contactHref.startsWith('/') ? (
+                  <Link to={contactHref} className={contactButtonClassName}>
+                    {contactLabel}
+                  </Link>
+                ) : (
+                  <a
+                    href={contactHref}
+                    target={opensInNewTab ? '_blank' : undefined}
+                    rel={opensInNewTab ? 'noopener noreferrer' : undefined}
+                    className={contactButtonClassName}
+                  >
+                    {contactLabel}
+                  </a>
+                )}
               </div>
             </div>
           </div>
@@ -155,7 +113,7 @@ export const SponsorPage: React.FC = () => {
               )}
             </div>
 
-            <ImpactCards cards={sponsorUs?.impactCards ?? null} />
+            <ImpactCards cards={sponsorUs?.impactCards} />
           </div>
         </section>
 
@@ -166,7 +124,7 @@ export const SponsorPage: React.FC = () => {
         </section>
         <section className="bg-background-white px-4 mt-10 mb-12 text-left">
           <div className="mx-auto grid w-full max-w-6xl grid-cols-2 gap-6 lg:grid-cols-4">
-            <StatCards statistics={sponsorUs?.statistics ?? null} />
+            <StatCards statistics={sponsorUs?.statistics} />
           </div>
         </section>
 
@@ -180,7 +138,7 @@ export const SponsorPage: React.FC = () => {
               {sponsorUs?.previousSponsorsTitle || 'Previous Sponsors'}
             </h2>
 
-            <PreviousSponsors sponsors={previousSponsors ?? null} />
+            <PreviousSponsors sponsors={previousSponsors} />
           </div>
         </section>
       </div>

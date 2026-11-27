@@ -4,12 +4,7 @@ import type React from 'react';
 import { useEffect, useRef } from 'react';
 import blueCast from '../../../assets/medrevue-home-castBlue.png';
 import pinkCast from '../../../assets/medrevue-home-castPink.png';
-import {
-  type CmsMedia,
-  type CmsRichText,
-  cmsAssetAlt,
-  cmsAssetUrl,
-} from '../../../services/cms/content';
+import type { AboutMedRevue, OurCharity } from '../../../services/cms';
 import { RichText } from '../../RichText/RichText';
 import { AboutPhoto } from './AboutPhoto';
 import { InfoCard } from './InfoCard';
@@ -22,15 +17,9 @@ const aboutBody =
 const charityBody =
   'The Mental Health Foundation of New Zealand works towards creating a society free from discrimination, where all people enjoy positive mental health and well-being. Focusing on suicide prevention, building individual, community well-being, and influencing policy to ensure everyone has the tools for good mental health.';
 
-type AboutContent = {
-  heading?: string;
-  body?: CmsRichText;
-  image?: CmsMedia;
-};
-
 type AboutCharitySectionProps = {
-  aboutMedRevue?: AboutContent | null;
-  ourCharity?: AboutContent | null;
+  aboutMedRevue?: AboutMedRevue;
+  ourCharity?: OurCharity;
 };
 
 export const AboutCharitySection: React.FC<AboutCharitySectionProps> = ({
@@ -134,11 +123,8 @@ export const AboutCharitySection: React.FC<AboutCharitySectionProps> = ({
 
       <div className="order-2">
         <AboutPhoto
-          src={cmsAssetUrl(aboutMedRevue?.image) ?? pinkCast}
-          alt={cmsAssetAlt(
-            aboutMedRevue?.image,
-            'Med Revue Cast Performance Pink',
-          )}
+          src={aboutMedRevue?.image.url ?? pinkCast}
+          alt={aboutMedRevue?.image.alt ?? 'Med Revue Cast Performance Pink'}
           rotation="clockwise"
           zoomed
         />
@@ -146,11 +132,8 @@ export const AboutCharitySection: React.FC<AboutCharitySectionProps> = ({
 
       <div className="order-4 md:order-3">
         <AboutPhoto
-          src={cmsAssetUrl(ourCharity?.image) ?? blueCast}
-          alt={cmsAssetAlt(
-            ourCharity?.image,
-            'Med Revue Cast Performance Blue',
-          )}
+          src={ourCharity?.image?.url ?? blueCast}
+          alt={ourCharity?.image?.alt ?? 'Med Revue Cast Performance Blue'}
           rotation="anticlockwise"
         />
       </div>
