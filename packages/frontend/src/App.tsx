@@ -10,52 +10,20 @@ import ReturnPolicyPage from './pages/ReturnPolicy';
 import { SponsorPage } from './pages/SponsorPage';
 import GalleryPage from './pages/gallery/GalleryPage';
 import Show2025 from './pages/show/2025show';
-import { useCmsResource } from './services/cms/content';
-
-type ThemeSettings = Partial<
-  Record<
-    | 'primaryBackground'
-    | 'secondaryBrand'
-    | 'secondaryHover'
-    | 'lightText'
-    | 'white'
-    | 'primaryText'
-    | 'mutedText'
-    | 'accent1'
-    | 'accent2'
-    | 'warmBrown',
-    string | null
-  >
->;
-
-const themeCssVariables: Record<keyof ThemeSettings, string> = {
-  primaryBackground: '--color-background-primary',
-  secondaryBrand: '--color-background-secondary',
-  secondaryHover: '--color-secondary-darker',
-  lightText: '--color-text-light',
-  white: '--color-background-white',
-  primaryText: '--color-text-grey',
-  mutedText: '--color-text-light-grey',
-  accent1: '--color-theme-pink',
-  accent2: '--color-theme-green',
-  warmBrown: '--color-text-brown',
-};
-
-const validHexColour = /^#[0-9a-f]{3}([0-9a-f]{3})?$/i;
+import { useGetThemeSettingsQuery } from './services/cms';
+import { applyTheme, saveTheme } from './utils/theme';
 
 const App: React.FC = () => {
   const isAdminPage = location.pathname.startsWith('/admin');
-  const themeSettings = useCmsResource<ThemeSettings>('globals/theme-settings');
+  const { data: themeSettings } = useGetThemeSettingsQuery(undefined, {
+    skip: isAdminPage,
+  });
 
   useEffect(() => {
     if (!themeSettings) return;
 
-    for (const [field, cssVariable] of Object.entries(themeCssVariables)) {
-      const value = themeSettings[field as keyof ThemeSettings];
-      if (value && validHexColour.test(value)) {
-        document.documentElement.style.setProperty(cssVariable, value);
-      }
-    }
+    applyTheme(themeSettings);
+    saveTheme(themeSettings);
   }, [themeSettings]);
 
   return (
