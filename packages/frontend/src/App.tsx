@@ -6,7 +6,6 @@ import { Menu } from './components/Menu';
 import { AboutUsPage } from './pages/AboutUsPage';
 import { ContactPage } from './pages/ContactUs';
 import HomePage from './pages/Home';
-import ReturnPolicyPage from './pages/ReturnPolicy';
 import { SponsorPage } from './pages/SponsorPage';
 import GalleryPage from './pages/gallery/GalleryPage';
 import { useGetThemeSettingsQuery } from './services/cms';
@@ -52,15 +51,6 @@ const App: React.FC = () => {
             <>
               <Menu />
               <SponsorPage />
-            </>
-          }
-        />
-        <Route
-          path="/return-policy"
-          element={
-            <>
-              <Menu />
-              <ReturnPolicyPage />
             </>
           }
         />
