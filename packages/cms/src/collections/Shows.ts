@@ -18,7 +18,20 @@ export const Shows: CollectionConfig = {
     { name: 'title', type: 'text', required: true },
     { name: 'year', type: 'number', required: true, min: 2000 },
     { name: 'poster', type: 'upload', relationTo: 'media', required: true },
-    { name: 'shortDescription', type: 'richText' },
+    {
+      name: 'shortDescription',
+      type: 'richText',
+      admin: { description: 'Shown on the show cards on the Gallery page.' },
+    },
+    {
+      name: 'description',
+      type: 'richText',
+      label: 'Full Description',
+      admin: {
+        description:
+          'Shown on the homepage. Uses the short description if left empty.',
+      },
+    },
     {
       name: 'performances',
       type: 'array',

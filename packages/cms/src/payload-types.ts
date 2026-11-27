@@ -208,7 +208,28 @@ export interface Show {
   title: string;
   year: number;
   poster: string | Media;
+  /**
+   * Shown on the show cards on the Gallery page.
+   */
   shortDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Shown on the homepage. Uses the short description if left empty.
+   */
+  description?: {
     root: {
       type: string;
       children: {
@@ -449,6 +470,7 @@ export interface ShowsSelect<T extends boolean = true> {
   year?: T;
   poster?: T;
   shortDescription?: T;
+  description?: T;
   performances?:
     | T
     | {
