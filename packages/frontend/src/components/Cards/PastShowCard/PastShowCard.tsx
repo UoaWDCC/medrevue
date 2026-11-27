@@ -113,6 +113,7 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
                   <button
                     type="button"
                     key={url}
+                    aria-label={`Open ${title} photo ${i + 1} of ${visibleImages.length}`}
                     onClick={() => {
                       setViewerIndex(i);
                     }}

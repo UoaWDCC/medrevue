@@ -69,7 +69,20 @@ const CardStack = () => {
         yPercent: -50,
       });
 
+      // Only the card on top should be reachable with Tab; the rest are hidden or animated away.
+      const updateInertCards = (progress: number) => {
+        // Leave cards alone while a photo viewer is open, so focus can return to its thumbnail on close.
+        if (document.querySelector('dialog[open]')) return;
+        // floor keeps a card interactive until its own exit animation has finished.
+        const topIndex = Math.floor(progress * (cardsArray.length - 1));
+        cardsArray.forEach((card, i) => {
+          card.inert = i !== topIndex;
+        });
+      };
+      updateInertCards(0);
+
       const tl = gsap.timeline({
+        onUpdate: () => updateInertCards(tl.progress()),
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',

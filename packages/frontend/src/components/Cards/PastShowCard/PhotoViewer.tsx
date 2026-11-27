@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 interface PhotoViewerProps {
@@ -35,7 +35,9 @@ export const PhotoViewer = ({
 
     dialog?.showModal();
     document.body.style.overflow = 'hidden';
-    document.body.style.paddingRight = `${scrollbarWidth}px`;
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
 
     return () => {
       if (dialog?.open) dialog.close();
@@ -44,21 +46,13 @@ export const PhotoViewer = ({
     };
   }, []);
 
-  // Preload the neighbouring images so navigating doesn't flash an unloaded image.
-  useEffect(() => {
-    if (images.length <= 1) return;
-    for (const url of [
-      images[(index - 1 + images.length) % images.length],
-      images[(index + 1) % images.length],
-    ]) {
-      new Image().src = url;
-    }
-  }, [images, index]);
-
   return createPortal(
     <dialog
       ref={dialogRef}
-      className="m-0 flex h-dvh w-screen max-h-none max-w-none touch-pinch-zoom items-center justify-center overscroll-contain border-0 bg-black/90 p-0"
+      // open:flex rather than flex, so the browser can still hide the dialog once it's closed.
+      // tabIndex lets clicks inside the dialog keep focus here, so the arrow keys keep working.
+      tabIndex={-1}
+      className="m-0 h-dvh w-screen max-h-none max-w-none open:flex items-center justify-center border-0 bg-black/90 p-0 outline-none"
       onPointerDown={(e) => {
         pointerDownOnBackdrop.current = e.target === e.currentTarget;
       }}
@@ -77,6 +71,8 @@ export const PhotoViewer = ({
         if (!dialogRef.current?.open) onClose();
       }}
       onKeyDown={(e) => {
+        // Leave shortcuts like Alt+Arrow (browser back/forward) to the browser.
+        if (e.altKey || e.ctrlKey || e.metaKey) return;
         if (e.key === 'ArrowLeft') prev();
         if (e.key === 'ArrowRight') next();
       }}
@@ -84,7 +80,7 @@ export const PhotoViewer = ({
     >
       <button
         type="button"
-        className="absolute top-4 right-4 text-white text-3xl"
+        className="absolute top-2 right-2 md:top-4 md:right-4 flex h-12 w-12 items-center justify-center rounded-full bg-black/50 text-white text-3xl"
         onClick={onClose}
         aria-label="Close"
       >
@@ -94,7 +90,7 @@ export const PhotoViewer = ({
       {images.length > 1 && (
         <button
           type="button"
-          className="absolute left-4 text-white text-4xl"
+          className="absolute left-2 md:left-4 flex h-12 w-12 items-center justify-center rounded-full bg-black/50 pb-1 text-white text-4xl"
           onClick={prev}
           aria-label="Previous image"
         >
@@ -111,7 +107,7 @@ export const PhotoViewer = ({
       {images.length > 1 && (
         <button
           type="button"
-          className="absolute right-4 text-white text-4xl"
+          className="absolute right-2 md:right-4 flex h-12 w-12 items-center justify-center rounded-full bg-black/50 pb-1 text-white text-4xl"
           onClick={next}
           aria-label="Next image"
         >
