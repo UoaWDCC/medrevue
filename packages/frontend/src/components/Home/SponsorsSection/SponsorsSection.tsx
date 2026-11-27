@@ -44,7 +44,7 @@ export const SponsorsSection: React.FC<{ sponsors?: Sponsor[] }> = ({
   return (
     <section className="w-full bg-background-white flex flex-col items-center py-16 px-4 md:px-8">
       <h2 className="text-center text-background-primary font-bold font-poppins text-3xl md:text-4xl mb-12">
-        Our sponsors for 2026
+        Our sponsors
       </h2>
 
       {platinum.length > 0 && (

@@ -9,7 +9,6 @@ import HomePage from './pages/Home';
 import ReturnPolicyPage from './pages/ReturnPolicy';
 import { SponsorPage } from './pages/SponsorPage';
 import GalleryPage from './pages/gallery/GalleryPage';
-import Show2025 from './pages/show/2025show';
 import { useGetThemeSettingsQuery } from './services/cms';
 import { applyTheme, saveTheme } from './utils/theme';
 
@@ -35,16 +34,6 @@ const App: React.FC = () => {
             <>
               <Menu />
               <HomePage />
-            </>
-          }
-        />
-        <Route
-          path="show"
-          element={
-            <>
-              <Menu />
-              {/* <LoadingComponent /> */}
-              <Show2025 />
             </>
           }
         />
