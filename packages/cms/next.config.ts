@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // The CMS has no public pages, so send visitors straight to the admin panel
+  // (which shows the login screen when signed out).
+  async redirects() {
+    return [{ source: '/', destination: '/admin', permanent: false }];
+  },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],

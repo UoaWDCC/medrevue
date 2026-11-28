@@ -27,6 +27,15 @@ const dirname = path.dirname(filename);
 export default buildConfig({
   admin: {
     user: Users.slug,
+    components: {
+      graphics: {
+        Logo: '/components/Logo',
+        Icon: '/components/Icon',
+      },
+    },
+    meta: {
+      titleSuffix: ' - MedRevue',
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
