@@ -19,6 +19,10 @@ RUN npm ci --include=dev
 
 COPY packages/ packages/
 
+# Vite inlines VITE_* env vars into the frontend bundle at build time
+ARG VITE_CMS_BASE_URL
+ENV VITE_CMS_BASE_URL=$VITE_CMS_BASE_URL
+
 RUN npm run build
 RUN npm prune --omit=dev
 

@@ -10,6 +10,9 @@ swap_size_mb = 512
 [build]
   dockerfile = 'Dockerfile'
 
+[build.args]
+  VITE_CMS_BASE_URL = 'https://cms-medrevue.vercel.app'
+
 [http_service]
   internal_port = 3000
   force_https = true
