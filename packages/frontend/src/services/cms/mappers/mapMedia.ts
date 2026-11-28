@@ -11,9 +11,15 @@ export function mapMedia(
     );
   }
 
+  const toAbsolute = (url: string) => new URL(url, `${cmsBaseUrl}/`).toString();
+  const url = toAbsolute(media.sizes?.large?.url ?? media.url);
+
   return {
     id: media.id,
-    url: new URL(media.url, `${cmsBaseUrl}/`).toString(),
+    url,
+    thumbnailUrl: media.sizes?.thumbnail?.url
+      ? toAbsolute(media.sizes.thumbnail.url)
+      : url,
     alt: media.alt,
     width: media.width ?? undefined,
     height: media.height ?? undefined,

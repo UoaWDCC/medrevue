@@ -12,6 +12,7 @@ export const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member }) => {
       <img
         src={member.image}
         alt={member.name}
+        loading="lazy"
         className="size-40 object-cover mb-3 rounded-lg"
       />
 

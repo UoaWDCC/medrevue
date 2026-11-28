@@ -36,6 +36,7 @@ export function mapPastShowCard(show: Show): CardStackCard {
     posterUrl: show.poster.url,
     posterAlt: show.poster.alt,
     galleryUrls: show.galleryImages.map((image) => image.url),
+    galleryThumbnailUrls: show.galleryImages.map((image) => image.thumbnailUrl),
     galleryAlts: show.galleryImages.map((image) => image.alt),
     galleryIds: show.galleryImages.map(
       (image, index) => image.rowId ?? `${show.id}-gallery-${index}`,

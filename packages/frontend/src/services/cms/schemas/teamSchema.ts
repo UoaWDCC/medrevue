@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { payloadImageSizesSchema } from './mediaSchema';
 
 export const payloadTeamMemberSchema = z.object({
   name: z.string(),
@@ -6,6 +7,7 @@ export const payloadTeamMemberSchema = z.object({
   category: z.string(),
   image: z.object({
     url: z.string(),
+    sizes: payloadImageSizesSchema.optional(),
   }),
   displayOrder: z.number(),
 });

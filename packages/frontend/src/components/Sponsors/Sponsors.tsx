@@ -12,6 +12,7 @@ export const PreviousSponsors: React.FC<{ sponsors: PreviousSponsor[] }> = ({
       <img
         src={src}
         alt={alt}
+        loading="lazy"
         className="h-full w-auto max-w-full object-contain"
       />
     </div>
@@ -37,11 +38,11 @@ export const PreviousSponsors: React.FC<{ sponsors: PreviousSponsor[] }> = ({
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Logo src={sponsor.logo.url} alt={sponsor.logo.alt} />
+            <Logo src={sponsor.logo.thumbnailUrl} alt={sponsor.logo.alt} />
           </a>
         ) : (
           <div key={sponsor.id} className="w-36 md:w-44">
-            <Logo src={sponsor.logo.url} alt={sponsor.logo.alt} />
+            <Logo src={sponsor.logo.thumbnailUrl} alt={sponsor.logo.alt} />
           </div>
         ),
       )}
