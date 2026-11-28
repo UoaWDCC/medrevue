@@ -256,6 +256,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ homepage, show }) => {
             ref={posterRef}
             src={posterUrl}
             alt={show?.poster.alt ?? 'Med Revue'}
+            fetchPriority="high"
             className="w-auto max-w-64 sm:max-w-80 md:max-w-[min(24rem,100%)] max-h-[calc(100vh-12rem)] md:max-h-[calc(100vh-8rem)] rounded-lg border-4 border-background-secondary shadow-lg"
           />
         </div>

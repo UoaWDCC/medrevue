@@ -14,7 +14,10 @@ export const teamAdapter: CmsAdapter<PayloadTeamMember, TeamMember> = {
     name: member.name,
     role: member.role,
     category: member.category,
-    image: new URL(member.image.url, context.cmsBaseUrl).toString(),
+    image: new URL(
+      member.image.sizes?.thumbnail?.url ?? member.image.url,
+      context.cmsBaseUrl,
+    ).toString(),
     displayOrder: member.displayOrder,
   }),
 };

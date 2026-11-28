@@ -35,7 +35,7 @@ export const Menu: React.FC = () => {
     >
       <Link to="/" className="menu-logo-link">
         <img
-          src={logo?.url ?? medrevueLogo}
+          src={logo?.thumbnailUrl ?? medrevueLogo}
           alt={logo?.alt || 'MedRevue logo'}
           className="h-10 w-auto"
         />

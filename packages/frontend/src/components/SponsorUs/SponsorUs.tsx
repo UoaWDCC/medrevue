@@ -61,7 +61,7 @@ const ImpactCard: React.FC<ImpactCardProps> = ({
   icon,
   fallbackIcon,
 }) => {
-  const iconUrl = icon?.url ?? fallbackIcon ?? exposureIcon;
+  const iconUrl = icon?.thumbnailUrl ?? fallbackIcon ?? exposureIcon;
 
   return (
     <div className="shadow-[0_4px_8px_rgba(0,0,0,0.25)] bg-background-white rounded-[32px] p-4 md:p-10">
@@ -69,6 +69,7 @@ const ImpactCard: React.FC<ImpactCardProps> = ({
         <img
           src={iconUrl}
           alt={icon?.alt || title}
+          loading="lazy"
           className="w-8 h-8 md:w-13 md:h-13"
         />
         {title}

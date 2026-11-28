@@ -27,6 +27,7 @@ const currentShow: Show = {
   poster: {
     id: 'poster-2027',
     url: 'http://localhost:3001/api/media/file/poster.png',
+    thumbnailUrl: 'http://localhost:3001/api/media/file/poster.png',
     alt: 'CMS Show poster',
   },
   performances: [],
@@ -69,6 +70,7 @@ describe('Menu CMS integration', () => {
         navbarLogo: {
           id: 'cms-logo',
           url: 'http://localhost:3001/api/media/file/cms-logo.png',
+          thumbnailUrl: 'http://localhost:3001/api/media/file/cms-logo.png',
           alt: 'CMS MedRevue logo',
         },
       },

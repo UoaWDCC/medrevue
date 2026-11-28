@@ -92,6 +92,7 @@ function show(id: string, year: number, title: string): Show {
     poster: {
       id: `${id}-poster`,
       url: `http://localhost:3001/api/media/file/${id}.png`,
+      thumbnailUrl: `http://localhost:3001/api/media/file/${id}.png`,
       alt: `${title} poster`,
     },
     shortDescription: richText(`${title} description from Payload`),
@@ -102,6 +103,7 @@ function show(id: string, year: number, title: string): Show {
       {
         id: `${id}-gallery`,
         url: `http://localhost:3001/api/media/file/${id}-gallery.png`,
+        thumbnailUrl: `http://localhost:3001/api/media/file/${id}-gallery.png`,
         alt: `${title} gallery`,
       },
     ],

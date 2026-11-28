@@ -37,6 +37,31 @@ describe('mapShow', () => {
     );
   });
 
+  test('prefers resized image sizes, falling back to the original', () => {
+    const show = mapShow(
+      {
+        ...payloadShow,
+        poster: {
+          id: 'poster-2026',
+          url: '/api/media/file/poster.png',
+          alt: 'Med Revue 2026 poster',
+          sizes: {
+            thumbnail: { url: '/api/media/file/poster-640x896.webp' },
+            large: { url: null },
+          },
+        },
+      },
+      'http://localhost:3001',
+    );
+
+    expect(show.poster.url).toBe(
+      'http://localhost:3001/api/media/file/poster.png',
+    );
+    expect(show.poster.thumbnailUrl).toBe(
+      'http://localhost:3001/api/media/file/poster-640x896.webp',
+    );
+  });
+
   test('rejects an unpopulated media relationship', () => {
     expect(() =>
       mapShow(
