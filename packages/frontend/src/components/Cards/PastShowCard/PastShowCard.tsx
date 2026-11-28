@@ -9,6 +9,7 @@ export interface PastShowCardProps {
   posterUrl: string;
   posterAlt?: string;
   galleryUrls: string[];
+  galleryThumbnailUrls?: string[];
   galleryAlts?: string[];
   galleryIds: string[];
 }
@@ -20,13 +21,14 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
   posterUrl,
   posterAlt,
   galleryUrls,
+  galleryThumbnailUrls,
   galleryAlts,
   galleryIds,
 }) => {
   // Identify each CMS row, not its upload: the same photo may be used repeatedly.
   const galleryPhotos = galleryUrls.map((url, index) => ({
     id: galleryIds[index],
-    url,
+    thumbnailUrl: galleryThumbnailUrls?.[index] ?? url,
     alt: galleryAlts?.[index] || `${title} gallery ${index + 1}`,
   }));
   // null = viewer closed, a number = index of the image that's open
@@ -87,6 +89,7 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
               <img
                 src={posterUrl}
                 alt={posterAlt || `${title} poster`}
+                loading="lazy"
                 className="w-full h-full object-cover"
               />
             )}
@@ -135,8 +138,9 @@ export const PastShowCard: React.FC<PastShowCardProps> = ({
                        w-20 h-20 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44"
                     >
                       <img
-                        src={photo.url}
+                        src={photo.thumbnailUrl}
                         alt={photo.alt}
+                        loading="lazy"
                         className="w-full h-full object-cover object-center block scale-120"
                       />
                     </button>

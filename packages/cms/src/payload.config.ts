@@ -31,7 +31,10 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  cors: [process.env.FRONTEND_URL || 'http://localhost:5173'],
+  // Comma-separated list, e.g. "https://a.com,https://b.com"
+  cors: (process.env.FRONTEND_URL || 'http://localhost:5173')
+    .split(',')
+    .map((url) => url.trim().replace(/\/+$/, '')),
   collections: [Users, Media, PreviousSponsors, Shows, Sponsors, TeamMembers],
   globals: [
     Homepage,

@@ -8,8 +8,9 @@ const SponsorLogoLink: React.FC<{
 }> = ({ sponsor, className }) => {
   const image = (
     <img
-      src={sponsor.logo.url}
+      src={sponsor.logo.thumbnailUrl}
       alt={sponsor.logo.alt}
+      loading="lazy"
       className="h-full w-full object-contain"
     />
   );
