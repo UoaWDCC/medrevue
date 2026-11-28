@@ -1,57 +1,53 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useEffect, useRef } from 'react'; // Ensure it only runs after the DOM is created
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PastShowCard, { type PastShowCardProps } from '../Cards/PastShowCard';
-
-import gallery2023_1 from '../../assets/gallery-2023-1.png';
-import gallery2023_2 from '../../assets/gallery-2023-2.png';
-import gallery2023_3 from '../../assets/gallery-2023-3.png';
-import gallery2024_1 from '../../assets/gallery-2024-1.png';
-import gallery2024_2 from '../../assets/gallery-2024-2.png';
-import gallery2024_3 from '../../assets/gallery-2024-3.png';
-import gallery2025_1 from '../../assets/gallery-2025-1.png';
-import gallery2025_2 from '../../assets/gallery-2025-2.png';
-import gallery2025_3 from '../../assets/gallery-2025-3.png';
-import poster2023 from '../../assets/medrevue-poster-2023.png';
-import poster2024 from '../../assets/medrevue-poster-2024.png';
-import poster2025 from '../../assets/medrevue-poster-2025.jpg';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const cards: PastShowCardProps[] = [
-  {
-    year: '2025',
-    title: 'Back to the Suture',
-    description:
-      'Back to the Suture takes Auckland MedRevue on a hilarious journey through medicine and time itself. When a medical mishap sends our characters hurtling through different eras, they must navigate the chaos of the past, present, and future to find their way home. Expect comedy, music, medical mishaps, and plenty of inside jokes along the way.',
-    posterUrl: poster2025,
-    galleryUrls: [gallery2025_1, gallery2025_2, gallery2025_3],
-  },
-  {
-    year: '2024',
-    title: 'Mean Docs',
-    description:
-      'Mean Docs takes Auckland MedRevue into the chaotic world of medical school, where friendships, drama, and competition collide. Follow a group of students as they navigate the pressures of med school, complicated friendships, and the ever-present battle to come out on top. Expect hilarious musical numbers, questionable medical decisions, dramatic rivalries, and plenty of moments that hit a little too close to home — all with the signature MedRevue twist.',
-    posterUrl: poster2024,
-    galleryUrls: [gallery2024_1, gallery2024_2, gallery2024_3],
-  },
-  {
-    year: '2023',
-    title: 'Medtilda',
-    description:
-      'Medtilda is a hilarious medical twist on the beloved story of Matilda the Musical. Follow a clever young med student as she navigates the chaos of medical school, questionable teaching, and larger-than-life characters. Packed with comedy, music, and plenty of medical humour, Medtilda is one night of pure medrevue madness.',
-    posterUrl: poster2023,
-    galleryUrls: [gallery2023_1, gallery2023_2, gallery2023_3],
-  },
-];
+export type CardStackCard = PastShowCardProps & { id: string };
 
-const CardStack = () => {
-  const containerRef = useRef<HTMLDivElement>(null); // Initialise with { current: null }
+type CardStackProps = {
+  cards: CardStackCard[];
+  // Rendered above the cards and pinned with them while scrolling.
+  heading?: React.ReactNode;
+};
+
+const CardStack = ({ cards, heading }: CardStackProps) => {
+  const containerRef = useRef<HTMLElement>(null);
+  // Cards stack and scroll away only when a whole card fits on screen; otherwise they show as a plain list.
+  const [stacked, setStacked] = useState(true);
+
+  useEffect(() => {
+    const updateStacked = () => {
+      const cardEls =
+        containerRef.current?.querySelectorAll<HTMLElement>('.card');
+      if (!cardEls?.length) return;
+      const tallestCard = Math.max(
+        ...[...cardEls].map((card) => card.offsetHeight),
+      );
+      // The top card can sit up to 12px lower on mobile, so leave room for that.
+      setStacked(tallestCard + 12 <= window.innerHeight);
+    };
+    updateStacked();
+    window.addEventListener('resize', updateStacked);
+    return () => window.removeEventListener('resize', updateStacked);
+  }, []);
 
   // useEffect(callback, deps)
   //     callback: the function that runs after the component mounts
   //     deps (dependency array): controls when effect re-runs
   useEffect(() => {
+    if (cards.length === 0) return;
+    if (!stacked) {
+      for (const card of containerRef.current?.querySelectorAll<HTMLElement>(
+        '.card',
+      ) ?? []) {
+        card.inert = false;
+      }
+      return;
+    }
     // Scope animation to containerRef
     const ctx = gsap.context(() => {
       // Grab all card elements as an array so we can index them
@@ -60,19 +56,37 @@ const CardStack = () => {
 
       // Set initial position
       gsap.set(cardsArray, {
-        position: 'absolute',
         zIndex: (i: number) => cardsArray.length - i,
         y: (i: number) => mobileCardYOffset + 12 * i,
-        top: '50%',
-        left: '50%',
-        xPercent: -50,
-        yPercent: -50,
       });
 
+      // Only the card on top should be reachable with Tab; the rest are hidden or animated away.
+      const updateInertCards = (progress: number) => {
+        // Leave cards alone while a photo viewer is open, so focus can return to its thumbnail on close.
+        if (document.querySelector('dialog[open]')) return;
+        // floor keeps a card interactive until its own exit animation has finished.
+        const topIndex = Math.floor(progress * (cardsArray.length - 1));
+        cardsArray.forEach((card, i) => {
+          card.inert = i !== topIndex;
+        });
+      };
+      updateInertCards(0);
+
+      // A single card needs positioning, but no pinned scroll animation.
+      if (cardsArray.length < 2) return;
+
       const tl = gsap.timeline({
+        onUpdate: () => updateInertCards(tl.progress()),
         scrollTrigger: {
           trigger: containerRef.current,
-          start: 'top top',
+          // On short screens the heading and card don't both fit, so pin later to keep the whole card in view.
+          start: () => {
+            const container = containerRef.current;
+            const overflow = container
+              ? Math.max(0, container.scrollHeight - container.clientHeight)
+              : 0;
+            return `top top-=${overflow}px`;
+          },
           end: `+=${(cards.length - 1) * window.innerHeight} top`,
           scrub: 1,
           pin: true,
@@ -93,19 +107,28 @@ const CardStack = () => {
 
     // Clean up on unmount (returns a function reference insteads of running it)
     return () => ctx.revert();
-  }, []);
+  }, [cards, stacked]);
 
   return (
-    <div
-      className="w-full h-[100svh] flex items-center justify-center px-3 md:px-0"
+    <section
+      className={`w-full px-3 md:px-0 ${stacked ? 'h-[100svh] flex flex-col' : ''}`}
       ref={containerRef}
+      aria-label="Past shows"
     >
-      {cards.map((card) => (
-        <div key={card.year}>
-          <PastShowCard key={card.year} {...card} />
+      <div className={stacked ? 'my-auto' : 'pb-16'}>
+        {heading}
+        {/* When stacked, every card shares one grid cell, so the cell is as tall as the tallest card. */}
+        <div
+          className={
+            stacked ? 'grid *:[grid-area:1/1] pb-8' : 'flex flex-col gap-8'
+          }
+        >
+          {cards.map((card) => (
+            <PastShowCard key={card.id} {...card} />
+          ))}
         </div>
-      ))}
-    </div>
+      </div>
+    </section>
   );
 };
 

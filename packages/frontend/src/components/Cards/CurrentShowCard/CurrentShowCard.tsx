@@ -5,51 +5,62 @@ export interface CurrentShowCardProps {
   year: string;
   title: string;
   posterUrl?: string;
+  posterAlt?: string;
   description: string;
-  dates: string;
-  time: string;
-  doors: string;
-  location: string;
+  dates?: string;
+  time?: string;
+  doors?: string;
+  location?: string;
+  performanceDetails?: string[];
 }
 export default function CurrentShowCard({
   year,
   title,
   posterUrl,
+  posterAlt,
   description,
   dates,
   time,
   doors,
   location,
+  performanceDetails,
 }: CurrentShowCardProps) {
-  const cardRef = useRef<HTMLImageElement | HTMLDivElement | null>(null);
-  const detailLines = [dates, time, doors, location];
+  const cardRef = useRef<HTMLElement>(null);
+  const detailLines = [
+    ...(performanceDetails ?? [dates, time, doors]),
+    location,
+  ].filter((line): line is string => Boolean(line));
   // Effect for background image zoom on opening
   useEffect(() => {
     if (cardRef.current) {
-      gsap.to(cardRef.current, {
+      const animation = gsap.to(cardRef.current, {
         scale: 1.05,
         duration: 1,
         ease: 'power1.out',
       });
+      return () => {
+        animation.kill();
+      };
     }
   }, []);
 
   return (
-    <div
-      ref={cardRef as React.RefObject<HTMLImageElement>}
+    <section
+      ref={cardRef}
+      aria-label="Current show"
       className="w-full md:max-w-[720px] lg:max-w-[1000px] xl:max-w-[1200px] mx-auto"
     >
       {/*
         Outer card:
         - Mobile: stacked column, free height
-        - md+: side-by-side grid, 19:10 aspect ratio, original sizing
+        - md+: side-by-side grid, height fits the content
         - lg+: side-by-side grid, 19:10 aspect ratio, scaled-up sizing
       */}
       <div
         className="
           flex flex-col rounded-[28px] lg:rounded-[38px] overflow-hidden
           border border-black/[0.08] shadow-lg
-          md:grid md:grid-cols-[72px_1fr] md:[aspect-ratio:19/10]
+          md:grid md:grid-cols-[72px_1fr] lg:[aspect-ratio:19/10]
           lg:grid-cols-[96px_1fr]
         "
       >
@@ -86,15 +97,15 @@ export default function CurrentShowCard({
               flex-shrink-0 rounded-2xl overflow-hidden
               shadow-[4px_6px_20px_rgba(0,0,0,0.22)]
               border-[5px] lg:border-[6px] border-text-brown
-              w-[140px] md:w-auto
+              w-[140px] md:w-[200px] md:self-center lg:w-auto lg:self-auto
               [aspect-ratio:7/10]
-              md:h-full
+              lg:h-full
             "
           >
             {posterUrl ? (
               <img
                 src={posterUrl}
-                alt={`${title} poster`}
+                alt={posterAlt || `${title} poster`}
                 className="w-full h-full object-fill"
               />
             ) : (
@@ -115,35 +126,39 @@ export default function CurrentShowCard({
               >
                 {title}
               </h2>
-              <p
-                className="
+              {description && (
+                <p
+                  className="
                   text-black leading-[1.6] m-0
-                  text-[0.85rem] md:text-[0.68rem] lg:text-[1.0rem] xl:text-[1.25rem]
+                  text-[0.85rem] md:text-[0.8rem] lg:text-[1.0rem] xl:text-[1.25rem]
                   text-center md:text-left overflow-hidden
                 "
-              >
-                {description}
-              </p>
+                >
+                  {description}
+                </p>
+              )}
             </div>
             {/* Details box */}
-            <div className="bg-background-white rounded-2xl border border-black/[0.07] p-4 lg:p-5 flex-shrink-0">
-              <p className="font-bold text-[0.82rem] md:text-[0.9rem] lg:text-[1.15rem] text-black mb-2 lg:mb-3">
-                Date &amp; Location
-              </p>
-              <div className="flex flex-col gap-1 lg:gap-1.5">
-                {detailLines.map((line) => (
-                  <span
-                    key={line}
-                    className="text-[0.78rem] md:text-[0.85rem] lg:text-[1.05rem] text-black leading-[1.5]"
-                  >
-                    {line}
-                  </span>
-                ))}
+            {detailLines.length > 0 && (
+              <div className="bg-background-white rounded-2xl border border-black/[0.07] p-4 lg:p-5 flex-shrink-0">
+                <p className="font-bold text-[0.82rem] md:text-[0.9rem] lg:text-[1.15rem] text-black mb-2 lg:mb-3">
+                  Date &amp; Location
+                </p>
+                <div className="flex flex-col gap-1 lg:gap-1.5">
+                  {detailLines.map((line) => (
+                    <span
+                      key={line}
+                      className="text-[0.78rem] md:text-[0.8rem] lg:text-[1.05rem] text-black leading-[1.5]"
+                    >
+                      {line}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -261,15 +261,6 @@ const SuccessPage: React.FC = () => {
                     <span>Paid</span>
                     <span>${order ? order.totalPrice.toFixed(2) : ''}</span>
                   </div>
-                  <hr className="border-[#FFFBE8] opacity-40" />
-
-                  {/* Returns */}
-                  <a
-                    href="/return-policy"
-                    className={`underline text-sm ${boxText} hover:text-[#FFF0A2] block text-left px-2`}
-                  >
-                    Read about our return policy
-                  </a>
                 </div>
               </div>
 
