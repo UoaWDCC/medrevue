@@ -10,6 +10,21 @@ const webpSize = (name: string, maxDimension: number) => ({
   fit: 'inside' as const,
   withoutEnlargement: true,
   formatOptions: { format: 'webp' as const, options: { quality: 80 } },
+  // Images smaller than both boxes come out the same size for every size, so
+  // the default `name-WxH` filename clashes and Vercel Blob rejects the upload.
+  generateImageName: ({
+    originalName,
+    sizeName,
+    width,
+    height,
+    extension,
+  }: {
+    originalName: string;
+    sizeName: string;
+    width: number;
+    height: number;
+    extension: string;
+  }) => `${originalName}-${sizeName}-${width}x${height}.${extension}`,
 });
 
 export const Media: CollectionConfig = {
